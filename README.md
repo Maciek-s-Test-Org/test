@@ -6,13 +6,6 @@ Here's a quick PR description for the favorites functionality:
 
 ## 🌟 Add Favorite Cities Feature
 
-### What's New
-- **Favorite Cities Management**: Users can now save and manage their favorite cities
-- **Star Button**: Click the star (☆/★) next to any city name to add/remove from favorites
-- **Favorites List**: Toggle between weather view and favorites list with a control button
-- **Quick Access**: Click on any favorite city to instantly view its weather
-- **Persistent Storage**: Favorites are saved locally using localStorage
-
 ### Key Features
 - ✨ Interactive star buttons with smooth animations
 - 📱 Fully responsive design for all devices
