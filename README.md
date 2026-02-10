@@ -3,6 +3,7 @@ Another line
 well 
 well
 nice
+cool
 nice
 what
 is
