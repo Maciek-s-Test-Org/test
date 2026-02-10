@@ -7,7 +7,7 @@ Stand in the desert. . . . Near them, on the sand,
 Half sunk a visage lies, whose frown,
 And wrinkled lip, and sneer of cold command,
 Tell read
-Which survive, stamped on these lifeless things,
+Who survive, stamped on these lifeless things,
 The, what!!!
 And on the pedestal, these words appear:
 My name is Ozymandias, King of Kings;
