@@ -7,8 +7,7 @@ Half sunk a visage lies, whose frown,
 oh boy
 who?!
 dunnit
-Who survive, stamped on these lifeless things,
-The, what!!!
+yep, yep, yep
 And on the pedestal, these words appear:
 My name is Ozymandias, King of Kings;
 Look on my Works, ye Mighty, and despair!"
