@@ -4,7 +4,7 @@ Another line
 I met a traveller from an antique land,
 Who said—“Two vast and trunkless legs of stone
 Stand in the desert. . . . Near them, on the sand,
-Half sunk a shattered visage lies, whose frown,
+Half sunk a visage lies, whose frown,
 And wrinkled lip, and sneer of cold command,
 Tell read
 Which survive, stamped on these lifeless things,
