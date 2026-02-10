@@ -1,6 +1,5 @@
 bom bom
 Another line
-is
 going on
 I met a traveller from an antique land,
 Who said—“Two vast and trunkless legs of stone
