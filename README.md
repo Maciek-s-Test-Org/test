@@ -6,7 +6,7 @@ Who said—“Two vast and trunkless legs of stone
 Stand in the desert. . . . Near them, on the sand,
 Half sunk a visage lies, whose frown,
 And wrinkled lip, and sneer of cold command,
-Tell read
+What?!
 Who survive, stamped on these lifeless things,
 The, what!!!
 And on the pedestal, these words appear:
