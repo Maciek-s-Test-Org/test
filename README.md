@@ -1,11 +1,5 @@
 bom bom
 Another line
-well 
-well
-nice
-cool
-nice
-what
 is
 going on
 I met a traveller from an antique land,
