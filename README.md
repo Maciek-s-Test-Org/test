@@ -6,7 +6,7 @@ Who said—“Two vast and trunkless legs of stone
 Stand in the desert. . . . Near them, on the sand,
 Half sunk a shattered visage lies, whose frown,
 And wrinkled lip, and sneer of cold command,
-Tell that its sculptor well those passions read
+Tell read
 Which survive, stamped on these lifeless things,
 The, and the heart that fed;
 And on the pedestal, these words appear:
