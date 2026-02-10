@@ -8,7 +8,7 @@ Half sunk a shattered visage lies, whose frown,
 And wrinkled lip, and sneer of cold command,
 Tell read
 Which survive, stamped on these lifeless things,
-The, and the heart that fed;
+The, what!!!
 And on the pedestal, these words appear:
 My name is Ozymandias, King of Kings;
 Look on my Works, ye Mighty, and despair!"
