@@ -6,7 +6,6 @@ Stand in the desert. . . . Near them, on the sand,
 Half sunk a visage lies, whose frown,
 oh boy
 who?!
-dunnit
 And on the pedestal, these words appear:
 My name is Ozymandias, King of Kings;
 Look on my Works, ye Mighty, and despair!"
