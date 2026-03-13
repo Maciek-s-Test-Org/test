@@ -1,4 +1,4 @@
-name: Commit Message Lint
+name: Commit Message Lint!!
 
 on:
   pull_request:
