@@ -50,8 +50,6 @@ For suspending our own Legislatures, and declaring themselves invested with powe
 
 He has abdicated Government here, by declaring us out of his Protection and waging War against us.
 
-He has plundered our seas, ravaged our Coasts, burnt our towns, and destroyed the lives of our people.
-
 He is at this time transporting large Armies of foreign Mercenaries to compleat the works of death, desolation and tyranny, already begun with circumstances of Cruelty & perfidy scarcely paralleled in the most barbarous ages, and totally unworthy the Head of a civilized nation.
 
 He has constrained our fellow Citizens taken Captive on the high Seas to bear Arms against their Country, to become the executioners of their friends and Brethren, or to fall themselves by their Hands.
