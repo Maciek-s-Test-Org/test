@@ -38,8 +38,6 @@ For imposing Taxes on us without our Consent:
 
 For depriving us in many cases, of the benefits of Trial by Jury:
 
-For transporting us beyond Seas to be tried for pretended offences:
-
 For abolishing the free System of English Laws in a neighbouring Province, establishing therein an Arbitrary government, and enlarging its Boundaries so as to render it at once an example and fit instrument for introducing the same absolute rule into these Colonies:
 
 For taking away our Charters, abolishing our most valuable Laws, and altering fundamentally the Forms of our Governments:
