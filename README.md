@@ -20,8 +20,6 @@ He has endeavoured to prevent the population of these States; for that purpose o
 
 He has obstructed the Administration of Justice, by refusing his Assent to Laws for establishing Judiciary powers.
 
-He has made Judges dependent on his Will alone, for the tenure of their offices, and the amount and payment of their salaries.
-
 He has erected a multitude of New Offices, and sent hither swarms of Officers to harrass our people, and eat out their substance.
 
 He has kept among us, in times of peace, Standing Armies without the Consent of our legislatures.
@@ -50,14 +48,10 @@ For suspending our own Legislatures, and declaring themselves invested with powe
 
 He has abdicated Government here, by declaring us out of his Protection and waging War against us.
 
-He has plundered our seas, ravaged our Coasts, burnt our towns, and destroyed the lives of our people.
-
 He is at this time transporting large Armies of foreign Mercenaries to compleat the works of death, desolation and tyranny, already begun with circumstances of Cruelty & perfidy scarcely paralleled in the most barbarous ages, and totally unworthy the Head of a civilized nation.
 
 He has constrained our fellow Citizens taken Captive on the high Seas to bear Arms against their Country, to become the executioners of their friends and Brethren, or to fall themselves by their Hands.
 
 He has excited domestic insurrections amongst us, and has endeavoured to bring on the inhabitants of our frontiers, the merciless Indian Savages, whose known rule of warfare, is an undistinguished destruction of all ages, sexes and conditions.
-
-In every stage of these Oppressions We have Petitioned for Redress in the most humble terms: Our repeated Petitions have been answered only by repeated injury. A Prince, whose character is thus marked by every act which may define a Tyrant, is unfit to be the ruler of a free people.
 
 We, therefore, the Representatives of the united States of America, in General Congress, Assembled, appealing to the Supreme Judge of the world for the rectitude of our intentions, do, in the Name, and by Authority of the good People of these Colonies, solemnly publish and declare, That these United Colonies are, and of Right ought to be Free and Independent States; that they are Absolved from all Allegiance to the British Crown, and that all political connection between them and the State of Great Britain, is and ought to be totally dissolved; and that as Free and Independent States, they have full Power to levy War, conclude Peace, contract Alliances, establish Commerce, and to do all other Acts and Things which Independent States may of right do. And for the support of this Declaration, with a firm reliance on the protection of divine Providence, we mutually pledge to each other our Lives, our Fortunes and our sacred Honor.
