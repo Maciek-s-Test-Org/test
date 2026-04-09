@@ -22,8 +22,6 @@ He has endeavoured to prevent the population of these States; for that purpose o
 
 He has obstructed the Administration of Justice, by refusing his Assent to Laws for establishing Judiciary powers.
 
-He has made Judges dependent on his Will alone, for the tenure of their offices, and the amount and payment of their salaries.
-
 He has erected a multitude of New Offices, and sent hither swarms of Officers to harrass our people, and eat out their substance.
 
 He has kept among us, in times of peace, Standing Armies without the Consent of our legislatures.
