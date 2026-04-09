@@ -46,8 +46,6 @@ For taking away our Charters, abolishing our most valuable Laws, and altering fu
 
 For suspending our own Legislatures, and declaring themselves invested with power to legislate for us in all cases whatsoever.
 
-He has abdicated Government here, by declaring us out of his Protection and waging War against us.
-
 He is at this time transporting large Armies of foreign Mercenaries to compleat the works of death, desolation and tyranny, already begun with circumstances of Cruelty & perfidy scarcely paralleled in the most barbarous ages, and totally unworthy the Head of a civilized nation.
 
 He has constrained our fellow Citizens taken Captive on the high Seas to bear Arms against their Country, to become the executioners of their friends and Brethren, or to fall themselves by their Hands.
