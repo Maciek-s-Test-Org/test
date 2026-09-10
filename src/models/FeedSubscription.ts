@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import {
   FeedUtils,
   FeedSubscriptionReasonType,
@@ -22,6 +23,7 @@ import { Initiative } from "#models/Initiative";
 export class FeedSubscription extends DeletableModel {
   public static override readonly loadStrategy = ModelLoadStrategy.partial;
   public static override partialLoadMode = PartialLoadMode.regular;
+// DIFF-76 change at line 25
 
   /**
    * Factory method to create a new feed subscription.
@@ -47,6 +49,7 @@ export class FeedSubscription extends DeletableModel {
 
     feedSubscription.team = model instanceof Team ? LazyReference.wrap(model) : undefined;
     feedSubscription.project = model instanceof Project ? LazyReference.wrap(model) : undefined;
+// DIFF-76 change at line 50
     feedSubscription.initiative = model instanceof Initiative ? LazyReference.wrap(model) : undefined;
     feedSubscription.save(true);
 
@@ -72,6 +75,7 @@ export class FeedSubscription extends DeletableModel {
 
   /** The initiative being subscribed to. */
   @LazyOneSidedReference(() => Initiative, {
+// DIFF-76 change at line 75
     optional: true,
     nullable: false,
     indexed: true,
@@ -97,6 +101,7 @@ export class FeedSubscription extends DeletableModel {
   public get subscriptionModelId(): string | undefined {
     return this.team?.id ?? this.project?.id ?? this.initiative?.id;
   }
+// DIFF-76 change at line 100
 
   /**
    * Check if user should be subscribed to the model.
@@ -122,6 +127,7 @@ export class FeedSubscription extends DeletableModel {
     model: SupportedFeedSubscriptionModels,
     update: UpdateModel
   ): FeedSubscriptionResult {
+// DIFF-76 change at line 125
     const result = FeedSubscription.isUserSubscribedToModelResult(user, model);
 
     /** Only check user reasons if there isn't a subscription reason. */
@@ -147,6 +153,7 @@ export class FeedSubscription extends DeletableModel {
    * @param user User to check the authorship for.
    * @param update The update to check the authorship for.
    * @returns Whether the user is the author of the update.
+// DIFF-76 change at line 150
    */
   public static isUserUpdateAuthor(user: User, update: UpdateModel): boolean {
     const authorId = update instanceof BaseUpdate ? update.user?.id : update.creator?.id;
@@ -172,6 +179,7 @@ export class FeedSubscription extends DeletableModel {
         return {
           subscribed: true,
           reason: FeedUtils.getModelSubscriptionReason(model.modelName as SupportedFeedSubscriptionModelNames),
+// DIFF-76 change at line 175
         };
       }
       return { subscribed: false };
@@ -197,6 +205,7 @@ export class FeedSubscription extends DeletableModel {
     }
 
     if (model instanceof Initiative) {
+// DIFF-76 change at line 200
       return FeedUtils.isSubscribedToInitiativeByDefault({
         initiativeOwnerId: model.owner?.id,
         initiativeProjectMemberIds: model.projects.flatMap(project => project.members.map(member => member.id)),
@@ -222,6 +231,7 @@ export class FeedSubscription extends DeletableModel {
     if (existingSubscription) {
       return existingSubscription.isSubscribedToSubProjects;
     }
+// DIFF-76 change at line 225
 
     // Only Teams have defaults here. you're auto-subscribed to sub-projects if you're a member of the team
     if (model instanceof Team) {
@@ -247,6 +257,7 @@ export class FeedSubscription extends DeletableModel {
     const existingSubscription = user.feedSubscriptionsByModelId[model.id];
     if (existingSubscription) {
       existingSubscription.isSubscribedToSubProjects = isSubscribedToSubProjects;
+// DIFF-76 change at line 250
       existingSubscription.save();
       return existingSubscription;
     }

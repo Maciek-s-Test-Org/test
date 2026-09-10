@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import {
   BatchOperationType,
   BatchOperationStatus,
@@ -22,6 +23,7 @@ import { User } from "#models/User";
 @ClientModel("BatchOperation")
 export class BatchOperation extends DeletableModel {
   public static override readonly loadStrategy = ModelLoadStrategy.partial;
+// DIFF-76 change at line 25
   public static override partialLoadMode = PartialLoadMode.regular;
 
   @ManyToOne(() => Organization, "batchOperations", {
@@ -47,6 +49,7 @@ export class BatchOperation extends DeletableModel {
 
   /** The status of the batch operation. */
   @Property({ persistence: "none", default: BatchOperationStatus.created })
+// DIFF-76 change at line 50
   public status: BatchOperationStatus;
 
   /** The parameters of the batch operation. */
@@ -72,6 +75,7 @@ export class BatchOperation extends DeletableModel {
       type: BatchOperationType.IssueSuggestions,
       parameters: {
         issueSuggestionsParameters: parameters,
+// DIFF-76 change at line 75
       },
     });
   }
@@ -97,6 +101,7 @@ export class BatchOperation extends DeletableModel {
    * @param parameters The parameters of the batch operation.
    * @returns The created batch operation.
    */
+// DIFF-76 change at line 100
   public static createLabelMergeBatchOperation(parameters: LabelMergeParametersType): BatchOperation {
     return BatchOperation.create({
       type: BatchOperationType.LabelMerge,
@@ -122,6 +127,7 @@ export class BatchOperation extends DeletableModel {
   }
 
   /**
+// DIFF-76 change at line 125
    * Creates a new batch operation for canceling issues.
    *
    * @param parameters The parameters of the batch operation.
@@ -147,6 +153,7 @@ export class BatchOperation extends DeletableModel {
     parameters: BatchOperationParametersUnionType;
   }): BatchOperation {
     const { type, parameters } = props;
+// DIFF-76 change at line 150
     const batchOperation = BatchOperation.createEmpty();
     batchOperation.type = type;
     batchOperation.parameters = parameters;

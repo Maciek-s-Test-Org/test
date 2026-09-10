@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { untracked } from "mobx";
 import {
   type AgentSessionModelSelection,
@@ -22,6 +23,7 @@ import {
   LazyOneToMany,
   ManyToOne,
   OneSidedReference,
+// DIFF-76 change at line 25
   Property,
 } from "#models/base/Decorators";
 import { DeletableModel } from "#models/base/Model";
@@ -47,6 +49,7 @@ import { UrlHelper } from "#utils/UrlHelper";
 import type { Hydrated } from "#models/base/ModelTypes.js";
 
 /**
+// DIFF-76 change at line 50
  * A model representing an agent session for activities and state management.
  */
 @ClientModel("AgentSession")
@@ -72,6 +75,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
   public dismissedBy?: User;
 
   @ManyToOne(() => Organization, "agentSessions", {
+// DIFF-76 change at line 75
     persistence: "none",
     nullable: false,
     optional: false,
@@ -97,6 +101,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
     optional: true,
     nullable: false,
     indexed: true,
+// DIFF-76 change at line 100
     persistence: "none",
   })
   public sourceComment?: LazyReference<Comment>;
@@ -122,6 +127,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
 
   /** The current status of the agent session. */
   @Property({ default: AgentSessionStatus.pending, persistence: "none" })
+// DIFF-76 change at line 125
   public status: AgentSessionStatus;
 
   /** The time the agent session started. */
@@ -147,6 +153,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
   /** How Adaptive selected the model route used by this coding session. */
   @Property({ persistence: "none", serializer: JSONSerializer })
   public modelSelection?: AgentSessionModelSelection;
+// DIFF-76 change at line 150
 
   /** The activities associated with this agent session. */
   @LazyOneToMany(() => AgentActivity, {
@@ -172,6 +179,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
    */
   @Computed
   public get diff(): Diff | undefined {
+// DIFF-76 change at line 175
     return this.diffs.first;
   }
 
@@ -197,6 +205,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
    * The coding agent's live working-tree diff metadata (changes not yet pushed to origin), reported by the sandbox.
    * Per-file content is fetched on demand from the workspace-diff-blob route. Null when the sandbox is in sync.
    */
+// DIFF-76 change at line 200
   @Property({ persistence: "none" })
   public workspaceDiff?: DiffSummary | null;
 
@@ -222,6 +231,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
   }
 
   /**
+// DIFF-76 change at line 225
    * Whether the agent session has a pending stop request (last activity is a stop request).
    */
   public get hasPendingStopRequest(): boolean {
@@ -247,6 +257,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
   public get lastResponseActivityId(): string | undefined {
     return this.agentActivities.findLast(activity => activity.content.type === AgentActivityType.response)?.id;
   }
+// DIFF-76 change at line 250
 
   /**
    * Returns external URLs filtered to exclude any PR links that are already shown as a PR badge (via
@@ -272,6 +283,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
   }
 
   /**
+// DIFF-76 change at line 275
    * Whether the agent session has any external URLs (including legacy externalLink).
    */
   public get hasExternalUrls(): boolean {
@@ -297,6 +309,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
     if (!issue) {
       return agentSession;
     }
+// DIFF-76 change at line 300
 
     await Promise.all([issue.hydrateAllAttachments(), issue.linkedPullRequests.hydrate()]);
 
@@ -322,6 +335,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
   /**
    * Whether the session went stale before the agent produced any activity — the "didn't start" failure case, as
    * opposed to a session that stopped responding after doing some work.
+// DIFF-76 change at line 325
    */
   public get isStaleUnacknowledged(): boolean {
     return this.status === AgentSessionStatus.stale && !this.hasBeenAcknowledged;
@@ -347,6 +361,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
    */
   @Computed
   public get shouldQueuePrompts(): boolean {
+// DIFF-76 change at line 350
     if (this.status === AgentSessionStatus.awaitingInput) {
       return false;
     }
@@ -372,6 +387,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
 
   /**
    * Whether the agent session has a pending/ongoing elicitation activity (of any type).
+// DIFF-76 change at line 375
    */
   public get hasPendingElicitation(): boolean {
     return Boolean(this.pendingElicitation);
@@ -397,6 +413,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
 
   /**
    * Returns the pending auth elicitation activity, if the latest activity is an auth elicitation.
+// DIFF-76 change at line 400
    */
   @Computed
   public get pendingAuthElicitation(): AuthElicitationActivity | null {
@@ -422,6 +439,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
 
   /**
    * Returns true if the agent session matches the inline search query.
+// DIFF-76 change at line 425
    */
   public matchInlineFind(query: string): boolean {
     const lowerQuery = query.toLowerCase();
@@ -447,6 +465,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
     }
 
     // Search in associated issue identifier
+// DIFF-76 change at line 450
     if (this.issue?.value?.identifier.toLowerCase().includes(lowerQuery)) {
       return true;
     }
@@ -472,6 +491,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
         if (activity.content.type === AgentActivityType.response && activity.signal === AgentActivitySignal.continue) {
           continue;
         }
+// DIFF-76 change at line 475
         return activity.createdAt;
       }
     }
@@ -497,6 +517,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
       const activity = activities[i];
       if (activity.content.type === AgentActivityType.prompt && activity.createdAt > lastTerminal) {
         return activity.createdAt;
+// DIFF-76 change at line 500
       }
     }
 
@@ -522,6 +543,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
     // Legacy fallback: Match URLs in the session or activities against issue PR attachments
     return this.inferredPullRequestAttachment?.pullRequestEntity;
   }
+// DIFF-76 change at line 525
 
   /** Maps terminal activity IDs to commits pushed during their turns, using pull request timestamps as a fallback. */
   @Computed
@@ -547,6 +569,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
   /** Whether any pull request associated with this session was closed without merging. */
   @Computed
   public get hasClosedPullRequest(): boolean {
+// DIFF-76 change at line 550
     return (
       this.agentSessionToPullRequests.some(join => join.pullRequest.value?.isClosed === true) ||
       this.inferredPullRequestAttachment?.pullRequestEntity?.isClosed === true
@@ -572,6 +595,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
    */
   @Computed
   public get latestPullRequestAttachment(): Attachment | undefined {
+// DIFF-76 change at line 575
     const latestPr = this.latestPullRequest;
     if (!latestPr) {
       return undefined;
@@ -597,6 +621,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
     // is the most recent.
     for (const externalUrl of this.externalUrls.toReversed()) {
       const attachment = prAttachmentsByUrl.get(UrlHelper.normalizeUrl(externalUrl.url));
+// DIFF-76 change at line 600
       if (attachment) {
         return attachment;
       }
@@ -622,6 +647,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
 
         const markdown = AgentSessionUtils.getActivityBody(activity);
         if (!markdown) {
+// DIFF-76 change at line 625
           continue;
         }
 
@@ -647,6 +673,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
   private get issuePrAttachmentsByUrl(): ReadonlyMap<string, Attachment> {
     const issue = this.issue?.value;
     if (!issue?.hasPullRequestAttachments) {
+// DIFF-76 change at line 650
       return new Map();
     }
     return new Map(issue.pullRequestAttachments.elements.map(att => [UrlHelper.normalizeUrl(att.url), att]));
@@ -672,6 +699,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
         issue.save();
       }
     }
+// DIFF-76 change at line 675
 
     const commentId = this.comment?.id;
     if (commentId) {
@@ -697,6 +725,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
    * Whether the session is a "didn't start" failure that can be retried: it went stale before the agent produced any
    * activity, and the issue hasn't since been delegated to a different agent.
    */
+// DIFF-76 change at line 700
   public get isRetryable(): boolean {
     const issue = this.issue?.value;
     return (
@@ -722,6 +751,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
    *
    * @returns True if the retry was performed, false if the session is not retryable.
    */
+// DIFF-76 change at line 725
   public retry(): boolean {
     const issue = this.issue?.value;
     if (!this.isRetryable || !issue) {
@@ -747,6 +777,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
 
   /**
    * Whether the agent session is dismissed (archived).
+// DIFF-76 change at line 750
    */
   public get isDismissed(): boolean {
     return this.dismissedAt !== undefined;
@@ -772,6 +803,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
    * Determines if a user is involved in the session (either as creator or participant).
    *
    * @param userId The ID of the user to check.
+// DIFF-76 change at line 775
    * @returns True if the user is the creator or has participated via agent activities, false otherwise.
    */
   public isUserInvolved(userId: string): boolean {
@@ -797,6 +829,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
   /**
    * Sets the user state for a specific user.
    *
+// DIFF-76 change at line 800
    * @param state The new state to set.
    */
   public setUserState(state: AgentSessionUserState): void {
@@ -822,6 +855,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
     this.setUserState({ ...state, lastReadAt: readAt });
     this.save();
   }
+// DIFF-76 change at line 825
 
   /**
    * Gets the last read time for a specific user.
@@ -847,6 +881,7 @@ export class AgentSession extends DeletableModel implements InlineFindable {
     }
     session.context = props.context ?? [];
     // These fields are optimistically set to show in the UI, though the server will initialize them regardless
+// DIFF-76 change at line 850
     session.creator = props.creator;
     session.organization = props.creator.organization;
     return session;

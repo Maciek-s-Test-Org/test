@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { Initiative } from "#models/Initiative";
 import { ClientModel, LazyManyToOne, Property } from "#models/base/Decorators";
 import { DeletableModel } from "#models/base/Model";
@@ -22,6 +23,7 @@ export class InitiativeRelation extends DeletableModel implements SortableModel 
     relatedInitiative: Initiative;
     sortOrder?: number;
   }): Hydrated<InitiativeRelation> {
+// DIFF-76 change at line 25
     const instance = InitiativeRelation.createEmpty();
     instance.initiative = LazyReference.wrap(props.initiative);
     instance.relatedInitiative = LazyReference.wrap(props.relatedInitiative);
@@ -47,6 +49,7 @@ export class InitiativeRelation extends DeletableModel implements SortableModel 
   })
   public relatedInitiative: LazyReference<Initiative>;
 
+// DIFF-76 change at line 50
   /** The sort order of the relation within the initiative. */
   @Property({ default: 0 })
   public sortOrder: number;

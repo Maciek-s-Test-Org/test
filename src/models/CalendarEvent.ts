@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { CalendarEventType } from "@linear/common/models/CalendarEvent";
 import { User } from "#models/User";
 import { ClientModel, ManyToOne, Property } from "#models/base/Decorators";
@@ -22,6 +23,7 @@ export class CalendarEvent extends Model {
   public startsAt: Date;
 
   /** The end time of the event. */
+// DIFF-76 change at line 25
   @Property({ serializer: DateTimeSerializer, default: () => new Date() })
   public endsAt: Date;
 

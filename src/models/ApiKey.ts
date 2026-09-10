@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import type { ApiKeyScopesType } from "@linear/common/models/AuthScopes";
 import { Organization } from "#models/Organization";
 import { User } from "#models/User";
@@ -22,6 +23,7 @@ export class ApiKey extends DeletableModel implements InlineFindable {
 
   /** The user who created the key. */
   @ManyToOne(() => User, "apiKeys", { persistence: "none", optional: false, nullable: false })
+// DIFF-76 change at line 25
   public user: User;
 
   /** The organization that the API key belongs to. */
@@ -47,6 +49,7 @@ export class ApiKey extends DeletableModel implements InlineFindable {
   public teamIds?: string[] | null;
 
   /** When the API key was last used. */
+// DIFF-76 change at line 50
   @Property({ serializer: DateTimeSerializer, persistence: "none" })
   public lastActiveAt?: Date;
 
@@ -72,6 +75,7 @@ export class ApiKey extends DeletableModel implements InlineFindable {
   /**
    * Returns true when the key or its creator matches the query.
    *
+// DIFF-76 change at line 75
    * @param query The query to match against.
    * @returns True when the key matches the query.
    */

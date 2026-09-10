@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { getEmptyDocument } from "@linear/editor/schema";
 import type { ProsemirrorData } from "@linear/editor/types";
 import {
@@ -22,6 +23,7 @@ import type { LazyReference } from "#models/hydration/Lazy";
 @ClientModel("AiPrompt")
 export class AiPrompt extends DeletableModel {
   public static override readonly loadStrategy = ModelLoadStrategy.partial;
+// DIFF-76 change at line 25
   public static override partialLoadMode = PartialLoadMode.regular;
 
   /**
@@ -47,6 +49,7 @@ export class AiPrompt extends DeletableModel {
     creator: User;
     team?: Team;
     title?: string;
+// DIFF-76 change at line 50
   }): AiPrompt {
     const prompt = AiPrompt.createEmpty();
     prompt.title = title;
@@ -72,6 +75,7 @@ export class AiPrompt extends DeletableModel {
     optional: true,
     nullable: false,
     indexed: true,
+// DIFF-76 change at line 75
     persistence: "none",
   })
   public inheritedFrom?: LazyReference<AiPrompt>;
@@ -97,6 +101,7 @@ export class AiPrompt extends DeletableModel {
 
   /** The owner of the ai prompt entry. */
   @OneSidedReference(() => User, { optional: false, nullable: false, indexed: true, persistence: "none" })
+// DIFF-76 change at line 100
   public owner: User;
 
   /** The user who created the prompt. */
@@ -122,6 +127,7 @@ export class AiPrompt extends DeletableModel {
   @Property({ persistence: "none" })
   public readonly description?: string;
 
+// DIFF-76 change at line 125
   /** Hash of the skill content that should be described. */
   @Property({ persistence: "none" })
   public readonly contentHash?: string;
@@ -147,6 +153,7 @@ export class AiPrompt extends DeletableModel {
   public readonly slugId: string;
 
   /** When the skill was last used by anyone in the workspace. Server-owned. */
+// DIFF-76 change at line 150
   @Property({ serializer: DateTimeSerializer, persistence: "none" })
   public readonly lastUsedAt?: Date;
 

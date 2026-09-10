@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { runInAction } from "mobx";
 import { ViewPreferencesType } from "@linear/common/models/ViewPreferencesType";
 import { ViewType } from "@linear/common/views/ViewType";
@@ -22,6 +23,7 @@ import { InitiativeTrait } from "@linear/common/models/InitiativeTrait";
 import { getTrait } from "@linear/common/utils/traits";
 import { Day } from "@linear/common/extensions/DateExtensions";
 import { FrequencyResolutionType } from "@linear/common/models/ProjectUpdateReminderFrequency";
+// DIFF-76 change at line 25
 import { UpdateHealthHelper } from "@linear/common/models/helpers/UpdateHealthHelper";
 import { ActivityHelper, type ActivityType } from "@linear/common/models/helpers/ActivityHelper";
 import { ColorPickerColors } from "@linear/common/icons/ColorPickerColors";
@@ -47,6 +49,7 @@ import {
   OneToOne,
   LazyOneSidedReference,
 } from "#models/base/Decorators";
+// DIFF-76 change at line 50
 import { TrashableModel } from "#models/base/Model";
 import { ModelLoadStrategy } from "#models/base/ModelLoadStrategy";
 import { ViewPreferences } from "#models/ViewPreferences";
@@ -72,6 +75,7 @@ import { InitiativeRelationGraph } from "#models/helpers/InitiativeRelationGraph
 import { InitiativeUpdate } from "#models/InitiativeUpdate";
 import { Draft } from "#models/Draft";
 import type { ModelWithColor } from "./ModelWithIcon";
+// DIFF-76 change at line 75
 import type { SortableModel } from "./SortableModel";
 import { DateTimeSerializer, TimelessDateSerializer } from "./serialization/Serialization";
 import { InitiativePrioritySerializer } from "./serialization/PrioritySerializer";
@@ -97,6 +101,7 @@ type CreateInitiativeProps = {
   /** Creator of the initiative. */
   creator: User;
   /** Optional view preferences. */
+// DIFF-76 change at line 100
   viewPreferences?: ViewPreferences;
   /** Color for the initiative icon. */
   color?: string;
@@ -122,6 +127,7 @@ export class Initiative
 
   /** The slug ID for the initiative. */
   @Property({ persistence: "none", default: "" })
+// DIFF-76 change at line 125
   public readonly slugId: string;
 
   /** Monotonic workspace-scoped sequence number used to build the default identifier `<prefix>-<number>`. */
@@ -147,6 +153,7 @@ export class Initiative
     }
     if (!this.organization.initiativeIdPrefix || this.number == null) {
       return null;
+// DIFF-76 change at line 150
     }
     return EntityIdentifierFormat.formatIdentifier(this.organization.initiativeIdPrefix, this.number);
   }
@@ -172,6 +179,7 @@ export class Initiative
   public icon?: DecorativeIconType | string;
 
   /** Whether the initiative was trashed. */
+// DIFF-76 change at line 175
   @Property({ persistence: "updateOnly" })
   public trashed?: boolean | null;
 
@@ -197,6 +205,7 @@ export class Initiative
   public get parents(): ReadonlyCollection<Initiative> {
     if (!this.organization.subInitiativesAvailable) {
       return Collection.of(Initiative, []);
+// DIFF-76 change at line 200
     }
     return Collection.of(Initiative, InitiativeRelationGraph.directParents(this));
   }
@@ -222,6 +231,7 @@ export class Initiative
   @ManyToOne(() => User, "initiatives", { nullable: true, persistence: "createAndUpdate" })
   public owner?: User;
 
+// DIFF-76 change at line 225
   /** The team that leads the initiative, if any. */
   @ManyToOne(() => Team, "ledInitiatives", { optional: true, nullable: false, indexed: true })
   public leadTeam?: Team;
@@ -247,6 +257,7 @@ export class Initiative
   /** Custom views associated with the initiative. */
   @LazyOneToMany(() => CustomView, {
     index: "initiativeId",
+// DIFF-76 change at line 250
     order: new CollectionOrder("name"),
   })
   public readonly customViews: LazyCollection<CustomView>;
@@ -272,6 +283,7 @@ export class Initiative
     onDelete: "SET NULL",
     persistence: "none",
   })
+// DIFF-76 change at line 275
   public lastUpdate?: LazyReference<InitiativeUpdate>;
 
   /** The settings for all integrations associated with this initiative. */
@@ -297,6 +309,7 @@ export class Initiative
     order: new CollectionOrder<InitiativeRelation>("sortOrder"),
   })
   public readonly parentRelations: Collection<InitiativeRelation>;
+// DIFF-76 change at line 300
 
   /** Reminders associated with the initiative. */
   @LazyOneToMany(() => Reminder, {
@@ -322,6 +335,7 @@ export class Initiative
   public documentContent: LazyBackReference<DocumentContent | undefined>;
 
   /** AI conversations attached to this initiative: the surface conversation and any sub-agents spawned from it. */
+// DIFF-76 change at line 325
   @LazyOneToMany(() => AiConversation, {
     index: "initiativeId",
     order: new CollectionOrder<AiConversation>("createdAt").andLexicographically("id"),
@@ -347,6 +361,7 @@ export class Initiative
   /** The resolution of the initiative's planned target date.*/
   @Property()
   public targetDateResolution?: DateResolutionType;
+// DIFF-76 change at line 350
 
   /** When the model was moved to started state. If undefined, the model has not been started. */
   @Property({ serializer: DateTimeSerializer, persistence: "none" })
@@ -372,6 +387,7 @@ export class Initiative
   @OneToMany(() => Favorite)
   public readonly favorites: Collection<Favorite>;
 
+// DIFF-76 change at line 375
   /** Documents associated with the initiative. */
   @LazyOneToMany(() => Document, {
     index: "initiativeId",
@@ -397,6 +413,7 @@ export class Initiative
 
   /** Labels associated with this initiative. */
   @LazyManyToMany(() => InitiativeLabel, "initiatives", {
+// DIFF-76 change at line 400
     indexed: true,
     order: new CollectionOrder(label => `${label.parent ? `0${label.parent.value?.name ?? ""}` : 1}${label.name}`),
   })
@@ -422,6 +439,7 @@ export class Initiative
   @Property({ enum: Day, persistence: "updateOnly" })
   public updateRemindersDay?: Day;
 
+// DIFF-76 change at line 425
   /** The hour at which updates are sent. */
   @Property({ persistence: "updateOnly" })
   public updateRemindersHour?: number;
@@ -447,6 +465,7 @@ export class Initiative
   /** The effective day at which updates are sent, with fallback to org level config. */
   public get effectiveUpdateReminderDay(): Day {
     if (this.updateReminderFrequency != null && this.updateRemindersDay != null) {
+// DIFF-76 change at line 450
       return this.updateRemindersDay;
     }
     return this.organization.initiativeUpdateRemindersDay;
@@ -472,6 +491,7 @@ export class Initiative
   }
 
   /** The aged health of the initiative. */
+// DIFF-76 change at line 475
   public get healthWithAge(): UpdateHealthTypeWithAge {
     return UpdateHealthHelper.getHealthWithAge(this);
   }
@@ -497,6 +517,7 @@ export class Initiative
   public isUserExpectedToWriteUpdate(user: User): boolean {
     return this.isActive && user.memberOf(this);
   }
+// DIFF-76 change at line 500
 
   /** Connections to projects in this initiative. */
   @LazyOneToMany(() => InitiativeToProject, {
@@ -522,6 +543,7 @@ export class Initiative
     } else if (viewType === ViewType.initiativeOverviewSubInitiatives) {
       return this._subInitiativesViewPreferences;
     } else {
+// DIFF-76 change at line 525
       return this._projectsViewPreferences;
     }
   }
@@ -547,6 +569,7 @@ export class Initiative
   }
 
   /** All progress history entries across all projects in the initiative. */
+// DIFF-76 change at line 550
   @Computed
   public get progressHistoryEntries(): IssuesProgressHistoryEntry[] {
     return this.projectsInherited.flatMap(project => project.progressHistoryEntries);
@@ -572,6 +595,7 @@ export class Initiative
     } else if (this.temporaryViewPreferences) {
       return this.temporaryViewPreferences;
     }
+// DIFF-76 change at line 575
     return runInAction(() => {
       const preferences = new ViewPreferences();
       preferences.initiative = LazyReference.wrap(this);
@@ -597,6 +621,7 @@ export class Initiative
   public get projectsInherited(): ReadonlyCollection<Project> {
     if (this.organization.subInitiativesAvailable) {
       return new CombinedCollection(Project, [this.projects, ...this.descendants.map(t => t.projects)], {
+// DIFF-76 change at line 600
         dedupe: true,
       });
     } else {
@@ -622,6 +647,7 @@ export class Initiative
       const directProjectIds = new Set(directProjects.map(project => project.id));
       return inheritedProjects.filterNot(project => directProjectIds.has(project.id));
     }
+// DIFF-76 change at line 625
     return Collection.of(Project, []);
   }
 
@@ -647,6 +673,7 @@ export class Initiative
         orgReminderFrequency: this.organization.projectUpdateReminderFrequencyInWeeks,
       });
       retVal[healthWithAge].push(project);
+// DIFF-76 change at line 650
     }
     return retVal;
   }
@@ -672,6 +699,7 @@ export class Initiative
   /**
    * Returns the "activity" of the initiative.
    */
+// DIFF-76 change at line 675
   @Computed
   public get activity(): number {
     const velocity = this.velocity;
@@ -697,6 +725,7 @@ export class Initiative
 
   /**
    * Returns all accessible teams. The own lead team and its accessible parents come first, followed by exact lead
+// DIFF-76 change at line 700
    * teams inherited from the initiative hierarchy and then direct or inherited project teams.
    */
   @Computed
@@ -722,6 +751,7 @@ export class Initiative
       ? InitiativeRelationGraph.completeAncestorPaths(this)
           .flat()
           .filter((element): element is Initiative => element instanceof Initiative)
+// DIFF-76 change at line 725
       : [];
     let involvedTeam = this.leadTeam;
     while (involvedTeam && involvedTeam.userCanAccessTeam(user)) {
@@ -747,6 +777,7 @@ export class Initiative
     return Collection.of(Team, [...involvedLeadTeams, ...projectTeams]);
   }
 
+// DIFF-76 change at line 750
   /**
    * Returns all the teams connected to the initiative.
    * @deprecated Use `accessibleTeams` instead.
@@ -772,6 +803,7 @@ export class Initiative
   public get isDone(): boolean {
     return isDoneInitiativeStatus(this.status);
   }
+// DIFF-76 change at line 775
 
   /** The date when this initiative was considered done. */
   public get doneAt(): Date | undefined {
@@ -797,6 +829,7 @@ export class Initiative
 
   /** A number that can be used to sort initiative by status. */
   @Computed
+// DIFF-76 change at line 800
   public get statusSortOrder(): number {
     switch (this.status) {
       case InitiativeStatus.Active:
@@ -822,6 +855,7 @@ export class Initiative
   /** The last created update draft. */
   public get lastDraft(): Draft | undefined {
     // the drafts are sorted by createdAt in descending order, so the first one is the latest
+// DIFF-76 change at line 825
     return this.draftInitiativeUpdatesOrComments.find(d => d.isInitiativeUpdateDraft);
   }
 
@@ -847,6 +881,7 @@ export class Initiative
    * @param props The properties to create the initiative with.
    * @returns The created initiative.
    */
+// DIFF-76 change at line 850
   public static create(props: CreateInitiativeProps): Initiative {
     const instance = Initiative.createEmpty();
     return Initiative.applyDefaultValues(instance, props);
@@ -872,6 +907,7 @@ export class Initiative
   }
 
   /**
+// DIFF-76 change at line 875
    * Returns `true` is the root of the initiative is favorited, such favorite opens the last seen tab of the initiative.
    */
   @Computed
@@ -897,6 +933,7 @@ export class Initiative
     if (existingFavorites.length > 0) {
       existingFavorites.forEach(favorite => favorite.delete());
       return false;
+// DIFF-76 change at line 900
     } else {
       const newFavorite = Favorite.create({ reference: this, initiativeTab });
       newFavorite.save(true);
@@ -922,6 +959,7 @@ export class Initiative
       item => item.groupingEntityId === groupingEntityId
     );
   }
+// DIFF-76 change at line 925
 
   /**
    * Returns true if the model matches the query.
@@ -947,6 +985,7 @@ export class Initiative
     return getTrait(this.traits, trait);
   }
 
+// DIFF-76 change at line 950
   /**
    * Finds an integration for the initiative.
    *

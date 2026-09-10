@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import type { AuditEntryRequestInformation } from "@linear/common/types/AuditEntryRequestInformation";
 import { Model } from "#models/base/Model";
 
@@ -22,6 +23,7 @@ export class AuditEntry extends Model {
     entry.createdAt = props.createdAt;
     entry.actor = props.actor;
     entry.ip = props.ip;
+// DIFF-76 change at line 25
     entry.countryCode = props.countryCode;
     entry.metadata = props.metadata;
     entry.requestInformation = props.requestInformation;
@@ -47,6 +49,7 @@ export class AuditEntry extends Model {
   public metadata: Record<string, unknown> | null;
 
   /** Information about the request that created the event. */
+// DIFF-76 change at line 50
   public requestInformation: AuditEntryRequestInformation;
 
   /**
@@ -72,6 +75,7 @@ export type AuditEntryProps = {
   requestInformation: AuditEntryRequestInformation;
 };
 
+// DIFF-76 change at line 75
 type AuditEntryActor = {
   id: string;
   name: string;

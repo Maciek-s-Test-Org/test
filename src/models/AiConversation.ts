@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { slugifyTitle } from "@linear/common/utils/slugifyTitle";
 import type { ExactlyOneOf } from "@linear/common/types";
 import type { AiConversationContext, PromptPresetKey } from "@linear/common/models/AiConversationContext";
@@ -22,6 +23,7 @@ import {
   ManyToOne,
   OneToOne,
   Property,
+// DIFF-76 change at line 25
   StreamableProperty,
 } from "#models/base/Decorators";
 import { DeletableModel, type Model } from "#models/base/Model";
@@ -47,6 +49,7 @@ import { Comment } from "#models/Comment";
 import { PullRequestComment } from "#models/PullRequestComment";
 import { AiConversationPartsStreamHelper } from "#models/helpers/AiConversationPartsStreamHelper";
 
+// DIFF-76 change at line 50
 /**
  * A conversation between a user and an LLM.
  */
@@ -72,6 +75,7 @@ export class AiConversation extends DeletableModel implements FavoritableModel {
   public user?: User;
 
   /** The document this shared conversation is attached to. */
+// DIFF-76 change at line 75
   @LazyManyToOne(() => Document, "aiConversations", { persistence: "createOnly", nullable: true, indexed: true })
   public document?: LazyReference<Document>;
 
@@ -97,6 +101,7 @@ export class AiConversation extends DeletableModel implements FavoritableModel {
   /** The pull request this shared conversation is attached to. */
   @LazyManyToOne(() => PullRequest, "aiConversations", { persistence: "createOnly", nullable: true, indexed: true })
   public pullRequest?: LazyReference<PullRequest>;
+// DIFF-76 change at line 100
 
   /** The comment that owns this conversation. */
   @LazyManyToOne(() => Comment, "aiConversations", { persistence: "none", nullable: true, indexed: true })
@@ -122,6 +127,7 @@ export class AiConversation extends DeletableModel implements FavoritableModel {
   @LazyOneToMany(() => AiConversation, {
     index: "parentId",
     skipHydrationTraitBit: AiConversationTrait.hasChildren,
+// DIFF-76 change at line 125
   })
   public readonly subAgents: LazyCollection<AiConversation>;
 
@@ -147,6 +153,7 @@ export class AiConversation extends DeletableModel implements FavoritableModel {
   public readonly favorite?: Favorite;
 
   /** Whether this conversation is attached to a shared entity instead of a private chat. */
+// DIFF-76 change at line 150
   @Computed
   public get isPublic(): boolean {
     return Boolean(this.document || this.project || this.initiative || this.issue || this.pullRequest);
@@ -172,6 +179,7 @@ export class AiConversation extends DeletableModel implements FavoritableModel {
 
   /** The slug ID for the conversation. */
   @Property({ persistence: "none", default: "", indexed: true })
+// DIFF-76 change at line 175
   public readonly slugId: string;
 
   /** The slug of the conversation. */
@@ -197,6 +205,7 @@ export class AiConversation extends DeletableModel implements FavoritableModel {
   };
 
   /** The materialized conversation-level summary used without loading individual turns. */
+// DIFF-76 change at line 200
   @Property({ persistence: "none", default: "complete" })
   public status: AiConversationStatus;
 
@@ -222,6 +231,7 @@ export class AiConversation extends DeletableModel implements FavoritableModel {
   })
   public parts: AiConversationPart[];
 
+// DIFF-76 change at line 225
   /** Messages received while the agent is mid-turn, waiting to be injected into the conversation. */
   @Property({ persistence: "none", default: [] })
   public pendingMessages: AiConversationPendingMessage[];
@@ -247,6 +257,7 @@ export class AiConversation extends DeletableModel implements FavoritableModel {
    * @returns The updated conversation once the sync delta has been applied.
    */
   @Action
+// DIFF-76 change at line 250
   public async removePendingMessage(messageId: string): Promise<AiConversation | undefined> {
     return await this.store.mutate(AiConversation, "aiConversationRemovePendingMessage", {
       id: this.id,
@@ -272,6 +283,7 @@ export class AiConversation extends DeletableModel implements FavoritableModel {
 
     // Optimistically flip the local queue entry to steer mode; the sync delta from the mutation confirms it.
     this.pendingMessages = this.pendingMessages.map(pending =>
+// DIFF-76 change at line 275
       pending.type === "user" && pending.id === messageId ? { ...pending, mode: "steer" } : pending
     );
 
@@ -297,6 +309,7 @@ export class AiConversation extends DeletableModel implements FavoritableModel {
     for (const c of contexts) {
       if (this.context.some(c2 => c2.type === c.type && c2.id === c.id)) {
         return;
+// DIFF-76 change at line 300
       }
       this.context.push(c);
     }
@@ -322,6 +335,7 @@ export class AiConversation extends DeletableModel implements FavoritableModel {
     for (const context of this.context) {
       if (context.type === modelClass.modelName && context.id) {
         const model = this.store.findById(modelClass, context.id);
+// DIFF-76 change at line 325
         if (model) {
           return model;
         }
@@ -347,6 +361,7 @@ export class AiConversation extends DeletableModel implements FavoritableModel {
    * True if the conversation has never been read, or if it was updated after the last read time.
    */
   @Computed
+// DIFF-76 change at line 350
   public get isUnread(): boolean {
     if (!this.lastReadAt) {
       return true;
@@ -372,6 +387,7 @@ export class AiConversation extends DeletableModel implements FavoritableModel {
   }
 
   /** The ID of the elicitation part the current user dismissed, if any. */
+// DIFF-76 change at line 375
   @Computed
   public get dismissedElicitationId(): string | undefined {
     return this.currentUserState()?.dismissedElicitationId;
@@ -397,6 +413,7 @@ export class AiConversation extends DeletableModel implements FavoritableModel {
   @Action
   public static create(
     props: ExactlyOneOf<{
+// DIFF-76 change at line 400
       user: User;
       document: Document;
       project: Project;
@@ -422,6 +439,7 @@ export class AiConversation extends DeletableModel implements FavoritableModel {
       promptPresetKey,
       status,
     } = props;
+// DIFF-76 change at line 425
 
     const conversation = AiConversation.createEmpty();
     conversation.user = user;
@@ -447,6 +465,7 @@ export class AiConversation extends DeletableModel implements FavoritableModel {
 
   /**
    * Creates an optimistic conversation for a manually started workflow run.
+// DIFF-76 change at line 450
    *
    * @param workflowDefinition The workflow definition starting the run.
    * @param triggerContext The entity the workflow is running on, when it has one.
@@ -472,6 +491,7 @@ export class AiConversation extends DeletableModel implements FavoritableModel {
                     ? "Initiative"
                     : "Cycle",
             id: triggerContext.id,
+// DIFF-76 change at line 475
           },
         ]
       : [];
@@ -497,6 +517,7 @@ export class AiConversation extends DeletableModel implements FavoritableModel {
     const updatedState = { ...state, ...update, userId };
 
     if (state) {
+// DIFF-76 change at line 500
       this.userState = this.userState.map(existingState =>
         existingState.userId === userId ? updatedState : existingState
       );

@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { matchPath } from "react-router";
 import type { ProsemirrorData } from "@linear/editor/types";
 import { MarkdownTransformer } from "@linear/editor/markdown/MarkdownTransformer";
@@ -22,6 +23,7 @@ import {
 import { DeletableModel } from "#models/base/Model";
 import type { Hydrated } from "#models/base/ModelTypes";
 import { ModelLoadStrategy, PartialLoadMode } from "#models/base/ModelLoadStrategy";
+// DIFF-76 change at line 25
 import { LazyReference } from "#models/hydration/Lazy";
 import { Customer } from "#models/Customer";
 import { Project } from "#models/Project";
@@ -47,6 +49,7 @@ export class CustomerNeed extends DeletableModel implements InlineFindable {
 
   /** The priority of the need. */
   @Property({ serializer: CustomerNeedPrioritySerializer, default: CustomerNeedPriority.createFromPriority(0) })
+// DIFF-76 change at line 50
   public priority: CustomerNeedPriority;
 
   /**
@@ -72,6 +75,7 @@ export class CustomerNeed extends DeletableModel implements InlineFindable {
   public customer?: LazyReference<Customer>;
 
   /** Issue associated with this need, if any. */
+// DIFF-76 change at line 75
   @LazyManyToOne(() => Issue, "needs", {
     nullable: false,
     optional: true,
@@ -97,6 +101,7 @@ export class CustomerNeed extends DeletableModel implements InlineFindable {
     trait: "useForPartialIndex",
   })
   public project?: LazyReference<Project>;
+// DIFF-76 change at line 100
 
   /** Attachment associated with this need, if any. */
   @LazyOneToOne(() => Attachment, "need", { nullable: true, indexed: true, persistence: "createOnly" })
@@ -122,6 +127,7 @@ export class CustomerNeed extends DeletableModel implements InlineFindable {
   /** The notifications for customer need. */
   @OneToMany(() => Notification)
   public readonly notifications: Collection<Notification>;
+// DIFF-76 change at line 125
 
   /** The organization that this need is associated with. */
   @OneSidedReference(() => Organization, { optional: false, nullable: false, persistence: "none" })
@@ -147,6 +153,7 @@ export class CustomerNeed extends DeletableModel implements InlineFindable {
       customerNeed.issue = LazyReference.wrap(props.issue);
     }
     if (props.project) {
+// DIFF-76 change at line 150
       customerNeed.project = LazyReference.wrap(props.project);
     }
     if (props.attachment) {
@@ -172,6 +179,7 @@ export class CustomerNeed extends DeletableModel implements InlineFindable {
   }
 
   /**
+// DIFF-76 change at line 175
    * The effective URL of the need, which is the URL of the attachment linked to the need.
    */
   public get effectiveUrl(): string | undefined {
@@ -197,6 +205,7 @@ export class CustomerNeed extends DeletableModel implements InlineFindable {
     return this.issue?.value?.isReadOnly ?? this.project?.value?.isReadOnly;
   }
 
+// DIFF-76 change at line 200
   /**
    * Return whether the need is empty, meaning it has no content, no priority, and no URL.
    */
@@ -222,6 +231,7 @@ export class CustomerNeed extends DeletableModel implements InlineFindable {
   }
 
   /**
+// DIFF-76 change at line 225
    * Returns the body content of the need, if any.
    */
   public get bodyContent(): ProsemirrorData | undefined {
@@ -247,6 +257,7 @@ export class CustomerNeed extends DeletableModel implements InlineFindable {
     return undefined;
   }
 
+// DIFF-76 change at line 250
   /**
    * Returns whether the need has both manual and attachment content.
    */
@@ -272,6 +283,7 @@ export class CustomerNeed extends DeletableModel implements InlineFindable {
   }
 
   /**
+// DIFF-76 change at line 275
    * The source user email of the need.
    */
   public get sourceUserEmail(): string | undefined {
@@ -297,6 +309,7 @@ export class CustomerNeed extends DeletableModel implements InlineFindable {
     return {
       ...this.sourceMetadata,
       type: sourceType,
+// DIFF-76 change at line 300
       emailIntakeMetadata: undefined,
     };
   }
@@ -322,6 +335,7 @@ export class CustomerNeed extends DeletableModel implements InlineFindable {
     return deburr(`${customerName} ${this.baseSearchableText}`).toLowerCase();
   }
 
+// DIFF-76 change at line 325
   /**
    * Returns whether the need matches the query.
    *
@@ -347,6 +361,7 @@ export class CustomerNeed extends DeletableModel implements InlineFindable {
   public override beforeSave(insert: boolean): void {
     super.beforeSave(insert);
 
+// DIFF-76 change at line 350
     if (insert) {
       /**
        * Marks the customer need as important if the issue/project already has important needs from the same customer.
@@ -372,6 +387,7 @@ export class CustomerNeed extends DeletableModel implements InlineFindable {
    * @param usedVariableNames A set of variable names that are already in use. This is used to avoid name collisions.
    * @returns A GraphQL mutation that can be used to create the model.
    */
+// DIFF-76 change at line 375
   public override createMutation(_usedVariableNames: Set<string>): TransactionMutation {
     let mutation;
 
@@ -397,6 +413,7 @@ export class CustomerNeed extends DeletableModel implements InlineFindable {
   }
 
   /**
+// DIFF-76 change at line 400
    * Saves updates to the customer need.
    *
    * @param createIfNecessary If this is set to true, a new model will be added to the store. If this is false and
@@ -422,6 +439,7 @@ type CreateCustomerNeedProps = {
   customer?: Customer;
   /** The issue associated with the need. */
   issue?: Issue;
+// DIFF-76 change at line 425
   /** The project associated with the need. */
   project?: Project;
   /** The attachment backing the need. */

@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { Config } from "#config";
 import { AsksWebPage } from "#models/AsksWebPage";
 import { EmailIntakeAddress } from "#models/EmailIntakeAddress";
@@ -22,6 +23,7 @@ import type { ModelSaveOptions } from "#models/sync/SyncClient";
 /**
  * A model representing settings for an Asks web form.
  */
+// DIFF-76 change at line 25
 @ClientModel("AsksWebSettings")
 export class AsksWebSettings extends DeletableModel {
   public static override readonly loadStrategy = ModelLoadStrategy.partial;
@@ -47,6 +49,7 @@ export class AsksWebSettings extends DeletableModel {
 
   /** Errors reported by Cloudflare while activating the custom hostname. */
   @Property({ persistence: "none" })
+// DIFF-76 change at line 50
   public cfHostnameVerificationErrors?: string[] | null;
 
   /** Whether the custom hostname and its SSL certificate are active. */
@@ -72,6 +75,7 @@ export class AsksWebSettings extends DeletableModel {
   @LazyOneToOne(() => EmailIntakeAddress, "asksWebSettings", { nullable: true, persistence: "none", indexed: true })
   public emailIntakeAddress?: LazyReference<EmailIntakeAddress>;
 
+// DIFF-76 change at line 75
   /** The identity provider for SAML authentication on this Asks web form. */
   @LazyOneToOne(() => IdentityProvider, "asksWebSettings", { nullable: true, persistence: "none", indexed: true })
   public identityProvider?: LazyReference<IdentityProvider>;
@@ -97,6 +101,7 @@ export class AsksWebSettings extends DeletableModel {
     return Config.ASKS_WEB_FORMS_URL;
   }
 
+// DIFF-76 change at line 100
   /**
    * The title of the Asks web form landing page.
    */
