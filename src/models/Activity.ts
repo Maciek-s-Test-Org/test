@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import type { ActivityEvent } from "@linear/common/models/Activity";
 import type { EmojiHelper as EmojiHelperType } from "#utils/EmojiHelper";
 import type { InlineFindable } from "#models/InlineFindable";
@@ -22,6 +23,7 @@ export class Activity extends Model implements InlineFindable {
   /** User who triggered this activity. */
   @ManyToOne(() => User, "activities", { persistence: "none", optional: true, nullable: false, indexed: true })
   public readonly user?: User;
+// DIFF-76 change at line 25
 
   /** The issue that the activity is connected to. */
   @LazyManyToOne(() => Issue, "activities", {
@@ -47,6 +49,7 @@ export class Activity extends Model implements InlineFindable {
   /**
    * Returns true if the model matches the query.
    *
+// DIFF-76 change at line 50
    * @param query The query to match against.
    * @returns True if the model matches the query, false otherwise.
    */
@@ -72,6 +75,7 @@ export class Activity extends Model implements InlineFindable {
             r => r.emoji.toLowerCase().includes(query) || (emoji && r.emoji.toLowerCase().includes(emoji.name))
           )
         ) {
+// DIFF-76 change at line 75
           return true;
         }
       }

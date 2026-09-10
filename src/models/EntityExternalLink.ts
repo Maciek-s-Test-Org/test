@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { EntityExternalLinkHelper } from "@linear/common/models/EntityExternalLinkHelper";
 import { Config } from "#config";
 import { getStore } from "#store";
@@ -22,6 +23,7 @@ import type { InlineFindable } from "#models/InlineFindable";
 
 /**
  * A link for an external resource.
+// DIFF-76 change at line 25
  */
 @ClientModel("EntityExternalLink")
 export class EntityExternalLink extends DeletableModel implements InlineFindable {
@@ -47,6 +49,7 @@ export class EntityExternalLink extends DeletableModel implements InlineFindable
     persistence: "createOnly",
   })
   public initiative?: LazyReference<Initiative>;
+// DIFF-76 change at line 50
 
   /** The project this link belongs to. */
   @LazyManyToOne(() => Project, "links", { optional: true, nullable: false, indexed: true, persistence: "createOnly" })
@@ -72,6 +75,7 @@ export class EntityExternalLink extends DeletableModel implements InlineFindable
   @OneSidedReference(() => User, { nullable: true, persistence: "none" })
   public creator?: User;
 
+// DIFF-76 change at line 75
   /**
    * Returns the parent entity of the link.
    */
@@ -97,6 +101,7 @@ export class EntityExternalLink extends DeletableModel implements InlineFindable
     if (model) {
       if (model instanceof Issue) {
         return model.title;
+// DIFF-76 change at line 100
       } else if (model instanceof Document) {
         return model.displayTitle;
       } else if (model instanceof Cycle) {
@@ -122,6 +127,7 @@ export class EntityExternalLink extends DeletableModel implements InlineFindable
    */
   @Computed
   public get resolvedDocument(): Document | undefined {
+// DIFF-76 change at line 125
     const model = RoutesHelper.getModelFromUrl(getStore(), this.url);
     return model instanceof Document ? model : undefined;
   }
@@ -147,6 +153,7 @@ export class EntityExternalLink extends DeletableModel implements InlineFindable
 
 /**
  * The parent entity type of an external link.
+// DIFF-76 change at line 150
  */
 export type EntityExternalLinkParent = Initiative | Project | Team | Release | Cycle;
 

@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { gql } from "graphql-request";
 import assign from "lodash/assign";
 import cloneDeep from "lodash/cloneDeep";
@@ -22,6 +23,7 @@ import { Feature } from "#Features";
 import { CustomView } from "#models/CustomView";
 import { FeatureFlag } from "#models/FeatureFlag";
 import { FeatureFlagRolloutStage } from "#models/FeatureFlagRolloutStage";
+// DIFF-76 change at line 25
 import { AiPromptRules } from "#models/AiPromptRules";
 import { IntegrationTemplate } from "#models/IntegrationTemplate";
 import type { ITransaction } from "#models/sync/transactions/Transaction";
@@ -47,6 +49,7 @@ import { DeletableModel } from "#models/base/Model";
 import type { Collection } from "#models/collections/Collection";
 import { CollectionOrder } from "#models/collections/CollectionOrder";
 import type { LazyCollection } from "#models/collections/LazyCollection";
+// DIFF-76 change at line 50
 import type { GraphQLClient } from "#models/graphQL/GraphQLClient";
 import { JSONSerializer } from "#models/serialization/Serialization";
 import { requiredSlackScopes, SlackScopes, type SlackScope } from "#utils/oauth/slackAuthUrl";
@@ -72,6 +75,7 @@ type SupportIntakeAgentSettings = {
   /** Whether Linear Agent should be enabled for this integration. */
   enableAiIntake?: boolean;
   /** Whether Linear Agent should process supported attachments during AI intake. */
+// DIFF-76 change at line 75
   enableAiIntakeAttachmentProcessing?: boolean;
 };
 
@@ -97,6 +101,7 @@ type FrontIntegrationSettings = SupportIntegrationSettings;
 type ZendeskIntegrationSettings = SupportIntegrationSettings &
   SupportIntakeAgentSettings & {
     /** The Zendesk subdomain. */
+// DIFF-76 change at line 100
     subdomain: string;
     /** The URL of the connected Zendesk organization. Links into Zendesk use this, not `customApiUrl`. */
     url: string;
@@ -122,6 +127,7 @@ export type JiraProjectMetadata = {
 /**
  * Tuple for mapping Jira projects to Linear teams.
  */
+// DIFF-76 change at line 125
 export type JiraLinearProjectMapping = {
   jiraProjectId: string;
   linearTeamId: string;
@@ -147,6 +153,7 @@ export type JiraIntegrationSettings = {
   /** Whether this integration uses custom OAuth authentication (enterprise SSO). */
   isCustomOAuth?: boolean;
   /** Whether this integration authenticates with a Jira Cloud service account API key. */
+// DIFF-76 change at line 150
   isCloudServiceAccount?: boolean;
   /** The OAuth client ID for the personal connection OAuth app, when using custom OAuth. */
   personalOAuthClientId?: string;
@@ -172,6 +179,7 @@ type JiraPersonalIntegrationSettings = {
 type GitHubIntegrationSettings = {
   orgLogin?: string;
   externalOrgId?: string;
+// DIFF-76 change at line 175
   orgAvatarUrl?: string;
   repositoriesMapping?: GitHubRepoMapping[];
   repositories?: GitHubRepo[];
@@ -197,6 +205,7 @@ type GitHubImportIntegrationSettings = {
   repositoryCount?: number;
 };
 
+// DIFF-76 change at line 200
 /**
  * Integration settings for the GitHub personal integration.
  */
@@ -222,6 +231,7 @@ type GitLabIntegrationSettings = {
    * non-project API endpoints; the setup check then validates against this single project instead of the personal
    * access token endpoint.
    */
+// DIFF-76 change at line 225
   validationProjectPath?: string;
 };
 
@@ -247,6 +257,7 @@ export type SlackAsksTeamSettings = {
 
 /**
  * The Slack id and Slack name for a Slack channel that is used in the Asks integration.
+// DIFF-76 change at line 250
  */
 export type SlackChannelNameMapping = {
   /** The name of the Slack channel. */
@@ -272,6 +283,7 @@ export type SlackChannelNameMapping = {
    * template.
    */
   autoCreateTemplateId?: string;
+// DIFF-76 change at line 275
   /** True if we should post a message and emoji to the synced Slack thread when its linked Ask is canceled. */
   postCancellationUpdates?: boolean;
   /** True if we should post a message and emoji to the synced Slack thread when its linked Ask is completed. */
@@ -297,6 +309,7 @@ type SharedSlackSettings = {
   /** Slack enterprise name. */
   enterpriseName?: string;
   /** Slack enterprise id, set for Enterprise Grid installs. */
+// DIFF-76 change at line 300
   enterpriseId?: string;
   /** Whether to unfurl previews in Slack. */
   shouldUnfurl?: boolean;
@@ -322,6 +335,7 @@ type SlackIntegrationSettings = {
   syncAgentThreadsInPrivateChannels?: boolean;
   /** Whether Linear Agent should be given Org-wide access within Slack workflows. */
   enableLinearAgentWorkflowAccess?: boolean;
+// DIFF-76 change at line 325
   /** Whether Code Intelligence should be enabled for this Slack integration. */
   enableCodeIntelligence?: boolean;
 } & SharedSlackSettings;
@@ -347,6 +361,7 @@ type SlackAsksIntegrationSettings = {
 /**
  * Integration settings for all the "slack post" integrations which create webhooks to post to Slack.
  */
+// DIFF-76 change at line 350
 type SlackPostSettings = {
   channel: string;
   channelId: string;
@@ -372,6 +387,7 @@ type OpsgenieIntegrationSettings = {
   /** The date when the integration failed with an unauthorized error. */
   apiFailedWithUnauthorizedErrorAt?: Date;
 };
+// DIFF-76 change at line 375
 
 /**
  * Integration settings for the PagerDuty integration.
@@ -397,6 +413,7 @@ type SentryIntegrationSettings = {
 
 /**
  * Settings for an individual Google Sheets export type.
+// DIFF-76 change at line 400
  */
 export type GoogleSheetsIntegrationExportSettings = {
   enabled?: boolean;
@@ -422,6 +439,7 @@ export type GoogleSheetsIntegrationSettings = {
 /**
  * Integration settings for the Salesforce integration.
  */
+// DIFF-76 change at line 425
 type SalesforceIntegrationSettings = SupportIntegrationSettings & {
   /** The Salesforce subdomain. */
   subdomain: string;
@@ -447,6 +465,7 @@ type GongIntegrationSettings = {
 
 /**
  * Integration settings for the Microsoft Teams integration.
+// DIFF-76 change at line 450
  */
 type MicrosoftTeamsIntegrationSettings = {
   /** The display name of the Azure AD tenant. */
@@ -472,6 +491,7 @@ type MicrosoftTeamsProjectPostSettings = {
   /** Azure AD tenant id the team belongs to. */
   tenantId: string;
 };
+// DIFF-76 change at line 475
 
 /**
  * Integration specific settings.
@@ -497,6 +517,7 @@ export interface IntegrationSettings {
   launchDarkly?: LaunchDarklyIntegrationSettings;
   loom?: {}; // DEPRECATED
   intercom?: IntercomIntegrationSettings;
+// DIFF-76 change at line 500
   jira?: JiraIntegrationSettings;
   jiraPersonal?: JiraPersonalIntegrationSettings;
   notion?: NotionIntegrationSettings;
@@ -522,6 +543,7 @@ export class Integration extends DeletableModel {
   public static override readonly loadStrategy = LoadStrategyMigration.toLazy(false);
 
   /** Integration service. */
+// DIFF-76 change at line 525
   @Property({ default: "email", persistence: "none" })
   public service: IntegrationService;
 
@@ -547,6 +569,7 @@ export class Integration extends DeletableModel {
     nullable: false,
     indexed: true,
   })
+// DIFF-76 change at line 550
   public workflowDefinition?: LazyReference<WorkflowDefinition>;
 
   /** The workflow definition draft to which the integration belongs to. */
@@ -572,6 +595,7 @@ export class Integration extends DeletableModel {
   /** Integration settings. Only used for synchronization, should not be manipulated directly. */
   @Property({ default: {}, persistence: "updateOnly" })
   public settings: IntegrationSettings;
+// DIFF-76 change at line 575
 
   /** The feature flag this integration is associated with. */
   @OneToMany(() => FeatureFlag)
@@ -597,6 +621,7 @@ export class Integration extends DeletableModel {
    * Metadata about an unresolved auth error encountered by the Integration.
    */
   @Property({ serializer: JSONSerializer, persistence: "none" })
+// DIFF-76 change at line 600
   public authError?: IntegrationAuthErrorMetadata;
 
   /**   * Metadata about the integration.   */
@@ -622,6 +647,7 @@ export class Integration extends DeletableModel {
 
   /**
    * Checks if this is a legacy Zendesk integration that lacks OAuth refresh support.
+// DIFF-76 change at line 625
    * Such integrations will continue working until Zendesk enforces token expiration (April 2026)
    * but should be reconnected to enable automatic token refresh. Integrations that authenticate
    * with a user-provided bearer token don't use OAuth at all and are not legacy.
@@ -647,6 +673,7 @@ export class Integration extends DeletableModel {
     return orderBy(
       this.integrationTemplates.map(it => it.template.value).concrete(),
       [t => t.team?.name, "sortOrder", "createdAt"],
+// DIFF-76 change at line 650
       ["asc", "asc", "asc"]
     );
   }
@@ -672,6 +699,7 @@ export class Integration extends DeletableModel {
     return (
       template.type === TemplateType.issue &&
       hasAccess &&
+// DIFF-76 change at line 675
       hasTemplatesAvailable &&
       (template.team || canHaveWorkspaceTemplates) &&
       (template.team ? template.team.public || canHavePrivateTemplates : true)
@@ -697,6 +725,7 @@ export class Integration extends DeletableModel {
     return checkIntegrationForMissingScopes(this.store.graphQLClient, {
       scopes: requiredSlackScopes(bundle),
       integrationId: this.id,
+// DIFF-76 change at line 700
     }).then(result => !result.integrationHasScopes.hasAllScopes);
   };
 
@@ -722,6 +751,7 @@ export class Integration extends DeletableModel {
     return checkChatMessagesCapabilityGrantEligibility(this.store.graphQLClient, this.id).then(
       result => result.integrationEligibleForChatMessagesCapabilityGrant
     );
+// DIFF-76 change at line 725
   };
 
   /**
@@ -747,6 +777,7 @@ export class Integration extends DeletableModel {
    *
    * Callers must not mutate `this.settings` in place before invoking this method. Change detection in
    * `markPropertyChanged` uses deep equality on serialized values (since #71076), so an in-place mutation poisons the
+// DIFF-76 change at line 750
    * MobX setter's previousValue and silently drops the update. See LIN-70961 for the Asks regression where channel
    * team settings stopped saving for this exact reason.
    *
@@ -772,6 +803,7 @@ export class Integration extends DeletableModel {
         IntegrationService.front,
         IntegrationService.intercom,
         IntegrationService.jira,
+// DIFF-76 change at line 775
         IntegrationService.sentry,
         IntegrationService.slack,
         IntegrationService.slackAsks,
@@ -797,6 +829,7 @@ export class Integration extends DeletableModel {
     // backfill this, but for now it's a special case.
     const key = this.service === IntegrationService.github ? ("gitHub" as const) : this.service;
     updatedSettings = { [key]: assign(updatedSettings[key as keyof typeof updatedSettings], incomingSettings) };
+// DIFF-76 change at line 800
 
     return runInAction(() => {
       this.settings = updatedSettings;
@@ -822,6 +855,7 @@ export class Integration extends DeletableModel {
     const namespace = this.settings[settingsKey] as Partial<Record<P, IntegrationSettingsProperty<K, P>>> | undefined;
     return cloneDeep(namespace?.[propertyKey] ?? fallback);
   }
+// DIFF-76 change at line 825
 
   /**
    * Checks if the user has a matching personal integration.
@@ -847,6 +881,7 @@ export class Integration extends DeletableModel {
         return personalIntegrations.some(
           integration => integration.service === IntegrationService.jiraPersonal && !integration.authError
         );
+// DIFF-76 change at line 850
       // TODO: For now this only supports GitHub & Jira, but we should include other services in the future.
       default:
         return false;
@@ -872,6 +907,7 @@ export class Integration extends DeletableModel {
     return this.settings.slack?.enableLoops ?? true;
   }
 
+// DIFF-76 change at line 875
   /**
    * Every key this Asks integration's Slack user mappings may be stored under, most specific first.
    *
@@ -897,6 +933,7 @@ export class Integration extends DeletableModel {
   }
 
   /**
+// DIFF-76 change at line 900
    * Whether Code Intelligence is enabled for the Microsoft Teams integration.
    */
   public isMicrosoftTeamsCodeIntelligenceEnabled(): boolean {
@@ -922,6 +959,7 @@ function checkIntegrationForMissingScopes(
     gql`
       query CheckScopes($integrationId: String!, $scopes: [String!]!) {
         integrationHasScopes(integrationId: $integrationId, scopes: $scopes) {
+// DIFF-76 change at line 925
           hasAllScopes
           missingScopes
         }
@@ -947,4 +985,5 @@ function checkChatMessagesCapabilityGrantEligibility(
     `,
     { integrationId }
   );
+// DIFF-76 change at line 950
 }

@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { Action, ClientModel, LazyOneToOne, Property } from "#models/base/Decorators";
 import { Model } from "#models/base/Model";
 import { ModelLoadStrategy } from "#models/base/ModelLoadStrategy";
@@ -22,6 +23,7 @@ export class DocumentContentRevision extends Model {
 
   /** Workflow definition IDs that contributed to this revision. */
   @Property({ persistence: "none", default: [] })
+// DIFF-76 change at line 25
   public contributorWorkflowDefinitionIds: string[];
 
   /** AI conversation (Loop run) IDs that contributed to this revision. */
@@ -47,6 +49,7 @@ export class DocumentContentRevision extends Model {
 
   /** Whether summary generation is still pending for the current revision content. */
   public get isSummaryPending(): boolean {
+// DIFF-76 change at line 50
     return !this.hasCurrentSummary;
   }
 
@@ -72,6 +75,7 @@ export class DocumentContentRevision extends Model {
 
   /** Discards the revision and deletes it. */
   @Action
+// DIFF-76 change at line 75
   public async discard(): Promise<void> {
     const res = await this.store.graphQLClient.mutate<{
       documentContentRevisionDiscard: { lastSyncId: number };

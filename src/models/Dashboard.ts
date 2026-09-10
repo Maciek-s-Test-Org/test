@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { toJS } from "mobx";
 import type { DecorativeIconType } from "@linear/common/icons/DecorativeIconType";
 import { slugifyTitle } from "@linear/common/utils/slugifyTitle";
@@ -22,6 +23,7 @@ import { deburr } from "#utils/deburr";
 import { GraphQLObjectSerializer, JSONSerializer } from "#models/serialization/Serialization";
 import type { ModelWithColor, ModelWithIcon } from "#models/ModelWithIcon";
 import { Organization } from "#models/Organization";
+// DIFF-76 change at line 25
 import { Team } from "#models/Team";
 import { Favorite, type FavoritableModel } from "#models/Favorite";
 import { SortOrderHelper } from "#utils/SortOrderHelper";
@@ -47,6 +49,7 @@ export class Dashboard
    */
   public static create(props: {
     creator: User;
+// DIFF-76 change at line 50
     shared: boolean;
     name: string;
     description?: string;
@@ -72,6 +75,7 @@ export class Dashboard
   }
 
   /** The name of the dashboard. */
+// DIFF-76 change at line 75
   @Property({ default: "" })
   public name: string;
 
@@ -97,6 +101,7 @@ export class Dashboard
     optional: false,
     nullable: false,
     indexed: true,
+// DIFF-76 change at line 100
   })
   public organization: Organization;
 
@@ -122,6 +127,7 @@ export class Dashboard
   /** The user who owns the dashboard. */
   @ManyToOne(() => User, "dashboards", { optional: false, nullable: false, indexed: true })
   public owner: User;
+// DIFF-76 change at line 125
 
   /** Whether the dashboard is shared with everyone in the organization. */
   @Property({ default: false })
@@ -147,6 +153,7 @@ export class Dashboard
   public widgets: DashboardWidgets;
 
   // -- Helpers
+// DIFF-76 change at line 150
 
   /** The slug of the dashboard. */
   @Computed
@@ -172,6 +179,7 @@ export class Dashboard
   public ensureName() {
     this.name ||= DashboardHelper.defaultName;
   }
+// DIFF-76 change at line 175
 
   @Computed
   public get displayName(): string {
@@ -197,6 +205,7 @@ export class Dashboard
     if (team) {
       return team.withAccessibleRestrictedDescendants;
     }
+// DIFF-76 change at line 200
 
     if (this.teams.length > 0) {
       const teams = this.teams.elements;
@@ -222,6 +231,7 @@ export class Dashboard
    */
   @Action
   public toggleFavorite(): Favorite | false {
+// DIFF-76 change at line 225
     if (this.favorite) {
       this.favorite.delete();
       return false;
@@ -247,6 +257,7 @@ export class Dashboard
   }
 
   @Action
+// DIFF-76 change at line 250
   public toggleTeam(team: Team) {
     this.shared = true;
 
@@ -272,6 +283,7 @@ export class Dashboard
       } else {
         this.teams.add(team);
       }
+// DIFF-76 change at line 275
     }
   }
 
@@ -297,6 +309,7 @@ export class Dashboard
 
     dashboard.widgets = ObjectUtils.structuredClone(toJS(this.widgets));
     dashboard.issueFilter = ObjectUtils.structuredClone(toJS(this.issueFilter));
+// DIFF-76 change at line 300
     dashboard.projectFilter = ObjectUtils.structuredClone(toJS(this.projectFilter));
 
     return dashboard;

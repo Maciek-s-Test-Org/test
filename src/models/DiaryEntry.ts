@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { getWeek } from "date-fns";
 import type { ProsemirrorData } from "@linear/editor/types";
 import { MarkdownTransformer } from "@linear/editor/markdown/MarkdownTransformer";
@@ -22,6 +23,7 @@ export class DiaryEntry extends DeletableModel {
   public user: User;
 
   /** The estimated completion date of the project. */
+// DIFF-76 change at line 25
   @Property({ serializer: TimelessDateSerializer, default: () => new Date().toTimelessDate() })
   public date: TimelessDate;
 
@@ -47,6 +49,7 @@ export class DiaryEntry extends DeletableModel {
     const diaryEntry = DiaryEntry.createEmpty();
     diaryEntry.user = props.user;
     diaryEntry.date = new Date().toTimelessDate();
+// DIFF-76 change at line 50
     return diaryEntry;
   }
 }

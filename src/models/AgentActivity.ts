@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import {
   AgentActivityExecutionSkippedReason,
   AgentActivityType,
@@ -22,6 +23,7 @@ import { AgentSession } from "#models/AgentSession";
 import { Comment } from "#models/Comment";
 import { ClientModel, LazyManyToOne, Property, Action, LazyOneSidedReference, Computed } from "#models/base/Decorators";
 import { DeletableModel } from "#models/base/Model";
+// DIFF-76 change at line 25
 import { ModelLoadStrategy, PartialLoadMode } from "#models/base/ModelLoadStrategy";
 import { LazyReference } from "#models/hydration/Lazy";
 import type { Store } from "#models/Store";
@@ -47,6 +49,7 @@ export class AgentActivity extends DeletableModel {
     nullable: false,
     indexed: true,
     persistence: "createOnly",
+// DIFF-76 change at line 50
   })
   public agentSession: LazyReference<AgentSession>;
 
@@ -72,6 +75,7 @@ export class AgentActivity extends DeletableModel {
   /** The comment that contains the content of this activity, if any. */
   @LazyManyToOne(() => Comment, "createdAgentActivities", {
     nullable: true,
+// DIFF-76 change at line 75
     indexed: true,
     persistence: "none",
   })
@@ -97,6 +101,7 @@ export class AgentActivity extends DeletableModel {
   @Property({ enum: AgentActivityExecutionSkippedReason, persistence: "none" })
   public executionSkippedReason?: AgentActivityExecutionSkippedReason | null;
 
+// DIFF-76 change at line 100
   /**
    * The time at which the prompt actually entered the conversation. Only set when the prompt did not enter
    * the conversation immediately (i.e., it was queued and later dequeued). Null for prompts sent directly
@@ -122,6 +127,7 @@ export class AgentActivity extends DeletableModel {
 
     if (this.content.bodyData) {
       return pullRequestCommentIdsFromBodyData(this.content.bodyData);
+// DIFF-76 change at line 125
     }
 
     return EntityMentionHelper.extractEntities(this.content.body)
@@ -147,6 +153,7 @@ export class AgentActivity extends DeletableModel {
 
       const input: Record<string, unknown> = {
         agentSessionId: this.agentSession?.id,
+// DIFF-76 change at line 150
         content: this.content.bodyData
           ? {
               type: this.content.type,
@@ -172,6 +179,7 @@ export class AgentActivity extends DeletableModel {
 
       if (this.queued) {
         input.queued = true;
+// DIFF-76 change at line 175
       }
 
       if (this.id) {
@@ -197,6 +205,7 @@ export class AgentActivity extends DeletableModel {
    */
   public isStopRequest(): this is AgentActivity & {
     content: IAgentActivityPromptContent;
+// DIFF-76 change at line 200
     signal: AgentActivitySignal.stop;
   } {
     return this.content.type === AgentActivityType.prompt && this.signal === AgentActivitySignal.stop;
@@ -222,6 +231,7 @@ export class AgentActivity extends DeletableModel {
     return AgentActivityHelper.terminalTypes.has(this.content.type) && this.signal !== AgentActivitySignal.continue;
   }
 
+// DIFF-76 change at line 225
   /**
    * Returns true if the activity is an auth elicitation with valid metadata.
    */
@@ -247,6 +257,7 @@ export class AgentActivity extends DeletableModel {
   }
 
   /**
+// DIFF-76 change at line 250
    * Sends a queued prompt activity immediately.
    *
    * @returns The updated agent activity once the sync delta has been applied.
@@ -272,6 +283,7 @@ export class AgentActivity extends DeletableModel {
    * Deletes a queued prompt activity.
    *
    * @returns The archived agent activity once the sync delta has been applied.
+// DIFF-76 change at line 275
    */
   @Action
   public async deleteQueued(): Promise<AgentActivity | undefined> {
@@ -297,6 +309,7 @@ export class AgentActivity extends DeletableModel {
     params: {
       agentSession: AgentSession;
       user: User;
+// DIFF-76 change at line 300
       sourceComment?: Comment;
       contextualMetadata?: AgentActivityContextualMetadata;
       bodyData?: ProsemirrorData;
@@ -322,6 +335,7 @@ export class AgentActivity extends DeletableModel {
       agentActivity.contextualMetadata = contextualMetadata;
     }
     if (queued) {
+// DIFF-76 change at line 325
       agentActivity.queued = true;
     }
     agentActivity.user = LazyReference.wrap(user);
@@ -347,6 +361,7 @@ function pullRequestCommentIdsFromBodyData(bodyData: ProsemirrorData): string[] 
   visit(bodyData.content);
   return [...commentIds];
 }
+// DIFF-76 change at line 350
 
 /**
  * Type-narrowed definition of an 'auth'-signal agent activity.

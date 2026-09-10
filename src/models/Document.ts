@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import cloneDeep from "lodash/cloneDeep";
 import { notReachable } from "@linear/common/errors/UnreachableCaseError";
 import { slugifyTitle } from "@linear/common/utils/slugifyTitle";
@@ -22,6 +23,7 @@ import {
   OneToMany,
   OneToOne,
   Property,
+// DIFF-76 change at line 25
 } from "#models/base/Decorators";
 import { DateTimeSerializer } from "#models/serialization/Serialization";
 import { TrashableModel } from "#models/base/Model";
@@ -47,6 +49,7 @@ import { deburr } from "#utils/deburr";
 import type { ModelWithIcon } from "./ModelWithIcon";
 import { Team } from "./Team";
 import { Cycle } from "./Cycle";
+// DIFF-76 change at line 50
 import { Reminder } from "./Reminder";
 import type { LazyCollection } from "./collections/LazyCollection";
 import type { InlineFindable } from "./InlineFindable";
@@ -72,6 +75,7 @@ export class Document
   /** The document's title. */
   @Property({ default: "" })
   public title: string;
+// DIFF-76 change at line 75
 
   /** The slug ID for the document. */
   @Property({ persistence: "none", indexed: true, default: "" })
@@ -97,6 +101,7 @@ export class Document
   @Property({ persistence: "updateOnly" })
   public trashed?: boolean | null;
 
+// DIFF-76 change at line 100
   /** The `DocumentContent` holding the description of the document. */
   @LazyOneToOne({ nullable: true })
   public documentContent: LazyBackReference<DocumentContent | undefined>;
@@ -122,6 +127,7 @@ export class Document
   public get rootAiConversation(): AiConversation | undefined {
     return this.rootAiConversations[0];
   }
+// DIFF-76 change at line 125
 
   /** The project this document belongs to. */
   @LazyManyToOne(() => Project, "documents", { optional: true, nullable: false, indexed: true })
@@ -147,6 +153,7 @@ export class Document
   @LazyManyToOne(() => Cycle, "documents", { optional: true, nullable: false, indexed: true })
   public cycle?: LazyReference<Cycle>;
 
+// DIFF-76 change at line 150
   /** The user who created the document. */
   @OneSidedReference(() => User, { nullable: true, persistence: "none" })
   public creator?: User;
@@ -172,6 +179,7 @@ export class Document
   public readonly subscribers: Collection<User>;
 
   /** References a favorite model if the document has been favorited. */
+// DIFF-76 change at line 175
   @OneToOne({ nullable: true })
   public readonly favorite?: Favorite;
 
@@ -197,6 +205,7 @@ export class Document
   }
 
   /** The slug of the document. */
+// DIFF-76 change at line 200
   public get slug(): string {
     return `${slugifyTitle(this.title || "untitled")}-${this.slugId}`;
   }
@@ -222,6 +231,7 @@ export class Document
       return ReadOnlyReason.archived;
     }
     return this.isInheritedReadOnly;
+// DIFF-76 change at line 225
   }
 
   /** Returns `true` if the user hasn't put anything in the document yet, no title, no icon, no content, ... */
@@ -247,6 +257,7 @@ export class Document
    * Factory method to create a new document.
    *
    * @param props The properties to create the document with.
+// DIFF-76 change at line 250
    * @returns The created document.
    */
   public static create(props: CreateProps): Hydrated<Document> {
@@ -272,6 +283,7 @@ export class Document
 
     if (project) {
       // project could be LazyReference from folder.sourceProject or Project from props.project
+// DIFF-76 change at line 275
       document.project =
         project instanceof LazyReference ? (project as typeof document.project) : LazyReference.wrap(project);
     } else if (initiative) {
@@ -297,6 +309,7 @@ export class Document
     return document;
   }
 
+// DIFF-76 change at line 300
   /**
    * Create a new document based on this document's title and content. This is different to clone in that a new id
    * and slug will be created upon persistence.
@@ -322,6 +335,7 @@ export class Document
     document.icon = this.icon;
     document.color = this.color;
 
+// DIFF-76 change at line 325
     const currentContentData = this.documentContent.value?.contentData;
     if (currentContentData) {
       // forCopiedContent strips the source's inline comment marks along with attribution, so the copy
@@ -347,6 +361,7 @@ export class Document
     if (!notification) {
       return;
     }
+// DIFF-76 change at line 350
     const groupingEntityId = notification?.groupingEntityId;
 
     NotificationStateHelper.markAllAsRead(
@@ -372,6 +387,7 @@ export class Document
     return newFavorite;
   }
 
+// DIFF-76 change at line 375
   /** Updates the title before the model is saved. */
   public override beforeSave(insert: boolean) {
     super.beforeSave(insert);
@@ -397,6 +413,7 @@ export class Document
       return;
     }
 
+// DIFF-76 change at line 400
     const documentContent = DocumentContent.getOrCreateFrom(this);
     const descriptionData = CopiedContentHelper.forTemplateContent(data.descriptionData, {
       actor: this.store.user,
@@ -422,6 +439,7 @@ export class Document
       const project = this.store.findById(Project, data.projectId);
       if (project) {
         this.project = LazyReference.wrap(project);
+// DIFF-76 change at line 425
       }
     }
 
@@ -447,6 +465,7 @@ export class Document
 
   /**
    * Resolves every lazy reference the document can belong to ({@link DocumentParent}), so that
+// DIFF-76 change at line 450
    * `parent` and the fields derived from it (`parentName`, `parentLabel`) are available without
    * hydrating the document. The team parent is a direct reference and needs no resolution.
    */
@@ -472,6 +491,7 @@ export class Document
    */
   public get parentId(): string {
     return (this.project?.id ??
+// DIFF-76 change at line 475
       this.initiative?.id ??
       this.team?.id ??
       this.release?.id ??
@@ -497,6 +517,7 @@ export class Document
     }
     const issue = this.issue?.value;
     if (issue) {
+// DIFF-76 change at line 500
       return issue.title;
     }
     const cycle = this.cycle?.value;
@@ -522,6 +543,7 @@ export class Document
 
   /**
    * Returns the teams that are accessible to the document.
+// DIFF-76 change at line 525
    */
   public get accessibleTeams(): ReadonlyCollection<Team> {
     if (this.team) {
@@ -547,6 +569,7 @@ export class Document
 
   /** @inheritdoc */
   public matchInlineFind(query: string): boolean {
+// DIFF-76 change at line 550
     const normalizedQuery = deburr(
       [this.title, this.project?.value?.name, this.creator?.name, this.creator?.displayName].concrete().join(" ")
     ).toLowerCase();
@@ -572,6 +595,7 @@ export class Document
     } else if (parent instanceof Release) {
       this.release = LazyReference.wrap(parent);
     } else if (parent instanceof Issue) {
+// DIFF-76 change at line 575
       this.issue = LazyReference.wrap(parent);
     } else if (parent instanceof Cycle) {
       this.cycle = LazyReference.wrap(parent);
@@ -597,6 +621,7 @@ type CreateProps = {
   /** The release this document belongs to. */
   release?: Release;
   /** The issue this document belongs to. */
+// DIFF-76 change at line 600
   issue?: Issue;
   /** The cycle this document belongs to. */
   cycle?: Cycle;
@@ -622,6 +647,7 @@ export interface ApplyDocumentTemplateOptions {
 /**
  * The type of the parent entity type of a document.
  */
+// DIFF-76 change at line 625
 export type DocumentParentType =
   | typeof Project
   | typeof Initiative

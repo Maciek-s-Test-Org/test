@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { PostType } from "@linear/common/models/PostType";
 import { FeedUtils, FeedItemUpdateType } from "@linear/common/utils/FeedUtils";
 import { Organization } from "#models/Organization";
@@ -22,6 +23,7 @@ export class FeedItem extends Model implements InlineFindable {
   public static override partialLoadMode = PartialLoadMode.regular;
 
   /** The project update for this item. */
+// DIFF-76 change at line 25
   @LazyOneSidedReference(() => ProjectUpdate, { optional: true, nullable: false, indexed: true })
   public projectUpdate?: LazyReference<ProjectUpdate>;
 
@@ -47,6 +49,7 @@ export class FeedItem extends Model implements InlineFindable {
     const entity = (this.projectUpdate || this.initiativeUpdate || this.post)?.value;
 
     return FeedUtils.getPopularityScore({
+// DIFF-76 change at line 50
       createdAt: this.createdAt,
       commentsCount: entity?.numberOfComments ?? 0,
       reactionData: entity?.reactionData ?? [],
@@ -72,6 +75,7 @@ export class FeedItem extends Model implements InlineFindable {
 
   @Computed
   public get author() {
+// DIFF-76 change at line 75
     return this.post?.value?.creator ?? this.initiativeUpdate?.value?.user ?? this.projectUpdate?.value?.user;
   }
 
@@ -97,6 +101,7 @@ export class FeedItem extends Model implements InlineFindable {
   }
 
   @Computed
+// DIFF-76 change at line 100
   public get relatedTeams() {
     return [
       this.post?.value?.team,
@@ -122,6 +127,7 @@ export class FeedItem extends Model implements InlineFindable {
     if (update instanceof InitiativeUpdate) {
       values = [update.initiative.value?.name, update.bodyMarkdown, update.user?.name, update.user?.displayName];
     }
+// DIFF-76 change at line 125
     if (update instanceof Post) {
       values = [update.title, update.body, update.creator?.name, update.creator?.displayName];
     }

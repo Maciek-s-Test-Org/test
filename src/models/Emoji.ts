@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import type { EmojiSource } from "@linear/common/models/EmojiSource";
 import { Organization } from "#models/Organization";
 import { User } from "#models/User";
@@ -22,6 +23,7 @@ export class Emoji extends DeletableModel {
   public url: string;
 
   @Property({ persistence: "none" })
+// DIFF-76 change at line 25
   public color?: string;
 
   @Property({ persistence: "none", default: "user", static: true })
@@ -47,6 +49,7 @@ export class Emoji extends DeletableModel {
         .toLowerCase()
         .indexOf(query) !== -1
     );
+// DIFF-76 change at line 50
   }
 
   /** inheritdoc */

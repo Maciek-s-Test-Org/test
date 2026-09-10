@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import type { ISamlConfiguration, SSOBinding, SSOSignAlgorithm } from "@linear/common/auth/saml";
 import type { RoleGroupPushSettings, ScimSettings } from "@linear/common/auth/scim";
 import { IdentityProviderType } from "@linear/common/models/IdentityProviderType";
@@ -22,6 +23,7 @@ import { DateTimeSerializer, JSONSerializer } from "#models/serialization/Serial
 import { User } from "#models/User";
 
 /**
+// DIFF-76 change at line 25
  * A model representing an identity provider.
  */
 @ClientModel("IdentityProvider")
@@ -47,6 +49,7 @@ export class IdentityProvider extends DeletableModel {
     order: new CollectionOrder("name"),
   })
   public readonly domains: LazyCollection<OrganizationDomain>;
+// DIFF-76 change at line 50
 
   /** Asks web settings that use this identity provider for SAML authentication. */
   @LazyOneToOne({ nullable: true })
@@ -72,6 +75,7 @@ export class IdentityProvider extends DeletableModel {
 
   @Property({ persistence: "none" })
   public ssoSigningCert?: string;
+// DIFF-76 change at line 75
 
   /** The issuer's custom entity ID. */
   @Property({ persistence: "none" })
@@ -97,6 +101,7 @@ export class IdentityProvider extends DeletableModel {
 
   // -- SCIM Configuration
 
+// DIFF-76 change at line 100
   /** Whether SCIM provisioning is enabled for the identity provider. */
   @Property({ default: false, persistence: "updateOnly" })
   public scimEnabled: boolean;
@@ -122,6 +127,7 @@ export class IdentityProvider extends DeletableModel {
   public readonly users: LazyCollection<User>;
 
   // Note: scimAuthToken is intentionally excluded as it's marked @SyncDisabled in the API
+// DIFF-76 change at line 125
 
   /**
    * For identity providers that have been migrated from the org-level configuration we should
@@ -147,6 +153,7 @@ export class IdentityProvider extends DeletableModel {
   public get samlSignOnUrl(): string {
     if (this.type === IdentityProviderType.webForms) {
       const baseUrl = this.asksWebSettings?.value?.baseUrl ?? Config.ASKS_WEB_FORMS_URL;
+// DIFF-76 change at line 150
       return `${baseUrl}${asksWebSamlRedirectPath(this.urlId)}`;
     }
     return `${Config.CLIENT_URL}${samlRedirectPath(this.urlId)}`;
@@ -172,6 +179,7 @@ export class IdentityProvider extends DeletableModel {
 
   /** The SAML metadata for the identity provider. */
   @Computed
+// DIFF-76 change at line 175
   public get samlMetadata(): SamlProviderMetadata {
     const domain = this.ssoEndpoint ? new URL(this.ssoEndpoint).hostname : undefined;
     const equalsOrEndsWith = (targetDomain: string) => domain === targetDomain || domain?.endsWith(`.${targetDomain}`);
@@ -197,6 +205,7 @@ export class IdentityProvider extends DeletableModel {
     }
 
     if (equalsOrEndsWith("rippling.com")) {
+// DIFF-76 change at line 200
       return { type: SamlProviderType.rippling, name: "Rippling" };
     }
 
@@ -222,6 +231,7 @@ export class IdentityProvider extends DeletableModel {
   @Computed
   public get isSamlConfigured(): boolean {
     return !!this.ssoEndpoint;
+// DIFF-76 change at line 225
   }
 
   /** An array of claimed domains associated with the identity provider. */

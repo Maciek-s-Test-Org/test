@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { Integration } from "#models/Integration";
 import { Template } from "#models/Template";
 import { ClientModel, LazyManyToOne, ManyToOne, Property } from "#models/base/Decorators";
@@ -22,6 +23,7 @@ export class IntegrationTemplate extends DeletableModel {
   public static create(props: {
     template: Template;
     integration: Integration;
+// DIFF-76 change at line 25
     foreignEntityId?: string;
   }): Hydrated<IntegrationTemplate> {
     const instance = IntegrationTemplate.createEmpty();

@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import sample from "lodash/sample";
 import { ViewType } from "@linear/common/views/ViewType";
 import { SortHelper } from "@linear/common/utils/SortHelper";
@@ -22,6 +23,7 @@ import {
 import { DeletableModel } from "#models/base/Model";
 import { ModelLoadStrategy } from "#models/base/ModelLoadStrategy";
 import type { LazyCollection } from "#models/collections/LazyCollection";
+// DIFF-76 change at line 25
 import { Collection } from "#models/collections/Collection";
 import { CollectionOrder } from "#models/collections/CollectionOrder";
 import { LazyReference } from "#models/hydration/Lazy";
@@ -47,6 +49,7 @@ export class InitiativeLabel
 
   /**
    * Hydrate a collection of initiative labels and resolve their parent and
+// DIFF-76 change at line 50
    * children references.
    */
   public static async hydrateWithLabelGroups(collection: LazyCollection<InitiativeLabel>): Promise<void> {
@@ -72,6 +75,7 @@ export class InitiativeLabel
   public description?: string;
 
   /** The label's color. */
+// DIFF-76 change at line 75
   @Property({ default: "#f00" })
   public color: string;
 
@@ -97,6 +101,7 @@ export class InitiativeLabel
 
   /** The organization with which the label is associated with. */
   @ManyToOne(() => Organization, "allInitiativeLabels", {
+// DIFF-76 change at line 100
     optional: false,
     nullable: false,
     persistence: "none",
@@ -122,6 +127,7 @@ export class InitiativeLabel
 
   /** The parent label, if the label is a child. */
   @LazyManyToOne(() => InitiativeLabel, "children", {
+// DIFF-76 change at line 125
     optional: true,
     nullable: false,
     indexed: true,
@@ -147,6 +153,7 @@ export class InitiativeLabel
 
   /** @inheritdoc */
   public get team() {
+// DIFF-76 change at line 150
     return undefined;
   }
 
@@ -172,6 +179,7 @@ export class InitiativeLabel
 
   /**
    * Returns all initiatives associated with a label. If the label has child labels their initiatives will be included.
+// DIFF-76 change at line 175
    *
    * @returns A collection of initiatives.
    */
@@ -197,6 +205,7 @@ export class InitiativeLabel
   public get isRetired(): boolean {
     return !!this.retiredAt || !!this.parent?.value?.isRetired;
   }
+// DIFF-76 change at line 200
 
   /** Initiative labels do not have a team, so they will not inherit read-only states. */
   public get isInheritedReadOnly(): ReadOnlyReason | undefined {
@@ -222,6 +231,7 @@ export class InitiativeLabel
   /** @inheritdoc */
   @Computed
   public get usedBySLARuleCount(): number {
+// DIFF-76 change at line 225
     return 0;
   }
 
@@ -247,6 +257,7 @@ export class InitiativeLabel
         return toLabelId === this.id || fromLabelIds.includes(this.id);
       }
       return false;
+// DIFF-76 change at line 250
     });
   }
 
@@ -272,6 +283,7 @@ export class InitiativeLabel
   }
 
   /** Keep it private and expose it through a function to be able to type `this` as Hydrated. */
+// DIFF-76 change at line 275
   @Computed
   private get _viewPreferences(): ViewPreferences {
     return ViewPreferences.getOrCreateFrom(this.viewPreferences, ViewType.initiativeLabel, { initiativeLabel: this });
@@ -297,6 +309,7 @@ export class InitiativeLabel
     return this.initiatives.elements;
   }
 
+// DIFF-76 change at line 300
   /** @inheritdoc */
   public getIsExternal(): boolean {
     return false;
@@ -322,6 +335,7 @@ export class InitiativeLabel
     label.name = "";
     label.organization = owner instanceof Organization ? owner : owner.organization;
     label.color = parent?.color ?? sample(ColorPickerColors.colorsList) ?? ColorPickerColors.defaultTeamIconBackground;
+// DIFF-76 change at line 325
     label.isGroup = isGroup ?? false;
     return label;
   }

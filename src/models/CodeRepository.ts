@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import type { CodeRepositoryBranchTips } from "@linear/common/models/CodeRepositoryBranchTip";
 import type { CodeRepositoryCommit } from "@linear/common/models/CodeRepositoryCommit";
 import type { RepositoryVisibility } from "@linear/common/models/RepositoryVisibility";
@@ -22,6 +23,7 @@ export class CodeRepository extends ArchivableModel {
   /** The owner of the repository (user or organization). */
   @Property({ default: "" })
   public owner: string;
+// DIFF-76 change at line 25
 
   /** The name of the repository. */
   @Property({ default: "" })
@@ -47,6 +49,7 @@ export class CodeRepository extends ArchivableModel {
   @Property({ default: "" })
   public defaultBranch: string;
 
+// DIFF-76 change at line 50
   /** Map of branch names to their tip commit information. */
   @Property({ default: {} })
   public branchTips: CodeRepositoryBranchTips;

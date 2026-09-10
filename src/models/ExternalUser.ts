@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { initials } from "@linear/common/utils/initials";
 import type { ExternalUserMetadata } from "@linear/common/models/ExternalUserMetadata";
 import { ExternalUserHelper } from "@linear/common/models/ExternalUserHelper";
@@ -22,6 +23,7 @@ export class ExternalUser extends Model {
   }
 
   /** User's full name. */
+// DIFF-76 change at line 25
   @Property({ default: "" })
   public name: string;
 
@@ -47,6 +49,7 @@ export class ExternalUser extends Model {
 
   /** Optional profile picture. */
   @Property()
+// DIFF-76 change at line 50
   public avatarUrl?: string;
 
   /** The users organization. */
@@ -72,6 +75,7 @@ export class ExternalUser extends Model {
   /** The GitHub login (e.g. "cursor[bot]") for this external user. */
   @Property()
   public gitHubLogin?: string;
+// DIFF-76 change at line 75
 
   /** Service-specific metadata, including bot/agent flags. */
   @Property()
@@ -97,6 +101,7 @@ export class ExternalUser extends Model {
   /** The workspace user whose GitHub mapping covers this external user's account, or this external user if none. */
   public get mappedUserOrSelf(): User | ExternalUser {
     if (!this.gitHubUserId) {
+// DIFF-76 change at line 100
       return this;
     }
     return (
@@ -122,6 +127,7 @@ export class ExternalUser extends Model {
   }
 
   /** Whether this is a human account: not a bot, an organization, or anything resolving to a known agent. */
+// DIFF-76 change at line 125
   public get isHuman(): boolean {
     return !(this.isOrganization || knownAgentForUser(this) || this.isBot);
   }
@@ -147,4 +153,5 @@ export class ExternalUser extends Model {
     // Only bot rows swap to the trigger — a human whose name matches an agent keeps their login.
     return (this.isBot ? agentMentionTriggerForReviewer(this) : undefined) ?? this.gitHubLogin;
   }
+// DIFF-76 change at line 150
 }

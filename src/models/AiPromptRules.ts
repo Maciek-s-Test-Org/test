@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { AiPromptType } from "@linear/common/models/AiPromptProgress";
 import type { AiPromptRulesSettings } from "@linear/common/models/AiPromptRules";
 import { Action, ClientModel, LazyOneToOne, ManyToOne, OneSidedReference, Property } from "#models/base/Decorators";
@@ -22,6 +23,7 @@ export class AiPromptRules extends DeletableModel {
 
   /** The organization that this prompt rules belongs to. */
   @ManyToOne(() => Organization, "aiPromptRules", {
+// DIFF-76 change at line 25
     indexed: true,
     nullable: false,
     optional: false,
@@ -47,6 +49,7 @@ export class AiPromptRules extends DeletableModel {
   })
   public user?: User;
 
+// DIFF-76 change at line 50
   /** The integration that this prompt rules belongs to (for per-integration guidance). */
   @ManyToOne(() => Integration, "aiPromptRules", {
     optional: true,
@@ -72,6 +75,7 @@ export class AiPromptRules extends DeletableModel {
 
   /** The user who last updated the AI prompt rules. */
   @OneSidedReference(() => User, { nullable: true, persistence: "none" })
+// DIFF-76 change at line 75
   public updatedBy?: User;
 
   /**
@@ -97,6 +101,7 @@ export class AiPromptRules extends DeletableModel {
 
     promptRules.organization = promptRules.store.organization;
     promptRules.team = team;
+// DIFF-76 change at line 100
     promptRules.user = user;
     promptRules.integration = integration;
     promptRules.type = type;
