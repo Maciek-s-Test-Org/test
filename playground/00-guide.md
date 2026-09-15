@@ -76,3 +76,12 @@ git push origin HEAD:diff-76-head
 This creates another commit. It resets sample contents, not saved review state. Use the review controls to clear marks when you want to repeat a test from an unreviewed state.
 
 The fixture writer refuses to overwrite uncommitted changes under `playground/`. Commit or preserve local edits first. All sample code is for exercising the diff viewer; it is not a runnable application.
+
+## Related rename review demo
+
+Start with `19-rename-definition.ts` and mark its change reviewed.
+Open **Review related changes…** in the suggestion and inspect the preview.
+The group covers imports and calls of `formatReviewer → reviewerLabel` in files 20 and 21.
+Confirm the batch: completed files collapse, while the behavior change in file 21 stays unreviewed.
+The separate symbol in file 22 and text edits in file 23 also stay unreviewed.
+Use Undo to restore the batch while keeping the first change reviewed.
