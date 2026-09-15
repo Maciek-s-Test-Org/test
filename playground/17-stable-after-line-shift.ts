@@ -2,7 +2,7 @@
 export const search = {
   enabled: true,
   label: "Search",
-  minimumLength: 3,
+  minimumLength: 2,
   persist: true,
 };
 
@@ -10,7 +10,7 @@ export const search = {
 export const preview = {
   enabled: true,
   label: "Preview",
-  contextLines: 3,
+  contextLines: 6,
   persist: true,
 };
 
@@ -18,7 +18,7 @@ export const preview = {
 export const navigation = {
   enabled: true,
   label: "Navigation",
-  pageSize: 20,
+  pageSize: 50,
   persist: true,
 };
 
@@ -26,6 +26,6 @@ export const navigation = {
 export const history = {
   enabled: true,
   label: "History",
-  limit: 25,
+  limit: 100,
   persist: true,
 };

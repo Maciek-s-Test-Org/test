@@ -1,9 +1,9 @@
 export type User = { name: string; active: boolean; role: string };
 
-export function canReview(user: User): boolean {
-  return user.active;
+export function canReview(currentUser: User): boolean {
+  return currentUser.active && currentUser.role === "reviewer";
 }
 
-export function greeting(user: User): string {
-  return `Hello, ${user.name}`;
+export function greeting(currentUser: User): string {
+  return `Hello, ${currentUser.name}`;
 }

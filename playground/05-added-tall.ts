@@ -1,4 +1,5 @@
-export const legacyRules = [
+/** Large addition for checking the bottom-pinned review control. */
+export const scenarios = [
   { id: "rule-001", label: "Review rule 1", enabled: true, priority: 1 },
   { id: "rule-002", label: "Review rule 2", enabled: true, priority: 2 },
   { id: "rule-003", label: "Review rule 3", enabled: true, priority: 3 },
