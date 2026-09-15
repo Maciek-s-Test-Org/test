@@ -1,4 +1,3 @@
-// DIFF-76: modified fixture
 import { type AgentTriggerCondition, AgentTriggerEvent, AgentTriggerType } from "@linear/common/models/AgentTrigger";
 import { AiConversation } from "#models/AiConversation";
 import { User } from "#models/User";
@@ -23,7 +22,6 @@ export class AgentTrigger extends DeletableModel {
   @Property({ enum: AgentTriggerEvent, persistence: "createOnly", default: AgentTriggerEvent.entityCreated })
   public triggerEvent: AgentTriggerEvent;
 
-// DIFF-76 change at line 25
   /** The conditions that must match for the trigger to fire. */
   @Property({ serializer: GraphQLObjectSerializer })
   public conditions?: AgentTriggerCondition[];
@@ -49,7 +47,6 @@ export class AgentTrigger extends DeletableModel {
    * Entity IDs that this trigger explicitly targets, extracted from the `id` comparator in the trigger's conditions.
    *
    * Returns an empty array for triggers with broad filter conditions (e.g. project-wide or team-wide filters)
-// DIFF-76 change at line 50
    * that do not reference specific entity IDs.
    */
   @Computed
@@ -59,7 +56,7 @@ export class AgentTrigger extends DeletableModel {
     }
 
     const filterKey = filterKeyForTriggerType(this.triggerType);
-    const ids: string[] = [];
+    const ids = new Set<string>();
 
     for (const condition of this.conditions) {
       const filter = condition[filterKey];
@@ -73,17 +70,18 @@ export class AgentTrigger extends DeletableModel {
       }
 
       if (idComparator.eq) {
-        ids.push(idComparator.eq);
+        ids.add(idComparator.eq);
       }
-// DIFF-76 change at line 75
 
       if (idComparator.in) {
         const inValues = idComparator.in instanceof Set ? [...idComparator.in] : idComparator.in;
-        ids.push(...inValues);
+        for (const id of inValues) {
+          ids.add(id);
+        }
       }
     }
 
-    return [...new Set(ids)];
+    return [...ids];
   }
 }
 

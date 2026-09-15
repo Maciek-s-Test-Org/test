@@ -1,4 +1,3 @@
-// DIFF-76: modified fixture
 import type { ApiKeyScopesType } from "@linear/common/models/AuthScopes";
 import { Organization } from "#models/Organization";
 import { User } from "#models/User";
@@ -23,7 +22,6 @@ export class ApiKey extends DeletableModel implements InlineFindable {
 
   /** The user who created the key. */
   @ManyToOne(() => User, "apiKeys", { persistence: "none", optional: false, nullable: false })
-// DIFF-76 change at line 25
   public user: User;
 
   /** The organization that the API key belongs to. */
@@ -49,7 +47,6 @@ export class ApiKey extends DeletableModel implements InlineFindable {
   public teamIds?: string[] | null;
 
   /** When the API key was last used. */
-// DIFF-76 change at line 50
   @Property({ serializer: DateTimeSerializer, persistence: "none" })
   public lastActiveAt?: Date;
 
@@ -58,13 +55,17 @@ export class ApiKey extends DeletableModel implements InlineFindable {
     if (!this.scope) {
       return "full access";
     }
+    if (this.scope.length === 0) {
+      return "no permissions";
+    }
     return `${this.scope.length} ${this.scope.length === 1 ? "permission" : "permissions"}`;
   }
 
   /** Human-readable summary of which teams the API key can access. */
   public get humanReadableTeamAccess(): string {
     if (this.requestedSyncGroups !== undefined) {
-      return "selected teams";
+      const count = this.teamIds?.length;
+      return count === undefined ? "selected teams" : `${count} selected ${count === 1 ? "team" : "teams"}`;
     }
     if (this.user.activeTeams.some(team => team.private)) {
       return "public & private teams";
@@ -75,7 +76,6 @@ export class ApiKey extends DeletableModel implements InlineFindable {
   /**
    * Returns true when the key or its creator matches the query.
    *
-// DIFF-76 change at line 75
    * @param query The query to match against.
    * @returns True when the key matches the query.
    */
@@ -88,6 +88,6 @@ export class ApiKey extends DeletableModel implements InlineFindable {
       this.humanReadablePermissions,
       this.humanReadableTeamAccess,
     ];
-    return deburr(searchableText.concrete().join(" ")).toLowerCase().includes(query);
+    return deburr(searchableText.concrete().join(" ")).toLowerCase().includes(deburr(query.trim()).toLowerCase());
   }
 }

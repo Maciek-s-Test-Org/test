@@ -1,4 +1,3 @@
-// DIFF-76: modified fixture
 import { FeatureFlagStatusType } from "@linear/common/models/FeatureFlagStatusType";
 import {
   ClientModel,
@@ -23,7 +22,6 @@ import type { LazyReference } from "#models/hydration/Lazy";
  * A model representing feature flag.
  */
 @ClientModel("FeatureFlag")
-// DIFF-76 change at line 25
 export class FeatureFlag extends DeletableModel {
   /** The project to which the feature flag belongs to. */
   @LazyManyToOne(() => Project, "featureFlags", {
@@ -49,7 +47,6 @@ export class FeatureFlag extends DeletableModel {
 
   /** The unique key as defined by the feature flag provider. */
   @Property({ persistence: "createOnly" })
-// DIFF-76 change at line 50
   public key?: string;
 
   /** The default key to use when creating a new feature flag. Only used when creating a flag for a project. */
@@ -75,7 +72,6 @@ export class FeatureFlag extends DeletableModel {
   /** The organization of the feature flag. */
   @ManyToOne(() => Organization, "featureFlags", {
     persistence: "none",
-// DIFF-76 change at line 75
     optional: false,
     nullable: false,
     indexed: true,
@@ -93,11 +89,11 @@ export class FeatureFlag extends DeletableModel {
 
   /** The name of associated project or issue. */
   public get entityName(): string {
-    return this.project?.value?.name ?? this.issue?.value?.identifier ?? "";
+    return this.issue?.value?.identifier ?? this.project?.value?.name ?? "Untitled flag";
   }
 
   @Computed
   public get displayedKey(): string | undefined {
-    return this.key ?? this.defaultKey;
+    return this.key?.trim() || this.defaultKey?.trim() || undefined;
   }
 }

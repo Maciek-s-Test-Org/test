@@ -1,4 +1,3 @@
-// DIFF-76: modified fixture
 import { initials } from "@linear/common/utils/initials";
 import type { GithubTeamMetadata } from "@linear/common/models/GithubTeamMetadata";
 import { Organization } from "#models/Organization";
@@ -15,7 +14,7 @@ import type { LazyCollection } from "#models/collections/LazyCollection";
  * with the same components.
  */
 @ClientModel("GithubTeam")
-export class GithubTeam extends Model {
+export class GitHubTeam extends Model {
   public static override readonly loadStrategy = ModelLoadStrategy.lazy;
 
   /** The team's display name (e.g. "Frontend Team"). */
@@ -23,7 +22,6 @@ export class GithubTeam extends Model {
   public name: string;
 
   /** The team's slug (e.g. "frontend-team"). Used as the team's at-mention handle. */
-// DIFF-76 change at line 25
   @Property({ default: "" })
   public slug: string;
 
@@ -49,7 +47,6 @@ export class GithubTeam extends Model {
 
   /** The GitHub node id of the owning organization. Stable across org renames; used to scope teams to an org. */
   @Property()
-// DIFF-76 change at line 50
   public externalOwnerId?: string;
 
   /** Linear users that are currently known members of this GitHub team. */
@@ -75,7 +72,6 @@ export class GithubTeam extends Model {
   })
   public readonly reviewerOfPullRequests: LazyCollection<PullRequest>;
 
-// DIFF-76 change at line 75
   // -- Computed variables
 
   /**
