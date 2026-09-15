@@ -1,4 +1,4 @@
-import { formatReviewer, type Reviewer } from "./reviewer";
+import { reviewerLabel, type Reviewer } from "./reviewer";
 
 export type ReviewHeader = {
   title: string;
@@ -7,6 +7,6 @@ export type ReviewHeader = {
 
 export function reviewHeader(reviewer: Reviewer): ReviewHeader {
   const title = "Review requested";
-  const subtitle = formatReviewer(reviewer);
+  const subtitle = reviewerLabel(reviewer);
   return { title, subtitle };
 }

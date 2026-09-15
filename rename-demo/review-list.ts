@@ -1,4 +1,4 @@
-import { formatReviewer, type Reviewer } from "./reviewer";
+import { reviewerLabel, type Reviewer } from "./reviewer";
 
 export type ReviewerRow = {
   label: string;
@@ -7,7 +7,7 @@ export type ReviewerRow = {
 
 export function reviewerRow(reviewer: Reviewer): ReviewerRow {
   return {
-    label: formatReviewer(reviewer),
+    label: reviewerLabel(reviewer),
     pending: true,
   };
 }
@@ -15,5 +15,5 @@ export function reviewerRow(reviewer: Reviewer): ReviewerRow {
 export const reviewerListOptions = {
   heading: "Reviewers",
   emptyMessage: "No reviewers yet",
-  visibleLimit: 3,
+  visibleLimit: 5,
 };
