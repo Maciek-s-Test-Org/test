@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import type {
   AttachmentForDraft,
   AttachmentMetadata,
@@ -22,6 +23,7 @@ import { User } from "#models/User";
 import {
   ClientModel,
   Computed,
+// DIFF-76 change at line 25
   Property,
   OneSidedReference,
   LazyOneToOne,
@@ -47,6 +49,7 @@ import { PullRequestsFeatureHelper } from "./helpers/PullRequestsFeatureHelper";
 @ClientModel("Attachment")
 export class Attachment extends DeletableModel {
   public static override readonly loadStrategy = ModelLoadStrategy.partial;
+// DIFF-76 change at line 50
   public static override partialLoadMode = PartialLoadMode.regular;
   public static override partialPreloadForTeam = PartialPreloadForTeam.firstPriority;
 
@@ -72,6 +75,7 @@ export class Attachment extends DeletableModel {
 
   @LazyManyToOne(
     () => Issue,
+// DIFF-76 change at line 75
     // @ts-expect-error since Issue.attachments is protected field, it's not considered valid
     "attachments",
     {
@@ -97,6 +101,7 @@ export class Attachment extends DeletableModel {
   })
   public need: LazyBackReference<CustomerNeed | undefined>;
 
+// DIFF-76 change at line 100
   /** Attachment source metadata. What created the attachment. */
   @Property({ persistence: "none" })
   public sourceMetadata?: EntitySourceMetadata;
@@ -122,6 +127,7 @@ export class Attachment extends DeletableModel {
     const attachment = Attachment.create({
       url: draftAttachment.url,
       title: draftAttachment.title,
+// DIFF-76 change at line 125
       issue,
     });
     attachment.save();
@@ -147,6 +153,7 @@ export class Attachment extends DeletableModel {
    * Returns true for GitHub, GitLab, and Origin pull request attachments, and false for all others.
    */
   public get isPullRequest(): boolean {
+// DIFF-76 change at line 150
     const isValidSource =
       this.sourceType === IntegrationService.gitlab ||
       this.sourceType === IntegrationService.github ||
@@ -172,6 +179,7 @@ export class Attachment extends DeletableModel {
    * Returns true for Slack Asks attachments, and false for all other attachments.
    */
   public get isAsksThread(): boolean {
+// DIFF-76 change at line 175
     if (this.source?.type !== IntegrationService.slack) {
       return false;
     }
@@ -197,6 +205,7 @@ export class Attachment extends DeletableModel {
   public get isSynced(): boolean {
     return (
       this.isSyncedGithubIssue || this.isSyncedJiraIssue || this.isSyncedSlackThread || this.isSyncedSalesforceCase
+// DIFF-76 change at line 200
     );
   }
 
@@ -222,6 +231,7 @@ export class Attachment extends DeletableModel {
     if (!syncedCommentId) {
       return undefined;
     }
+// DIFF-76 change at line 225
 
     return this.store.findById(Comment, syncedCommentId) ?? undefined;
   }
@@ -247,6 +257,7 @@ export class Attachment extends DeletableModel {
       if (relation.externalEntityType !== ExternalEntityType.jiraIssue) {
         return false;
       }
+// DIFF-76 change at line 250
 
       const integration = relation.integration;
       if (hasIntegrationId && integration?.id !== integrationId) {
@@ -272,6 +283,7 @@ export class Attachment extends DeletableModel {
     }
     const { owner, repo, number } = match;
 
+// DIFF-76 change at line 275
     return !!(
       this.isGithubIssue &&
       this.issue.value?.activeExternalEntityRelations.find(
@@ -297,6 +309,7 @@ export class Attachment extends DeletableModel {
    */
   public get isGithubCommit(): boolean {
     return this.sourceType === IntegrationService.githubCommit;
+// DIFF-76 change at line 300
   }
 
   /**
@@ -322,6 +335,7 @@ export class Attachment extends DeletableModel {
       return undefined;
     }
 
+// DIFF-76 change at line 325
     return this.metadata as PullRequestPayloadForAttachment;
   }
 
@@ -347,6 +361,7 @@ export class Attachment extends DeletableModel {
 
       const match = issue.linkedPullRequests.find(matches);
       if (match) {
+// DIFF-76 change at line 350
         return match;
       }
     }
@@ -372,6 +387,7 @@ export class Attachment extends DeletableModel {
    * @param props The properties to create the attachment with.
    * @returns The created attachment.
    */
+// DIFF-76 change at line 375
   public static create(props: { url: string; issue: Issue; title: string }): Hydrated<Attachment> {
     const { url, title, issue } = props;
 
@@ -397,6 +413,7 @@ export class Attachment extends DeletableModel {
         acc[i.service] = i.settings?.gitLab?.url;
       }
       return acc;
+// DIFF-76 change at line 400
     }, {} as IntegrationHelper.IntegrationBaseUrls);
 
     const result = IntegrationHelper.findIntegrationMatches(
@@ -422,6 +439,7 @@ export class Attachment extends DeletableModel {
           attachment.source = { type: IntegrationService.zendesk };
           break;
         case IntegrationService.gitlab:
+// DIFF-76 change at line 425
           attachment.source = { type: integrationType, pullRequestId: String(match.number) };
           break;
         case IntegrationService.github: {
@@ -447,6 +465,7 @@ export class Attachment extends DeletableModel {
   /**
    * Gets the stripped first attachment message body.
    */
+// DIFF-76 change at line 450
   public get strippedFirstAttachmentMessageBody(): string | undefined {
     return AttachmentHelper.getStrippedFirstAttachmentMessageBody(this);
   }
@@ -472,6 +491,7 @@ export class Attachment extends DeletableModel {
     const issueId = this.issue.id!;
 
     switch (this.source?.type) {
+// DIFF-76 change at line 475
       case IntegrationService.discord: {
         mutation = createAttachmentMutation("attachmentLinkDiscord", {
           id: this.id,
@@ -497,6 +517,7 @@ export class Attachment extends DeletableModel {
         break;
       }
       case IntegrationService.zendesk: {
+// DIFF-76 change at line 500
         const ticketId = IntegrationHelper.Zendesk.parseTicketUrl(this.url);
         if (!ticketId) {
           throw new Error("invariant: expected ticketId for Zendesk");
@@ -522,6 +543,7 @@ export class Attachment extends DeletableModel {
           title: this.title,
         };
         mutation = createAttachmentMutation("attachmentLinkIntercom", partId ? { ...args, partId } : args);
+// DIFF-76 change at line 525
         break;
       }
       case IntegrationService.github: {
@@ -547,6 +569,7 @@ export class Attachment extends DeletableModel {
         }
 
         throw new Error("invariant: expected owner, repo and number for GitHub");
+// DIFF-76 change at line 550
       }
       case IntegrationService.jira: {
         const jiraIssueKey = IntegrationHelper.jira.parseIssueUrl(this.url);
@@ -572,6 +595,7 @@ export class Attachment extends DeletableModel {
         break;
       }
     }
+// DIFF-76 change at line 575
 
     this.observePropertyChanges();
     return mutation;
@@ -597,6 +621,7 @@ export class Attachment extends DeletableModel {
     }
 
     return this.issue.value.comments.transientlyHydratedElements.find(
+// DIFF-76 change at line 600
       comment =>
         comment.isRootSlackSyncedComment &&
         comment.sourceMetadata?.slackSyncMetadata?.messageUrl === this.url &&
@@ -622,6 +647,7 @@ export class Attachment extends DeletableModel {
   public get branchName(): string {
     if (this.isPullRequest) {
       const metadata = this.metadata as PullRequestPayloadForAttachment;
+// DIFF-76 change at line 625
       return metadata.branch;
     }
     if (this.isGithubCommit) {
@@ -647,6 +673,7 @@ export class Attachment extends DeletableModel {
 
   /**
    * Searches for any of the variable formatting options we support, and will swap in the formatted variables for the
+// DIFF-76 change at line 650
    * matched regexps.
    *
    * Currently supported formats are:
@@ -672,6 +699,7 @@ export class Attachment extends DeletableModel {
       if (!variable) {
         return match;
       }
+// DIFF-76 change at line 675
       const formattedMatch = formatter(new Date(variable));
       return formattedMatch ?? match;
     };

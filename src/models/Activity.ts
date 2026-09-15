@@ -3,10 +3,9 @@ import type { EmojiHelper as EmojiHelperType } from "#utils/EmojiHelper";
 import type { InlineFindable } from "#models/InlineFindable";
 import { Issue } from "#models/Issue";
 import { User } from "#models/User";
-import { ClientModel, Property, ManyToOne, LazyManyToOne } from "#models/base/Decorators";
+import { ClientModel, Property, ManyToOne, LazyManyToOne, Computed } from "#models/base/Decorators";
 import { Model } from "#models/base/Model";
 import type { LazyReference } from "#models/hydration/Lazy";
-import { Logger } from "#logging/Logger";
 
 // Lazy load EmojiHelper to avoid bloating the initial bundle with emoji data.
 let EmojiHelper: typeof EmojiHelperType | undefined;
@@ -19,6 +18,9 @@ void import("#utils/EmojiHelper").then(module => {
  */
 @ClientModel("Activity")
 export class Activity extends Model implements InlineFindable {
+  /** Maximum number of events shown before expanding an activity. */
+  public static readonly previewLimit = 5;
+
   /** User who triggered this activity. */
   @ManyToOne(() => User, "activities", { persistence: "none", optional: true, nullable: false, indexed: true })
   public readonly user?: User;
@@ -51,6 +53,11 @@ export class Activity extends Model implements InlineFindable {
    * @returns True if the model matches the query, false otherwise.
    */
   public matchInlineFind(query: string): boolean {
+    query = query.trim().toLowerCase();
+    if (!query) {
+      return true;
+    }
+
     if (this.issue?.value?.matchInlineFind(query)) {
       return true;
     }
@@ -63,7 +70,6 @@ export class Activity extends Model implements InlineFindable {
       }
       if ("reactions" in event) {
         if (!EmojiHelper) {
-          Logger.warning("EmojiHelper not loaded, skipping emoji search");
           return false;
         }
         const emoji = EmojiHelper.findNativeBySymbol(query);
@@ -78,5 +84,17 @@ export class Activity extends Model implements InlineFindable {
 
       return false;
     });
+  }
+
+  /** Events shown in the collapsed activity row. */
+  @Computed
+  public get previewEvents(): ActivityEvent[] {
+    return this.events.slice(-Activity.previewLimit);
+  }
+
+  /** Number of events hidden by the collapsed view. */
+  @Computed
+  public get hiddenEventCount(): number {
+    return Math.max(0, this.events.length - Activity.previewLimit);
   }
 }

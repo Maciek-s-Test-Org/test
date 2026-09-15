@@ -4,7 +4,7 @@ This document contains several independent edits.
 
 ## Context
 
-Show three unchanged lines around each change.
+Show six unchanged lines around each change.
 
 Keep the source and preview switches available while reviewing.
 
@@ -16,12 +16,12 @@ Keep comments visible beside the source they refer to.
 
 ## Progress
 
-Review files after reading every changed line.
+Review each change as you finish reading it.
 
 The file checkbox reports whether all changes have been reviewed.
 
 ## Example
 
 ```typescript
-const reviewed = changes.every(change => change.reviewed);
+const reviewed = visibleChanges.every(change => change.reviewed);
 ```

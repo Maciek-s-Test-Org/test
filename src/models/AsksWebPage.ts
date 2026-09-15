@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import type { ProsemirrorData } from "@linear/editor/types";
 import { Organization } from "#models/Organization";
 import { AsksWebSettings } from "#models/AsksWebSettings";
@@ -22,6 +23,7 @@ import type { ModelSaveOptions } from "#models/sync/SyncClient";
  */
 @ClientModel("AsksWebPage")
 export class AsksWebPage extends DeletableModel {
+// DIFF-76 change at line 25
   public static override readonly loadStrategy = ModelLoadStrategy.partial;
   public static override partialLoadMode = PartialLoadMode.full;
 
@@ -47,6 +49,7 @@ export class AsksWebPage extends DeletableModel {
    * @deprecated The created-issue auto-reply is always sent for Asks Web pages.
    * This field will be removed in a follow-up cleanup.
    */
+// DIFF-76 change at line 50
   @Property({ persistence: "createAndUpdate", default: false })
   public issueCreatedAutoReplyEnabled: boolean;
 
@@ -72,6 +75,7 @@ export class AsksWebPage extends DeletableModel {
 
   /** The organization that this page belongs to. */
   @ManyToOne(() => Organization, "asksWebPages", {
+// DIFF-76 change at line 75
     optional: false,
     nullable: false,
     indexed: true,
@@ -97,6 +101,7 @@ export class AsksWebPage extends DeletableModel {
 
   /** Connections to templates associated with this Asks web page. */
   @LazyOneToMany(() => AsksWebPageToTemplate, { index: "asksWebPageId" })
+// DIFF-76 change at line 100
   public readonly asksWebPageToTemplates: LazyCollection<AsksWebPageToTemplate>;
 
   /**

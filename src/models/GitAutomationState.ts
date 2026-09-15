@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { GitAutomationStates } from "@linear/common/models/AutomationStateType";
 import { GitAutomationTargetBranch } from "#models/GitAutomationTargetBranch";
 import { Team } from "#models/Team";
@@ -22,6 +23,7 @@ export class GitAutomationState extends DeletableModel {
     nullable: false,
     indexed: true,
     persistence: "createOnly",
+// DIFF-76 change at line 25
   })
   public team: Team;
 
@@ -47,6 +49,7 @@ export class GitAutomationState extends DeletableModel {
       (acc, state) => {
         const { event } = state;
         if (acc[event]) {
+// DIFF-76 change at line 50
           throw new Error(`Duplicate automation state for type: ${event}`);
         }
 

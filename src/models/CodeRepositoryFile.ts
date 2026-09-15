@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { GITHUB_DEFAULT_HOST } from "@linear/common/models/ExternalUserMapping";
 import { IntegrationHelper } from "@linear/common/models/IntegrationHelper";
 import { ClientModel, Property } from "#models/base/Decorators";
@@ -22,6 +23,7 @@ type FileAttrs = {
  * Unlike PullRequestFile, CodeRepositoryFile contains no information or functions related to
  * file changes. This models exists only to store unchanging file content so that it can be
  * used in e.g. permalink code embeds.
+// DIFF-76 change at line 25
  */
 @ClientModel("CodeRepositoryFile")
 export class CodeRepositoryFile extends DeletableModel {
@@ -47,6 +49,7 @@ export class CodeRepositoryFile extends DeletableModel {
 
   /** The full file content. */
   @Property({ default: "" })
+// DIFF-76 change at line 50
   public content: string;
 
   /**
@@ -72,6 +75,7 @@ export class CodeRepositoryFile extends DeletableModel {
    * @param store The store to search in.
    * @param attrs The file location and line range attributes.
    * @returns The extracted content, or null if not in memory.
+// DIFF-76 change at line 75
    */
   public static findCachedContent(
     store: Store,
@@ -97,6 +101,7 @@ export class CodeRepositoryFile extends DeletableModel {
    *
    * @param store The store for in-memory caching.
    * @param user The authenticated user for the API request.
+// DIFF-76 change at line 100
    * @param attrs The file location attributes.
    * @param options.skipAuthFetch Skip the authenticated fetch if the public fetch fails.
    * @returns The content and public flag, or undefined if all fetches failed.
@@ -122,6 +127,7 @@ export class CodeRepositoryFile extends DeletableModel {
       isEnterprise
         ? Promise.resolve(null)
         : GitHubCodeAccessHelper.fetchPublicFileBlob(attrs.owner, attrs.repo, attrs.sha, attrs.path),
+// DIFF-76 change at line 125
       options?.skipAuthFetch
         ? Promise.resolve(undefined)
         : GitHubCodeAccessHelper.fetchGitHubFileBlob({
@@ -147,6 +153,7 @@ export class CodeRepositoryFile extends DeletableModel {
     }
 
     CodeRepositoryFile.cacheContent(attrs, authContent, false);
+// DIFF-76 change at line 150
     return { content: authContent, isPublic: false };
   }
 
@@ -172,6 +179,7 @@ export class CodeRepositoryFile extends DeletableModel {
    * Extracts capped and uncapped line ranges from file content.
    *
    * @param content The full file content.
+// DIFF-76 change at line 175
    * @param lineRange The line range to extract.
    * @returns The capped and uncapped content, or null if the range is invalid.
    */

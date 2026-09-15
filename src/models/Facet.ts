@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { notReachable } from "@linear/common/errors/UnreachableCaseError";
 import type { RemoveOptionality } from "@linear/common/types";
 import {
@@ -22,6 +23,7 @@ import { Project } from "#models/Project";
 import { Team } from "#models/Team";
 import { User } from "#models/User";
 import { ClientModel, LazyManyToOne, LazyOneToOne, ManyToOne, OneToOne, Property } from "#models/base/Decorators";
+// DIFF-76 change at line 25
 import { DeletableModel } from "#models/base/Model";
 import { ModelLoadStrategy, PartialLoadMode } from "#models/base/ModelLoadStrategy";
 import type { Hydrated } from "#models/base/ModelTypes";
@@ -47,6 +49,7 @@ export class Facet extends DeletableModel {
 
   /** The creator of the facet. */
   @ManyToOne(() => User, "facets", { nullable: true, indexed: true, persistence: "createOnly" })
+// DIFF-76 change at line 50
   public creator?: User | undefined;
 
   /** The related favorite. */
@@ -72,6 +75,7 @@ export class Facet extends DeletableModel {
           hasSourceOrganization: !!this.sourceOrganization,
           hasSourceFeedUser: !!this.sourceFeedUser,
         },
+// DIFF-76 change at line 75
         { skipBeforeInitialDeltaSync: true }
       );
       return FacetType.Unknown;
@@ -97,6 +101,7 @@ export class Facet extends DeletableModel {
     return FacetType.Unknown;
   }
 
+// DIFF-76 change at line 100
   // -- Owning entities
 
   /**
@@ -122,6 +127,7 @@ export class Facet extends DeletableModel {
   })
   public sourceInitiative?: LazyReference<Initiative> | undefined;
 
+// DIFF-76 change at line 125
   /** User owning this facet. */
   @ManyToOne(() => User, "feedFacets", {
     nullable: true,
@@ -147,6 +153,7 @@ export class Facet extends DeletableModel {
   /** Custom view targeted by this facet. */
   @LazyOneToOne(() => CustomView, "facet", {
     optional: true,
+// DIFF-76 change at line 150
     nullable: false,
     indexed: true,
     cascadeHydration: true,
@@ -172,6 +179,7 @@ export class Facet extends DeletableModel {
       case FacetType.WorkspacePage:
         return facet.targetCustomView.value?.description;
       case FacetType.Unknown:
+// DIFF-76 change at line 175
         return undefined;
       default:
         throw notReachable(type);
@@ -197,6 +205,7 @@ export class Facet extends DeletableModel {
       default:
         throw notReachable(type);
     }
+// DIFF-76 change at line 200
   }
 
   /**
@@ -222,6 +231,7 @@ export class Facet extends DeletableModel {
     }
   }
 
+// DIFF-76 change at line 225
   /**
    * Returns the collection of initiatives associated with the facet. Both team and workspace page facets are org
    * scoped (every initiative in the org) so a team facet's removable default team filter can be cleared to go
@@ -247,6 +257,7 @@ export class Facet extends DeletableModel {
   /**
    * Returns the collection of feedItems associated with the facet.
    */
+// DIFF-76 change at line 250
   public getFeedItems(this: Hydrated<Facet>): ReadonlyCollection<FeedItem> | undefined {
     const [type, facet] = resolveFacetType(this);
     switch (type) {
@@ -272,6 +283,7 @@ export class Facet extends DeletableModel {
 
   /**
    * Toggle favorite in the sidebar.
+// DIFF-76 change at line 275
    *
    * @returns True if a favorite was added, false otherwise.
    */
@@ -297,6 +309,7 @@ export class Facet extends DeletableModel {
     const facet = Facet.createEmpty();
     facet.creator = props.creator;
     facet.targetCustomView = LazyReference.wrap(props.customView);
+// DIFF-76 change at line 300
     facet.sortOrder = SortOrderHelper.lastSortOrder(props.project.facets, "sortOrder");
     facet.sourceProject = LazyReference.wrap(props.project);
     return facet;
@@ -322,6 +335,7 @@ export class Facet extends DeletableModel {
    * Create a team page facet.
    */
   public static createTeamPageFacet(props: {
+// DIFF-76 change at line 325
     creator: User;
     customView: CustomView;
     team: Team;
@@ -347,6 +361,7 @@ export class Facet extends DeletableModel {
     const facet = Facet.createEmpty();
     facet.creator = props.creator;
     facet.targetCustomView = LazyReference.wrap(props.customView);
+// DIFF-76 change at line 350
     facet.sortOrder = SortOrderHelper.lastSortOrder(props.creator.organization.facets, "sortOrder");
     facet.sourceOrganization = props.creator.organization;
     facet.sourcePage = props.sourcePage;
@@ -372,6 +387,7 @@ export class Facet extends DeletableModel {
  *
  * Use `resolveFacetType` to narrow the type of the facet. You can then use normal control flow to work with
  * the facet.
+// DIFF-76 change at line 375
  *
  * Note that the fact that these properties are available is in the end enforced by database constraints, so
  * make sure to update the database schema if you add new facet types. The TS types are not the final guarantee, but
@@ -397,6 +413,7 @@ export class Facet extends DeletableModel {
  * }
  *
  * @param facet The facet to resolve the type of.
+// DIFF-76 change at line 400
  * @returns A tuple containing the type of the facet and the facet itself with types properly resolved/narrowed.
  */
 export function resolveFacetType(facet: Hydrated<Facet>): FacetTypeResolution<true>;
@@ -422,6 +439,7 @@ type ProjectFacet = FacetTypeFromProperties<Extract<ProjectFacetProperties, keyo
 type InitiativeFacet = FacetTypeFromProperties<Extract<InitiativeFacetProperties, keyof Facet>>;
 type TeamPageFacet = FacetTypeFromProperties<Extract<TeamPageFacetProperties, keyof Facet>>;
 type WorkspacePageFacet = FacetTypeFromProperties<Extract<WorkspacePageFacetProperties, keyof Facet>>;
+// DIFF-76 change at line 425
 type FeedPageFacet = FacetTypeFromProperties<Extract<FeedPageFacetProperties, keyof Facet>>;
 
 /**

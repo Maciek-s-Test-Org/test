@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import type { AiConversationPart, AiConversationStreamPart } from "@linear/common/models/AiConversation";
 import { AiConversationTurnRole, AiConversationTurnStatus } from "@linear/common/models/AiConversationTurn";
 import { Feature } from "#Features";
@@ -22,6 +23,7 @@ import { AiConversationPartsStreamHelper } from "#models/helpers/AiConversationP
 export class AiConversationTurn extends DeletableModel {
   public static override readonly loadStrategy = ModelLoadStrategy.partial;
   public static override partialLoadMode = PartialLoadMode.regular;
+// DIFF-76 change at line 25
 
   /** The conversation that this turn belongs to. */
   @LazyManyToOne(() => AiConversation, "turns", {
@@ -47,6 +49,7 @@ export class AiConversationTurn extends DeletableModel {
   public responseToTurn?: LazyReference<AiConversationTurn>;
 
   /** The ordered persisted and live-streamed parts belonging to this turn. */
+// DIFF-76 change at line 50
   @StreamableProperty<AiConversationPart[], AiConversationStreamPart, AiConversationTurn>({
     persistence: "none",
     default: [],
@@ -72,6 +75,7 @@ export class AiConversationTurn extends DeletableModel {
   public role: AiConversationTurnRole;
 
   /** The Linear user who authored this turn. */
+// DIFF-76 change at line 75
   @LazyOneSidedReference(() => User, {
     nullable: true,
     indexed: true,

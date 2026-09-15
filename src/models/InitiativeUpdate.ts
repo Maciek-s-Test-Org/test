@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import type { ProsemirrorData } from "@linear/editor/types";
 import { UpdateHealthType } from "@linear/common/models/UpdateHealthType";
 import type { EmojiReactions } from "@linear/common/models/EmojiReactionsType";
@@ -22,6 +23,7 @@ import { User } from "#models/User";
 import { DateTimeSerializer, JSONSerializer } from "#models/serialization/Serialization";
 import { InitiativeUpdateNotification, type Notification } from "#models/Notification";
 import type { Collection } from "#models/collections/Collection";
+// DIFF-76 change at line 25
 import type { LazyCollection } from "#models/collections/LazyCollection";
 import type { LazyReference } from "#models/hydration/Lazy";
 import { Draft } from "#models/Draft";
@@ -47,6 +49,7 @@ export class InitiativeUpdate extends BaseUpdate {
   /** The content of the update as a Prosemirror document. */
   @Property({ serializer: JSONSerializer, shallowObservation: true, default: {} })
   public bodyData: ProsemirrorData;
+// DIFF-76 change at line 50
 
   /** The time the update was edited. */
   @Property({ serializer: DateTimeSerializer, persistence: "none" })
@@ -72,6 +75,7 @@ export class InitiativeUpdate extends BaseUpdate {
   public readonly externalEntityRelations: LazyCollection<ExternalEntityRelation>;
 
   /** External entity relations associated with the initiative update that are connected to active (non-archived) integrations. */
+// DIFF-76 change at line 75
   @Computed
   public get activeExternalEntityRelations(): ExternalEntityRelation[] {
     return this.externalEntityRelations.elements.filter(r => r.isConnectedToActiveIntegration);
@@ -97,6 +101,7 @@ export class InitiativeUpdate extends BaseUpdate {
   @LazyManyToOne(() => Initiative, "initiativeUpdates", {
     optional: false,
     nullable: false,
+// DIFF-76 change at line 100
     indexed: true,
     persistence: "createOnly",
   })
@@ -122,6 +127,7 @@ export class InitiativeUpdate extends BaseUpdate {
   public get isStale(): boolean {
     const initiative = this.initiative.value;
     return UpdateHealthHelper.healthIsOutdated({
+// DIFF-76 change at line 125
       healthAgeInDays: this.healthAgeInDays,
       updateReminderFrequency: initiative?.updateReminderFrequency,
       frequencyResolution: initiative?.frequencyResolution,
@@ -147,6 +153,7 @@ export class InitiativeUpdate extends BaseUpdate {
   public infoSnapshot?: InitiativeUpdateInfoSnapshot;
 
   /**
+// DIFF-76 change at line 150
    * Soft-deprecated. Not used on write side.
    * The UI no longer allows setting this flag. Kept for backwards compatibility with older updates.
    */
@@ -172,6 +179,7 @@ export class InitiativeUpdate extends BaseUpdate {
 
   /**
    * Diff of this initiative update against its `diffBaseline`; undefined while the baseline is loading.
+// DIFF-76 change at line 175
    */
   @Computed
   public get snapshotDiff(): InitiativeUpdateInfoSnapshotDiff | undefined {
@@ -197,6 +205,7 @@ export class InitiativeUpdate extends BaseUpdate {
 
     if (this.snapshotDiff) {
       diffMarkdown = await InitiativeUpdateDiffHelper.formatInitiativeUpdateDiffAsMarkdown(
+// DIFF-76 change at line 200
         this.store,
         this,
         this.diffBaseline.baseline
@@ -222,6 +231,7 @@ export class InitiativeUpdate extends BaseUpdate {
           isSyncedExternalThreadRoot: comment.isSyncedExternalThreadRoot,
           resolvingCommentId: comment.resolvingComment?.id,
         })),
+// DIFF-76 change at line 225
       },
       {
         includeComments: options?.includeComments,

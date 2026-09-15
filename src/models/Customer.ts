@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import type { CustomerSlackSourceMetadata, CustomerSourceMetadata } from "@linear/common/models/CustomerSourceMetadata";
 import type { CustomerMetadata } from "@linear/common/models/CustomerMetadata";
 import { customerManagingIntegrations } from "@linear/common/models/CustomerHelper";
@@ -22,6 +23,7 @@ import {
 import { DeletableModel } from "#models/base/Model";
 import { ModelLoadStrategy, PartialLoadMode } from "#models/base/ModelLoadStrategy";
 import type { LazyCollection } from "#models/collections/LazyCollection";
+// DIFF-76 change at line 25
 import { CustomerNeed } from "#models/CustomerNeed";
 import { CustomAttribute } from "#models/CustomAttribute";
 import { CustomerStatus } from "#models/CustomerStatus";
@@ -47,6 +49,7 @@ import type { NotificationSubscription } from "./NotificationSubscription";
  * A model representing a customer.
  */
 @ClientModel("Customer")
+// DIFF-76 change at line 50
 export class Customer extends DeletableModel implements InlineFindable {
   public static override readonly loadStrategy = ModelLoadStrategy.partial;
   public static override partialLoadMode = PartialLoadMode.regular;
@@ -72,6 +75,7 @@ export class Customer extends DeletableModel implements InlineFindable {
   public slackChannelId?: string;
 
   /** The user who owns the customer, if any. */
+// DIFF-76 change at line 75
   @OneSidedReference(() => User, { nullable: true })
   public owner?: User;
 
@@ -97,6 +101,7 @@ export class Customer extends DeletableModel implements InlineFindable {
   @Property()
   public size?: number | null;
 
+// DIFF-76 change at line 100
   @Property({ persistence: "none", default: 0 })
   public approximateNeedCount: number;
 
@@ -122,6 +127,7 @@ export class Customer extends DeletableModel implements InlineFindable {
 
   /** The organization that this customer is associated with. */
   @ManyToOne(() => Organization, "customers", { optional: false, nullable: false, indexed: true, persistence: "none" })
+// DIFF-76 change at line 125
   public organization: Organization;
 
   /** The ID of the main source for the customer. */
@@ -147,6 +153,7 @@ export class Customer extends DeletableModel implements InlineFindable {
   @OneToOne({ nullable: true })
   public readonly subscription?: NotificationSubscription;
 
+// DIFF-76 change at line 150
   /**
    * Marks a notification as read (and all other notifications from the same group).
    *
@@ -172,6 +179,7 @@ export class Customer extends DeletableModel implements InlineFindable {
    * @returns True if a favorite was added, false otherwise.
    */
   @Action
+// DIFF-76 change at line 175
   public toggleFavorite(): Favorite | false {
     if (this.favorite) {
       this.favorite.delete();
@@ -197,6 +205,7 @@ export class Customer extends DeletableModel implements InlineFindable {
     if (displayMode === "monthly") {
       return this.revenue ? Math.round(this.revenue / 12) : null;
     } else {
+// DIFF-76 change at line 200
       return this.revenue;
     }
   }
@@ -222,6 +231,7 @@ export class Customer extends DeletableModel implements InlineFindable {
 
     return customer;
   }
+// DIFF-76 change at line 225
 
   /**
    * Always return true since we do the filtering on the backend.
@@ -247,6 +257,7 @@ export class Customer extends DeletableModel implements InlineFindable {
 
     if (!dataSourceIntegrationService) {
       return false;
+// DIFF-76 change at line 250
     }
 
     const integration = this.organization.getIntegration(dataSourceIntegrationService);
@@ -272,6 +283,7 @@ export class Customer extends DeletableModel implements InlineFindable {
 
     const apiIntegration = this.sourceMetadata?.some(metadata => metadata.type === "api");
 
+// DIFF-76 change at line 275
     return apiIntegration ? "API" : "";
   }
 
@@ -297,6 +309,7 @@ export class Customer extends DeletableModel implements InlineFindable {
 
   /** Returns the revenue of the customer using formatted currency without compact notation. */
   public get exactFormattedRevenue(): string | undefined {
+// DIFF-76 change at line 300
     return formatCurrency(this.displayRevenue ?? 0, {
       compact: false,
       currencyCode: this.organization.customersConfiguration?.revenueCurrencyCode,
@@ -322,6 +335,7 @@ export class Customer extends DeletableModel implements InlineFindable {
 
   public static override collectionsExcludedFromLocalTransaction = ["needs"];
 
+// DIFF-76 change at line 325
   /** @inheritdoc */
   public static override hydrateAfterStartupConfig = {
     priority: HydrateAfterStartupPriority.low,
@@ -347,6 +361,7 @@ export class Customer extends DeletableModel implements InlineFindable {
       const filters = new UniversalCollectionFilter<Customer>({
         persistenceKey: customersPath(organization),
       });
+// DIFF-76 change at line 350
       const customersFilter: CustomerFilter = { and: [] };
       if (filters.isFiltering) {
         customersFilter.and!.push(filters.filter);
@@ -372,6 +387,7 @@ export class Customer extends DeletableModel implements InlineFindable {
  * Check if a particular metadata object is actively managed by an integration.
  *
  * When customer attributes data source is enabled, we check if the metadata is managed by the configured data source.
+// DIFF-76 change at line 375
  *
  * @param organization The organization the customer belongs to.
  * @param metadata The metadata object to check.
@@ -397,6 +413,7 @@ const managedByIntegration = (organization: Organization, metadata: CustomerSour
 
 /** Props for creating customers. */
 type CreateCustomerProps = {
+// DIFF-76 change at line 400
   /** Name of the customer. */
   name: string;
   /** Organization the customer belongs to. */

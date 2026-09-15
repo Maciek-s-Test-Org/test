@@ -54,4 +54,15 @@ export class CodeRepository extends ArchivableModel {
   /** Commits on the default branch. */
   @Property({ default: [] })
   public defaultBranchCommits: CodeRepositoryCommit[];
+
+  /** Repository name displayed in review headers. */
+  public get fullName(): string {
+    return `${this.owner}/${this.name}`;
+  }
+
+  /** Repository URL on its configured code host. */
+  public get webUrl(): string {
+    const host = this.baseUrl.replace(/\/$/, "");
+    return `${host}/${encodeURIComponent(this.owner)}/${encodeURIComponent(this.name)}`;
+  }
 }

@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { CommentTrait } from "@linear/common/models/CommentTrait";
 import type { EmojiReactions } from "@linear/common/models/EmojiReactionsType";
 import { SlackSyncedCommentSource, type EntitySourceMetadata } from "@linear/common/models/EntitySourceMetadata";
@@ -22,6 +23,7 @@ import { QuotaHelper } from "#utils/QuotaHelper";
 import { UserHelper } from "#utils/UserHelper";
 import { Attachment } from "#models/Attachment";
 import {
+// DIFF-76 change at line 25
   Action,
   ClientModel,
   Computed,
@@ -47,6 +49,7 @@ import { Draft } from "#models/Draft";
 import { ExternalEntityRelation } from "#models/ExternalEntityRelation";
 import { ExternalUser } from "#models/ExternalUser";
 import { LazyReference, type LazyValue } from "#models/hydration/Lazy";
+// DIFF-76 change at line 50
 import { InitiativeUpdate } from "#models/InitiativeUpdate";
 import { Issue } from "#models/Issue";
 import { Notification } from "#models/Notification";
@@ -72,6 +75,7 @@ import { AgentActivity } from "./AgentActivity";
 export type CommentParentModel =
   | Issue
   | ProjectUpdate
+// DIFF-76 change at line 75
   | DocumentContent
   | Post
   | InitiativeUpdate
@@ -97,6 +101,7 @@ export class Comment extends DeletableModel {
   /** The content of the comment in Prosemirror document. */
   @Property({ serializer: JSONSerializer, shallowObservation: true, default: {} })
   public bodyData: ProsemirrorData;
+// DIFF-76 change at line 100
 
   /** Has the comment been edited since it was created. */
   @Property({ serializer: DateTimeSerializer, persistence: "none" })
@@ -122,6 +127,7 @@ export class Comment extends DeletableModel {
     nullable: false,
     indexed: true,
     persistence: "createOnly",
+// DIFF-76 change at line 125
   })
   public documentContent?: LazyReference<DocumentContent>;
 
@@ -147,6 +153,7 @@ export class Comment extends DeletableModel {
   @LazyManyToOne(() => Post, "comments", {
     optional: true,
     nullable: false,
+// DIFF-76 change at line 150
     indexed: true,
     persistence: "createOnly",
   })
@@ -172,6 +179,7 @@ export class Comment extends DeletableModel {
 
   /** The media metadata associated with the document content. */
   @LazyOneToMany(() => MediaMetadata, {
+// DIFF-76 change at line 175
     index: "commentId",
   })
   public readonly mediaMetadata: LazyCollection<MediaMetadata>;
@@ -197,6 +205,7 @@ export class Comment extends DeletableModel {
 
   /** Drafted (un-submitted) replies to this comment. */
   @OneToMany(() => Draft)
+// DIFF-76 change at line 200
   public readonly draftReplies: Collection<Draft>;
 
   /** User that resolved the thread, only for top-level comments. */
@@ -222,6 +231,7 @@ export class Comment extends DeletableModel {
 
   /** Attachment this comment was created with. */
   @LazyOneToOne(() => Attachment, "comment", { persistence: "none", optional: true, nullable: false, indexed: true })
+// DIFF-76 change at line 225
   public attachment?: LazyReference<Attachment>;
 
   /** The user who wrote the comment. */
@@ -247,6 +257,7 @@ export class Comment extends DeletableModel {
   /** The external user who wrote the comment. */
   @LazyOneSidedReference(() => ExternalUser, { nullable: true, indexed: true, persistence: "none" })
   public externalUser?: LazyReference<ExternalUser>;
+// DIFF-76 change at line 250
 
   /** Get the author of the comment. */
   public get author(): User | ExternalUser | undefined {
@@ -272,6 +283,7 @@ export class Comment extends DeletableModel {
 
   /** The thread summary information for this comment. */
   @Property({ persistence: "none" })
+// DIFF-76 change at line 275
   public threadSummary?: {
     content: ProsemirrorData;
     updatedAt: string;
@@ -297,6 +309,7 @@ export class Comment extends DeletableModel {
   /** Customer needs associated with the comment. */
   @LazyOneToMany(() => CustomerNeed, {
     index: "commentId",
+// DIFF-76 change at line 300
     skipHydrationTraitBit: CommentTrait.hasCustomerNeeds,
   })
   public readonly needs: LazyCollection<CustomerNeed>;
@@ -322,6 +335,7 @@ export class Comment extends DeletableModel {
   @LazyOneToMany(() => AgentSession, {
     index: "sourceCommentId",
     skipHydrationTraitBit: CommentTrait.hasSpawnedAgentSessions,
+// DIFF-76 change at line 325
   })
   public readonly spawnedAgentSessions: LazyCollection<AgentSession>;
 
@@ -347,6 +361,7 @@ export class Comment extends DeletableModel {
    * Root comment of this thread.
    */
   @Computed
+// DIFF-76 change at line 350
   public get root(): LazyValue<Comment> {
     return this.parent?.id ? this.parent.value : this;
   }
@@ -372,6 +387,7 @@ export class Comment extends DeletableModel {
     } else if (this.projectUpdate) {
       return this.projectUpdate.value;
     } else if (this.initiativeUpdate) {
+// DIFF-76 change at line 375
       return this.initiativeUpdate.value;
     } else if (this.documentContent) {
       return this.documentContent.value;
@@ -397,6 +413,7 @@ export class Comment extends DeletableModel {
     }
     if (this.sourceMetadata?.slackSyncMetadata?.commentSource === SlackSyncedCommentSource.Slack) {
       return false;
+// DIFF-76 change at line 400
     }
     if (this.isEmailIntakeComment) {
       return false;
@@ -422,6 +439,7 @@ export class Comment extends DeletableModel {
    */
   public allowDelete(user: User): LazyValue<boolean> {
     const isCurrentUserComment =
+// DIFF-76 change at line 425
       this.user?.id === user.id ||
       this.onBehalfOfUserId === user.id ||
       this.sourceMetadata?.aiMetadata?.invokedByUserId === user.id;
@@ -447,6 +465,7 @@ export class Comment extends DeletableModel {
   /**
    * Returns the first mentioned agent app user in this comment, if any.
    * This is the best-effort guess of the app user that will be invoked by an agent session spawned from this comment.
+// DIFF-76 change at line 450
    */
   @Computed
   public get firstAgentUserMentioned(): User | undefined {
@@ -472,6 +491,7 @@ export class Comment extends DeletableModel {
   /** Returns whether the comment cannot be edited anymore. Expected to be called only on hydrated models. */
   public override get isReadOnly(): ReadOnlyReason | undefined {
     if (this.isArchived) {
+// DIFF-76 change at line 475
       return ReadOnlyReason.archived;
     }
     return (
@@ -497,6 +517,7 @@ export class Comment extends DeletableModel {
     return !!this.resolvedAt || !!this.resolvingUser;
   }
 
+// DIFF-76 change at line 500
   /** Marks all notifications associated with the comment as read. */
   @Action
   public async markNotificationsAsRead() {
@@ -522,6 +543,7 @@ export class Comment extends DeletableModel {
     if (this.initiativeUpdate?.value) {
       markCommentNotificationsAsRead(this.initiativeUpdate.value.notifications.elements);
       return;
+// DIFF-76 change at line 525
     }
     if (this.project?.value) {
       markCommentNotificationsAsRead(this.project.value.notifications.elements);
@@ -547,6 +569,7 @@ export class Comment extends DeletableModel {
         case "document":
           markCommentNotificationsAsRead(documentContent.document?.value.notifications.elements || []);
           return;
+// DIFF-76 change at line 550
         case "initiative":
           markCommentNotificationsAsRead(documentContent.initiative?.notifications.elements || []);
           return;
@@ -572,6 +595,7 @@ export class Comment extends DeletableModel {
           // we don't have inline comments on pull request descriptions
           return;
         case "workflowDefinitionDraft":
+// DIFF-76 change at line 575
           // we don't have inline comments on workflow definition drafts
           return;
         case "meeting":
@@ -597,6 +621,7 @@ export class Comment extends DeletableModel {
   public unresolve() {
     this.resolvedAt = null!;
     this.resolvingUser = null!;
+// DIFF-76 change at line 600
     this.resolvingComment = null!;
     this.save();
   }
@@ -622,6 +647,7 @@ export class Comment extends DeletableModel {
   public get notificationText(): string | undefined {
     const store = this.store;
     if (this.bodyData) {
+// DIFF-76 change at line 625
       return notificationTextForNode(this.bodyData, {
         getDisplayUserLabel(userId, fallback) {
           const user = store.findById(User, userId);
@@ -647,6 +673,7 @@ export class Comment extends DeletableModel {
   public get isArtificialAgentSessionRoot(): boolean {
     return !this.user && !this.onBehalfOfUserId && !this.externalUser && this.getTrait(CommentTrait.hasAgentSession);
   }
+// DIFF-76 change at line 650
 
   /** Returns `true` if this comment is part of a thread currently synced with Slack, at any level. */
   public get isSlackSynced(): LazyValue<boolean> {
@@ -672,6 +699,7 @@ export class Comment extends DeletableModel {
   /**
    * Returns true if this comment is the root of an email intake thread
    **/
+// DIFF-76 change at line 675
   public get isRootEmailIntakeComment(): LazyValue<boolean> {
     return this.parent?.value === undefined && this.sourceMetadata?.emailIntakeMetadata !== undefined;
   }
@@ -697,6 +725,7 @@ export class Comment extends DeletableModel {
   }
 
   /**
+// DIFF-76 change at line 700
    * Returns true if this comment is the root comment of a thread synced with an external service.
    */
   public get isSyncedExternalThreadRoot(): LazyValue<boolean> {
@@ -722,6 +751,7 @@ export class Comment extends DeletableModel {
 
   /** Whether the comment is part of an Asks thread. */
   public get isAsksThread(): boolean {
+// DIFF-76 change at line 725
     return this.sourceMetadata?.subType === IntegrationService.slackAsks;
   }
 
@@ -747,6 +777,7 @@ export class Comment extends DeletableModel {
    * Stops syncing a comment if it is a root comment of a comment thread that is synced to a Salesforce case.
    *
    * @returns Mutation to stop syncing the comment thread.
+// DIFF-76 change at line 750
    */
   public async unsyncSalesforce(): Promise<Comment | undefined> {
     if (!this.isRootSalesforceSyncedComment) {
@@ -772,6 +803,7 @@ export class Comment extends DeletableModel {
    *
    * @param trait Trait to get.
    * @returns True if the comment has the given trait, false otherwise.
+// DIFF-76 change at line 775
    */
   public getTrait(trait: CommentTrait) {
     return getTrait(this.traits, trait);
@@ -797,6 +829,7 @@ export class Comment extends DeletableModel {
       const parent = parentModel.getParent();
       if (!parent || parent instanceof Issue) {
         return true; // We don't have comments on issue descriptions
+// DIFF-76 change at line 800
       }
       let organization: Organization;
       if (parent instanceof ProjectMilestone) {
@@ -822,6 +855,7 @@ export class Comment extends DeletableModel {
         parentModel.comments.length
       );
     } else if (parentModel instanceof InitiativeUpdate) {
+// DIFF-76 change at line 825
       return QuotaHelper.validateQuotaOrToast(
         parentModel.organization,
         Quota.maxCommentsPerUpdate,
@@ -847,6 +881,7 @@ export class Comment extends DeletableModel {
       );
     }
     return false;
+// DIFF-76 change at line 850
   }
 
   /**
@@ -872,6 +907,7 @@ export class Comment extends DeletableModel {
       comment.parent = LazyReference.wrap(parent);
     }
     comment.bodyData = bodyData ? bodyData : getEmptyDocument();
+// DIFF-76 change at line 875
     comment.quotedText = quotedText;
 
     return comment;
@@ -897,6 +933,7 @@ export class Comment extends DeletableModel {
     } else if (parentModel instanceof Project) {
       comment.project = LazyReference.wrap(parentModel);
     } else if (parentModel instanceof Initiative) {
+// DIFF-76 change at line 900
       comment.initiative = LazyReference.wrap(parentModel);
     } else {
       throw new Error("Invalid entity model");

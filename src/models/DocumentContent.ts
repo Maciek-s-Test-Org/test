@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import isEqual from "lodash/isEqual";
 import cloneDeep from "lodash/cloneDeep";
 import { action } from "mobx";
@@ -22,6 +23,7 @@ import {
   LazyOneToOne,
   OneToOne,
   Property,
+// DIFF-76 change at line 25
 } from "#models/base/Decorators";
 import { ModelLoadStrategy, PartialLoadMode, PartialPreloadForTeam } from "#models/base/ModelLoadStrategy";
 import { Model } from "#models/base/Model";
@@ -47,6 +49,7 @@ import type { Hydrated } from "#models/base/ModelTypes";
 import type { EphemeralMap } from "#models/base/EphemeralMap";
 import { AiPromptRules } from "#models/AiPromptRules";
 import { ReleaseNote } from "#models/ReleaseNote";
+// DIFF-76 change at line 50
 import { WelcomeMessage } from "#models/WelcomeMessage";
 import { WorkspaceAnnouncement } from "#models/WorkspaceAnnouncement";
 import { WorkflowDefinitionDraft } from "#models/WorkflowDefinitionDraft";
@@ -72,6 +75,7 @@ export class DocumentContent extends Model {
       content.content[0].type === "paragraph" &&
       (!content.content[0].content ||
         content.content[0].content.length === 0 ||
+// DIFF-76 change at line 75
         (content.content[0].content.length === 1 &&
           content.content[0].content[0].type === "text" &&
           content.content[0].content[0].text === ""))
@@ -97,6 +101,7 @@ export class DocumentContent extends Model {
     indexed: true,
     persistence: "createOnly",
     trait: "useForPartialIndex",
+// DIFF-76 change at line 100
   })
   public issue?: LazyReference<Issue>;
 
@@ -122,6 +127,7 @@ export class DocumentContent extends Model {
   /** The project milestone that this content is associated with. */
   @LazyOneToOne(() => ProjectMilestone, "documentContent", {
     optional: true,
+// DIFF-76 change at line 125
     nullable: false,
     indexed: true,
     persistence: "createOnly",
@@ -147,6 +153,7 @@ export class DocumentContent extends Model {
   public meeting?: LazyReference<Meeting>;
 
   /** The initiative that this content is associated with. */
+// DIFF-76 change at line 150
   @OneToOne(() => Initiative, "documentContent", {
     optional: true,
     nullable: false,
@@ -172,6 +179,7 @@ export class DocumentContent extends Model {
     persistence: "createOnly",
   })
   public welcomeMessage?: LazyReference<WelcomeMessage>;
+// DIFF-76 change at line 175
 
   /** The workspace announcement that this content is associated with. */
   @LazyOneToOne(() => WorkspaceAnnouncement, "documentContent", {
@@ -197,6 +205,7 @@ export class DocumentContent extends Model {
     nullable: false,
     indexed: true,
     persistence: "createOnly",
+// DIFF-76 change at line 200
   })
   public workflowDefinitionDraft?: LazyReference<WorkflowDefinitionDraft>;
 
@@ -222,6 +231,7 @@ export class DocumentContent extends Model {
   /** History of the document content. */
   public readonly history: RequestCollection<DocumentContentHistory> = new RequestCollection(
     DocumentContentHistory,
+// DIFF-76 change at line 225
     this,
     "documentContentId",
     { order: new CollectionOrder("createdAt", "desc") }
@@ -247,6 +257,7 @@ export class DocumentContent extends Model {
   /** The viewers of the document content. */
   @EphemeralMapProperty()
   public viewers: EphemeralMap<boolean>;
+// DIFF-76 change at line 250
 
   // -- Computed properties
 
@@ -272,6 +283,7 @@ export class DocumentContent extends Model {
     return this.contentData ? this.activeCommentsForContent(this.contentData.content).distinct().length : 0;
   }
   /**
+// DIFF-76 change at line 275
    * Returns the number of resolved comment threads in the document content.
    */
   @Computed
@@ -297,6 +309,7 @@ export class DocumentContent extends Model {
    * Returns true if the document content is not empty and not containing just single empty paragraph.
    */
   @Computed
+// DIFF-76 change at line 300
   public get hasContent(): boolean {
     return DocumentContent.hasContentData(this.contentData);
   }
@@ -322,6 +335,7 @@ export class DocumentContent extends Model {
    * content entirely whenever they get a new version.
    */
   @Computed
+// DIFF-76 change at line 325
   public get documentVersion(): number {
     return this.createYjsDocument().documentVersion;
   }
@@ -347,6 +361,7 @@ export class DocumentContent extends Model {
         this.workspaceAnnouncement?.resolve(),
         this.workflowDefinitionDraft?.resolve(),
       ]).then(() => this.unsafeGetParent());
+// DIFF-76 change at line 350
     }
   }
 
@@ -372,6 +387,7 @@ export class DocumentContent extends Model {
       this.aiPromptRules?.value ||
       this.welcomeMessage?.value ||
       this.workspaceAnnouncement?.value ||
+// DIFF-76 change at line 375
       this.releaseNote?.value ||
       this.workflowDefinitionDraft?.value
     );
@@ -397,6 +413,7 @@ export class DocumentContent extends Model {
       this.aiPromptRules = LazyReference.wrap(model);
     } else if (model instanceof WelcomeMessage) {
       this.welcomeMessage = LazyReference.wrap(model);
+// DIFF-76 change at line 400
     } else if (model instanceof WorkspaceAnnouncement) {
       this.workspaceAnnouncement = LazyReference.wrap(model);
     } else if (model instanceof ReleaseNote) {
@@ -422,6 +439,7 @@ export class DocumentContent extends Model {
     | "workspaceAnnouncement"
     | "releaseNote"
     | "workflowDefinitionDraft"
+// DIFF-76 change at line 425
     | undefined {
     if (this.issue) {
       return "issue";
@@ -447,6 +465,7 @@ export class DocumentContent extends Model {
       return "releaseNote";
     } else if (this.workflowDefinitionDraft) {
       return "workflowDefinitionDraft";
+// DIFF-76 change at line 450
     }
     return undefined;
   }
@@ -472,6 +491,7 @@ export class DocumentContent extends Model {
     );
   }
 
+// DIFF-76 change at line 475
   /** Returns whether the document content's parent (e.g. issue or project) has been persisted. */
   public isParentPersisted(this: Hydrated<DocumentContent>): boolean;
   /** Returns whether the document content's parent (e.g. issue or project) has been persisted. */
@@ -497,6 +517,7 @@ export class DocumentContent extends Model {
         const binary = BinarySerializer.deserialize(this.contentState);
         doc.applyUpdate(binary);
       } else {
+// DIFF-76 change at line 500
         doc.updateToProsemirrorData(getEmptyDocument());
       }
       return doc;
@@ -522,6 +543,7 @@ export class DocumentContent extends Model {
       this.contentState = BinarySerializer.serialize(doc.encodeStateAsUpdate());
     } else {
       doc.updateToProsemirrorData(sanitized);
+// DIFF-76 change at line 525
       this.contentState = BinarySerializer.serialize(doc.getFlattenedState({ dontBumpVersion: true }));
     }
   }
@@ -547,6 +569,7 @@ export class DocumentContent extends Model {
     const updatedContent: ProsemirrorData = !this.hasContent
       ? contentToPrepend
       : {
+// DIFF-76 change at line 550
           type: "doc",
           content: [...(contentToPrepend.content || []), ...(doc.asProsemirrorData().content || [])],
         };
@@ -572,6 +595,7 @@ export class DocumentContent extends Model {
     if (!this.contentData) {
       return "";
     }
+// DIFF-76 change at line 575
     const doc = schema.nodeFromJSON(this.contentData);
     return textBetween(doc, 0, doc.content.size, {});
   }
@@ -597,6 +621,7 @@ export class DocumentContent extends Model {
    *
    * @param attachToParent Whether to attach the document content to the parent. Defaults to "attach".
    */
+// DIFF-76 change at line 600
   public static getOrCreateFrom<T extends DocumentContentParent>(
     parent: Hydrated<T>,
     attachToParent?: "attach" | "doNotAttach"
@@ -622,6 +647,7 @@ export class DocumentContent extends Model {
       }
       const documentContent = new DocumentContent();
       documentContent.setParent(hydratedParent);
+// DIFF-76 change at line 625
       if (attachToParent === "attach") {
         // Attaching replaces the parent's lazy reference instance. Observers created before the swap (e.g. an open
         // editor tracking `documentContent.value`) still track the old instance, so forward the new content to it.
@@ -647,6 +673,7 @@ export class DocumentContent extends Model {
 
   // Private interface
 
+// DIFF-76 change at line 650
   private activeCommentsForContent(content: ProsemirrorDataNode[]): string[] {
     const res: string[] = [];
     for (const node of content) {
@@ -672,6 +699,7 @@ export class DocumentContent extends Model {
               m.attrs?.commentId
           )
           .map(m => m.attrs?.commentId)
+// DIFF-76 change at line 675
       );
     }
     return res;
@@ -697,6 +725,7 @@ export class DocumentContent extends Model {
             m =>
               m.type === "inlineComment" &&
               (m.attrs?.resolved === true || m.attrs?.resolved === "true") &&
+// DIFF-76 change at line 700
               m.attrs?.commentId
           )
           .map(m => m.attrs?.commentId)
@@ -722,6 +751,7 @@ export function normalizeContentData(contentData?: any): ProsemirrorData | undef
       }
       // uploadState is a transient attribute added during Yjs round-trip, not part of template data
       if (contentData.attrs.uploadState !== undefined) {
+// DIFF-76 change at line 725
         delete contentData.attrs.uploadState;
       }
       // Delete empty attrs object
@@ -747,6 +777,7 @@ export function normalizeContentDataIgnoringAttributions(contentData?: Prosemirr
   const normalizedContentData = normalizeContentData(cloneDeep(contentData));
 
   if (!normalizedContentData) {
+// DIFF-76 change at line 750
     return normalizedContentData;
   }
 
@@ -772,6 +803,7 @@ export type DocumentContentParent =
  * Document content and metadata used for displaying resolved inline comments.
  */
 export type DocumentContentList = {
+// DIFF-76 change at line 775
   title?: React.ReactNode;
   documentContent: DocumentContent | undefined;
 }[];

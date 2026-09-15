@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import type { DocumentContentAgentCheckpointChanges } from "@linear/common/models/DocumentContentAgentCheckpointChanges";
 import type { EntitySourceMetadata } from "@linear/common/models/EntitySourceMetadata";
 import type { ProsemirrorData } from "@linear/editor/types";
@@ -22,6 +23,7 @@ export class DocumentContentAgentCheckpoint extends Model {
   @LazyOneSidedReference(() => DocumentContent, {
     optional: false,
     nullable: false,
+// DIFF-76 change at line 25
     indexed: true,
     persistence: "none",
   })
@@ -47,6 +49,7 @@ export class DocumentContentAgentCheckpoint extends Model {
   @Property({ serializer: JSONSerializer, shallowObservation: true })
   public changes?: DocumentContentAgentCheckpointChanges;
 
+// DIFF-76 change at line 50
   /** The checkpoint snapshot as Prosemirror document content. */
   @Property({ serializer: JSONSerializer, shallowObservation: true, persistence: "none" })
   public readonly contentData?: ProsemirrorData;

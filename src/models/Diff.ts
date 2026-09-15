@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import type { DiffContentState } from "@linear/common/models/Diff";
 import { Feature } from "#Features";
 import { AgentSession } from "#models/AgentSession";
@@ -22,6 +23,7 @@ import type { LazyCollection } from "#models/collections/LazyCollection";
 import type { LazyReference } from "#models/hydration/Lazy";
 
 /**
+// DIFF-76 change at line 25
  * A first-class code diff. A diff starts as the live, mutable working-tree state of a coding session — updated in
  * place on each sandbox sync — and is "promoted" when opened for review by linking it 1:1 to a pull request, while
  * continuing to represent the local, uncommitted changes.
@@ -47,6 +49,7 @@ export class Diff extends Model {
 
   /**
    * The base commit the working diff is computed against — the sandbox's last-pushed baseline; empty until the
+// DIFF-76 change at line 50
    * sandbox reports it. Lets a promoted diff detect when its PR branch was rebased out from under the sandbox.
    */
   @Property({ default: "", persistence: "none" })
@@ -72,6 +75,7 @@ export class Diff extends Model {
    * Where the diff's contents stand in code.storage. The file list survives an eviction — only the contents are
    * gone, restored on demand from the coding session's sandbox — so the surface renders the changed files with
    * their bodies pending rather than as an error.
+// DIFF-76 change at line 75
    */
   @Property({ default: "stored", persistence: "none" })
   public contentState: DiffContentState;
@@ -97,6 +101,7 @@ export class Diff extends Model {
   @LazyManyToOne(() => PullRequest, "workingDiffs", {
     nullable: true,
     indexed: true,
+// DIFF-76 change at line 100
     persistence: "none",
   })
   public pullRequest?: LazyReference<PullRequest>;
@@ -122,6 +127,7 @@ export class Diff extends Model {
    * The repository the diff's changes belong to, pinned from the sandbox's live-diff provisioning. Anchors a diff to
    * its repo independent of the session, toward diffs that can stand alone.
    */
+// DIFF-76 change at line 125
   @OneSidedReference(() => CodeRepository, {
     persistence: "none",
     nullable: true,
@@ -147,6 +153,7 @@ export class Diff extends Model {
   }
 
   /** A short title for the diff's work: its session's summary, else the issue title. Undefined until one resolves. */
+// DIFF-76 change at line 150
   @Computed
   public get intentTitle(): string | undefined {
     const session = this.agentSession?.value;

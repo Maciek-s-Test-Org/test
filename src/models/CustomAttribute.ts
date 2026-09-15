@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { SchemaFieldType } from "@linear/common/models/SchemaFieldType";
 import { ClientModel, Property, OneSidedReference, LazyManyToOne } from "#models/base/Decorators";
 import { DeletableModel } from "#models/base/Model";
@@ -22,6 +23,7 @@ export class CustomAttribute extends DeletableModel {
   @Property({ serializer: JSONSerializer, persistence: "none", default: "" })
   public value: string;
 
+// DIFF-76 change at line 25
   /** The type of the value stored by the attribute. */
   @Property({ persistence: "none", default: SchemaFieldType.stringType })
   public type: SchemaFieldType;

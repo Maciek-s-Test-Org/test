@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import type { ProsemirrorData } from "@linear/editor/types";
 import type { DocumentContentHistoryMetadata } from "@linear/common/models/DocumentContentHistoryEntry";
 import { Model } from "#models/base/Model";
@@ -22,6 +23,7 @@ export class DocumentContentHistory extends Model {
   @Property({ serializer: JSONSerializer, shallowObservation: true, persistence: "none" })
   public readonly contentData?: ProsemirrorData;
 
+// DIFF-76 change at line 25
   /** The actors which have contributed edits to the document content. */
   @ManyToMany(() => User)
   public readonly actors: Collection<User>;

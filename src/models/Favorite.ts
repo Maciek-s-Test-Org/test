@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { FavoriteType } from "@linear/common/models/FavoriteType";
 import {
   type LiveFavoriteFolderDefinition,
@@ -22,6 +23,7 @@ import { Document } from "#models/Document";
 import { Initiative } from "#models/Initiative";
 import {
   ClientModel,
+// DIFF-76 change at line 25
   LazyManyToOne,
   LazyOneToOne,
   ManyToOne,
@@ -47,6 +49,7 @@ import { InitiativeLabel } from "#models/InitiativeLabel";
 import { PullRequest } from "#models/PullRequest";
 import { AiConversation } from "#models/AiConversation";
 import { Release } from "#models/Release";
+// DIFF-76 change at line 50
 import { ReleaseNote } from "#models/ReleaseNote";
 import { ReleasePipeline } from "#models/ReleasePipeline";
 import { WorkflowDefinition } from "#models/WorkflowDefinition";
@@ -72,6 +75,7 @@ export class Favorite extends DeletableModel implements SortableModel {
   /** Parent favorite folder. */
   @ManyToOne(() => Favorite, "children", { optional: true, nullable: false, indexed: true })
   public parent?: Favorite;
+// DIFF-76 change at line 75
 
   /** The children of the favorite. Will only ever be populated for favorites of type folder. */
   @OneToMany(() => Favorite)
@@ -97,6 +101,7 @@ export class Favorite extends DeletableModel implements SortableModel {
   @LazyOneToOne(() => Issue, "favorite", {
     optional: true,
     nullable: false,
+// DIFF-76 change at line 100
     cascadeHydration: true,
     indexed: true,
     persistence: "createOnly",
@@ -122,6 +127,7 @@ export class Favorite extends DeletableModel implements SortableModel {
   public project?: LazyReference<Project>;
 
   /** Favorited sub page of the project. */
+// DIFF-76 change at line 125
   @Property({ persistence: "createOnly" })
   public projectTab?: ProjectTab;
 
@@ -147,6 +153,7 @@ export class Favorite extends DeletableModel implements SortableModel {
 
   /** Favorited custom view. */
   @LazyOneToOne(() => CustomView, "favorite", {
+// DIFF-76 change at line 150
     optional: true,
     nullable: false,
     indexed: true,
@@ -172,6 +179,7 @@ export class Favorite extends DeletableModel implements SortableModel {
     cascadeHydration: true,
     indexed: true,
     persistence: "createOnly",
+// DIFF-76 change at line 175
   })
   public initiative?: LazyReference<Initiative>;
 
@@ -197,6 +205,7 @@ export class Favorite extends DeletableModel implements SortableModel {
     indexed: true,
     persistence: "createOnly",
   })
+// DIFF-76 change at line 200
   public projectLabel?: LazyReference<ProjectLabel>;
 
   /** Favorited initiative label. */
@@ -222,6 +231,7 @@ export class Favorite extends DeletableModel implements SortableModel {
     persistence: "createOnly",
   })
   public customer?: LazyReference<Customer>;
+// DIFF-76 change at line 225
 
   /** Favorited dashboard. */
   @LazyOneToOne(() => Dashboard, "favorite", {
@@ -247,6 +257,7 @@ export class Favorite extends DeletableModel implements SortableModel {
   @LazyOneToOne(() => AiConversation, "favorite", {
     optional: true,
     nullable: false,
+// DIFF-76 change at line 250
     cascadeHydration: true,
     indexed: true,
     persistence: "createOnly",
@@ -272,6 +283,7 @@ export class Favorite extends DeletableModel implements SortableModel {
     persistence: "createOnly",
   })
   public releasePipeline?: LazyReference<ReleasePipeline>;
+// DIFF-76 change at line 275
 
   /** Favorited sub page of the release pipeline. */
   @Property({ persistence: "createOnly" })
@@ -297,6 +309,7 @@ export class Favorite extends DeletableModel implements SortableModel {
     nullable: false,
     cascadeHydration: true,
     indexed: true,
+// DIFF-76 change at line 300
     persistence: "createOnly",
   })
   public workflowDefinition?: LazyReference<WorkflowDefinition>;
@@ -322,6 +335,7 @@ export class Favorite extends DeletableModel implements SortableModel {
   public async hydrateEmojiIcon(): Promise<Emoji | undefined> {
     if (
       [FavoriteType.customView, FavoriteType.project, FavoriteType.document, FavoriteType.initiative].includes(
+// DIFF-76 change at line 325
         this.type
       )
     ) {
@@ -347,6 +361,7 @@ export class Favorite extends DeletableModel implements SortableModel {
     const target = this.targetModel;
     if (target instanceof LazyReference) {
       void target
+// DIFF-76 change at line 350
         .resolve()
         .then(model => model?.hydrate())
         .catch(() => undefined);
@@ -372,6 +387,7 @@ export class Favorite extends DeletableModel implements SortableModel {
   public override get naturalIdentity() {
     const target = typeof this.targetModel === "string" ? this.targetModel : this.targetModel?.id;
     return [this.type, this.owner.id, target];
+// DIFF-76 change at line 375
   }
 
   /**
@@ -397,6 +413,7 @@ export class Favorite extends DeletableModel implements SortableModel {
    * @param preset preset to create.
    * @returns a new live folder instance.
    */
+// DIFF-76 change at line 400
   public static createLiveFolder(preset: LiveFavoriteFolderPreset) {
     const favorite = new Favorite();
     const currentUser = getStore().user;
@@ -422,6 +439,7 @@ export class Favorite extends DeletableModel implements SortableModel {
     projectTeam?: Team;
     projectTab?: ProjectTab;
     initiativeTab?: InitiativeTab;
+// DIFF-76 change at line 425
     pipelineTab?: PipelineTab;
     predefinedViewTeam?: Team;
     predefinedViewType?: PredefinedViewType;
@@ -447,6 +465,7 @@ export class Favorite extends DeletableModel implements SortableModel {
       | Team
       | WorkflowDefinition;
   }): Hydrated<Favorite> {
+// DIFF-76 change at line 450
     const favorite = Favorite.createEmpty();
     const currentUser = getStore().user;
     favorite.owner = currentUser;
@@ -472,6 +491,7 @@ export class Favorite extends DeletableModel implements SortableModel {
       favorite.type = FavoriteType.issue;
       favorite.issue = LazyReference.wrap(props.reference);
     } else if (props.reference instanceof Project) {
+// DIFF-76 change at line 475
       favorite.type = FavoriteType.project;
       favorite.project = LazyReference.wrap(props.reference);
       favorite.projectTab = props.projectTab;
@@ -497,6 +517,7 @@ export class Favorite extends DeletableModel implements SortableModel {
     } else if (props.reference instanceof Dashboard) {
       favorite.type = FavoriteType.dashboard;
       favorite.dashboard = LazyReference.wrap(props.reference);
+// DIFF-76 change at line 500
     } else if (props.reference instanceof PullRequest) {
       favorite.type = FavoriteType.pullRequest;
       favorite.pullRequest = LazyReference.wrap(props.reference);
@@ -522,6 +543,7 @@ export class Favorite extends DeletableModel implements SortableModel {
     } else if (props.reference !== undefined) {
       notReachable(props.reference);
     }
+// DIFF-76 change at line 525
 
     if (props.parent) {
       favorite.parent = props.parent;
@@ -547,6 +569,7 @@ export class Favorite extends DeletableModel implements SortableModel {
       this.user ||
       this.customer ||
       this.dashboard ||
+// DIFF-76 change at line 550
       this.pullRequest ||
       this.aiConversation ||
       this.release ||

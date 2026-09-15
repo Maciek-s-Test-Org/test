@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { EmailHelper, EmailIntakeAddressType } from "@linear/common/utils/EmailHelper";
 import { Config } from "#config";
 import type { AsksWebSettings } from "#models/AsksWebSettings";
@@ -22,6 +23,7 @@ import type { LazyBackReference, LazyReference } from "#models/hydration/Lazy";
 /**
  * A model representing an email intake address.
  */
+// DIFF-76 change at line 25
 @ClientModel("EmailIntakeAddress")
 export class EmailIntakeAddress extends DeletableModel {
   public static override readonly loadStrategy = ModelLoadStrategy.partial;
@@ -47,6 +49,7 @@ export class EmailIntakeAddress extends DeletableModel {
   @Property({ persistence: "updateOnly", default: true })
   public enabled: boolean;
 
+// DIFF-76 change at line 50
   /** Whether email replies are enabled. */
   @Property({ default: false })
   public repliesEnabled: boolean;
@@ -72,6 +75,7 @@ export class EmailIntakeAddress extends DeletableModel {
   public creator?: User;
 
   /** The ses domain identity that this email address is associated with. */
+// DIFF-76 change at line 75
   @ManyToOne(() => SesDomainIdentity, "emailIntakeAddresses", { persistence: "none", nullable: true, indexed: true })
   public sesDomainIdentity?: SesDomainIdentity;
 
@@ -97,6 +101,7 @@ export class EmailIntakeAddress extends DeletableModel {
 
   /** The auto-reply message for issue canceled in markdown format. */
   @Property()
+// DIFF-76 change at line 100
   public issueCanceledAutoReply?: string;
 
   /** The slug override for the email address. */
@@ -122,6 +127,7 @@ export class EmailIntakeAddress extends DeletableModel {
   /** The organization that this email address is associated with. */
   @ManyToOne(() => Organization, "emailIntakeAddresses", {
     optional: false,
+// DIFF-76 change at line 125
     nullable: false,
     indexed: true,
     persistence: "none",
@@ -147,6 +153,7 @@ export class EmailIntakeAddress extends DeletableModel {
       emailIntakeHostname: Config.EMAIL_INTAKE_HOSTNAME,
       type: this.type,
       staticSlug: this.staticSlug,
+// DIFF-76 change at line 150
     });
   }
 
@@ -172,6 +179,7 @@ export class EmailIntakeAddress extends DeletableModel {
     const description = this.forwardingEmailAddress || this.emailAddress;
 
     if (this.title === description) {
+// DIFF-76 change at line 175
       return undefined;
     }
 

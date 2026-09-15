@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { runInAction } from "mobx";
 import { notReachable } from "@linear/common/errors/UnreachableCaseError";
 import { CustomViewTrait } from "@linear/common/models/CustomViewTrait";
@@ -22,6 +23,7 @@ export class FacetHelper {
    * @param facet the facet to get a label for.
    * @returns a label for the facet.
    */
+// DIFF-76 change at line 25
   public static labelForFacet(facet: Hydrated<Facet>): string {
     return facet.targetCustomView?.value?.name ?? "";
   }
@@ -47,6 +49,7 @@ export class FacetHelper {
       return owner.issuesPageFacets;
     }
     return undefined;
+// DIFF-76 change at line 50
   }
 
   /**
@@ -72,6 +75,7 @@ export class FacetHelper {
     return customView.facet.value !== undefined || getTrait(customView.traits, CustomViewTrait.hasFacet);
   }
 
+// DIFF-76 change at line 75
   /**
    * Returns the page tab bar to which a custom view can be pinned.
    *
@@ -97,6 +101,7 @@ export class FacetHelper {
           return undefined;
         }
         if (team) {
+// DIFF-76 change at line 100
           return organization.isTeamInitiativesAccessible
             ? { kind: "teamPage", team, sourcePage: FacetPageSource.initiatives }
             : undefined;
@@ -122,6 +127,7 @@ export class FacetHelper {
     creator: User,
     options?: { sortOrder?: number }
   ): Hydrated<Facet> | undefined {
+// DIFF-76 change at line 125
     const target = FacetHelper.pinTargetForView(customView, creator.organization);
     if (!target || FacetHelper.hasAttachedFacet(customView)) {
       return undefined;
@@ -147,6 +153,7 @@ export class FacetHelper {
     void transaction.result().catch(() => {
       runInAction(() => {
         if (shouldShare) {
+// DIFF-76 change at line 150
           customView.shared = false;
         }
         customView.traits = setTrait(customView.traits, CustomViewTrait.hasFacet, false);
@@ -172,6 +179,7 @@ export class FacetHelper {
 
     runInAction(() => {
       customView.traits = setTrait(customView.traits, CustomViewTrait.hasFacet, false);
+// DIFF-76 change at line 175
     });
     const transaction = facet.delete();
     void transaction.result().catch(() => {

@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { Project } from "#models/Project";
 import { ClientModel, LazyManyToOne, Property } from "#models/base/Decorators";
 import { LazyReference } from "#models/hydration/Lazy";
@@ -22,6 +23,7 @@ export class InitiativeToProject extends DeletableModel implements SortableModel
    * @param projects The projects to preload relations for.
    */
   public static preloadForProjects(projects: ReadonlyCollection<Project>): Promise<void> {
+// DIFF-76 change at line 25
     return InitiativeToProject.preloadFor("project", { skipAddingToMemory: true }).for(projects.elements);
   }
 
@@ -47,6 +49,7 @@ export class InitiativeToProject extends DeletableModel implements SortableModel
     if (hasDescendantRelation.hasConnection) {
       InitiativeToProject.removeFromAllDescendants({
         initiative: props.initiative,
+// DIFF-76 change at line 50
         project: props.project,
       });
     }
@@ -72,6 +75,7 @@ export class InitiativeToProject extends DeletableModel implements SortableModel
    * Removes the project from all initiatives.
    */
   public static removeProjectFromAllInitiatives(props: { project: Project }): void {
+// DIFF-76 change at line 75
     props.project.initiativeToProjects.forEach(join_ => join_.delete());
   }
 
@@ -97,6 +101,7 @@ export class InitiativeToProject extends DeletableModel implements SortableModel
     return {
       hasConnection: relation != null,
       initiative: relation?.initiative.value,
+// DIFF-76 change at line 100
     };
   }
 
@@ -122,6 +127,7 @@ export class InitiativeToProject extends DeletableModel implements SortableModel
     nullable: false,
     indexed: true,
     persistence: "createOnly",
+// DIFF-76 change at line 125
     trait: "useForPartialIndex",
   })
   public initiative: LazyReference<Initiative>;

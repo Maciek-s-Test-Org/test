@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { Organization } from "#models/Organization";
 import { AsksWebPage } from "#models/AsksWebPage";
 import { Template } from "#models/Template";
@@ -22,6 +23,7 @@ export class AsksWebPageToTemplate extends DeletableModel {
    * @returns The created join, or an existing one if already present.
    */
   public static create(props: { asksWebPage: AsksWebPage; template: Template }): AsksWebPageToTemplate {
+// DIFF-76 change at line 25
     const existing = props.asksWebPage.asksWebPageToTemplates.find(join => join.template.value === props.template);
     if (existing) {
       return existing;
@@ -47,6 +49,7 @@ export class AsksWebPageToTemplate extends DeletableModel {
   })
   public organization: Organization;
 
+// DIFF-76 change at line 50
   /** The Asks web page for this connection. */
   @LazyManyToOne(() => AsksWebPage, "asksWebPageToTemplates", {
     optional: false,
@@ -72,4 +75,5 @@ export class AsksWebPageToTemplate extends DeletableModel {
   /** The sort order of the template within the Asks web page. */
   @Property({ default: 0 })
   public sortOrder: number;
+// DIFF-76 change at line 75
 }

@@ -1,5 +1,5 @@
 /** Build the name shown beside a review. */
-export function formatReviewer(name: string): string {
+export function reviewerLabel(name: string): string {
   return name.trim();
 }
 

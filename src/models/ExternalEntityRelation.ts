@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import {
   type ExternalEntityRelationMetadata,
   type ExternalEntitySyncErrorMap,
@@ -22,6 +23,7 @@ import { PullRequestComment } from "#models/PullRequestComment";
  * external entity and back.
  *
  * You should use this entity to store relations between internal and external entities, instead of storing information
+// DIFF-76 change at line 25
  * about the external entity directly on the internal entity. For example, instead of storing the Slack thread id on
  * the comment, you should create an ExternalEntityRelation connecting the two.
  */
@@ -47,6 +49,7 @@ export class ExternalEntityRelation extends DeletableModel {
   /**
    * Metadata about the relation, e.g. the Slack channel id and message timestamp for a Slack thread.
    */
+// DIFF-76 change at line 50
   @Property()
   public metadata?: ExternalEntityRelationMetadata;
 
@@ -72,6 +75,7 @@ export class ExternalEntityRelation extends DeletableModel {
 
   /** Project update associated with this relation. */
   @LazyManyToOne(() => ProjectUpdate, "externalEntityRelations", { optional: true, nullable: false, indexed: true })
+// DIFF-76 change at line 75
   public projectUpdate?: LazyReference<ProjectUpdate>;
 
   /** Project update associated with this relation. */
@@ -97,6 +101,7 @@ export class ExternalEntityRelation extends DeletableModel {
     nullable: false,
     indexed: true,
     onArchive: "NO ACTION",
+// DIFF-76 change at line 100
   })
   public integration?: Integration;
 

@@ -14,7 +14,7 @@ import type { LazyCollection } from "#models/collections/LazyCollection";
  * with the same components.
  */
 @ClientModel("GithubTeam")
-export class GithubTeam extends Model {
+export class GitHubTeam extends Model {
   public static override readonly loadStrategy = ModelLoadStrategy.lazy;
 
   /** The team's display name (e.g. "Frontend Team"). */

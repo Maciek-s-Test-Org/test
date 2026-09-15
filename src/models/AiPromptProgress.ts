@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import {
   AiPromptType,
   AiPromptProgressStatus,
@@ -22,6 +23,7 @@ export class AiPromptProgress extends DeletableModel {
 
   @LazyManyToOne(() => Issue, "aiPromptProgresses", {
     nullable: false,
+// DIFF-76 change at line 25
     optional: true,
     indexed: true,
     trait: "useForPartialIndex",
@@ -47,6 +49,7 @@ export class AiPromptProgress extends DeletableModel {
 
   /** The parent progress. If undefined, this is a top-level progress. */
   @LazyManyToOne(() => AiPromptProgress, "children", {
+// DIFF-76 change at line 50
     optional: true,
     nullable: false,
     indexed: true,
@@ -72,6 +75,7 @@ export class AiPromptProgress extends DeletableModel {
 
   /** The metadata of the prompt workflow progress. */
   @Property({ persistence: "none", default: {} })
+// DIFF-76 change at line 75
   public metadata: AiPromptProgressMetadata;
 
   /**
@@ -97,6 +101,7 @@ export class AiPromptProgress extends DeletableModel {
 
   /**
    * Whether the prompt workflow has been canceled.
+// DIFF-76 change at line 100
    */
   public get isCanceled(): boolean {
     return this.status === AiPromptProgressStatus.canceled;

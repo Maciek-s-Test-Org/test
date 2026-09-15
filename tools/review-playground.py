@@ -58,7 +58,7 @@ sample('02-nearby-changes.ts', '''export function summarize(items: string[]): st
 rows = '\n'.join(f'  {{ id: "rule-{i:03}", label: "Review rule {i}", enabled: true, priority: {i % 4} }},' for i in range(1, 121))
 sample('03-tall-replacement.ts', 'export const rules = [\n  { id: "default", label: "Default rule", enabled: true, priority: 0 },\n];\n', 'export const rules = [\n' + rows + '\n];\n')
 sample('04-added-short.ts', None, 'export const reviewed = false;\n')
-sample('05-added-tall.ts', None, '/** Large addition for checking the bottom-pinned review control. */\nexport const scenarios = [\n' + rows + '\n];\n')
+sample('05-added-tall.ts', None, '/** Large addition for checking the bottom-pinned review control. */\nexport const scenarios = [\n' + rows.replace('id:', 'key:').replace('rule-', 'scenario-').replace('label:', 'description:').replace('Review rule', 'Scroll scenario').replace('enabled: true, priority:', 'reviewed: false, order:') + '\n];\n')
 sample('06-deleted-short.ts', 'export const legacyReviewMode = "file";\n', None)
 sample('07-deleted-tall.ts', 'export const legacyRules = [\n' + rows + '\n];\n', None)
 sample('08-name-before.ts', 'export class ReviewPreferences {\n  public readonly label = "Review preferences";\n  public readonly contextLines = 3;\n  public readonly enabled = true;\n  public readonly mode = "split";\n  public readonly showLineNumbers = true;\n  public readonly wrapLines = false;\n  public readonly collapseUnchanged = true;\n}\n', None)

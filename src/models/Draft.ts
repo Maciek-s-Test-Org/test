@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import type { To } from "react-router";
 import { runInAction } from "mobx";
 import type { ProsemirrorData } from "@linear/common/models/ProsemirrorHelper";
@@ -22,6 +23,7 @@ import {
   commentPath,
   initiativeActivityPath,
   initiativeUpdateDraftPath,
+// DIFF-76 change at line 25
   issuePath,
   projectUpdateDraftPath,
   projectUpdatesPath,
@@ -47,6 +49,7 @@ export type DraftParentModel =
   | Issue
   | Comment
   | Post
+// DIFF-76 change at line 50
   | Initiative
   | InitiativeUpdate
   | PullRequest
@@ -72,6 +75,7 @@ export class Draft extends DeletableModel {
 
   @Property({ default: {} })
   public data: DraftData;
+// DIFF-76 change at line 75
 
   @Property()
   public anchor?: string;
@@ -97,6 +101,7 @@ export class Draft extends DeletableModel {
 
   /** The associated project if the draft is a project update. */
   @LazyManyToOne(() => Project, "draftProjectUpdatesOrComments", {
+// DIFF-76 change at line 100
     optional: true,
     nullable: false,
     indexed: true,
@@ -122,6 +127,7 @@ export class Draft extends DeletableModel {
   })
   public initiative?: LazyReference<Initiative>;
 
+// DIFF-76 change at line 125
   /** The associated initiative update if the draft is a comment on an initiative update. */
   @LazyManyToOne(() => InitiativeUpdate, "draftComments", {
     optional: true,
@@ -147,6 +153,7 @@ export class Draft extends DeletableModel {
     indexed: true,
     cascadeHydration: true,
     persistence: "createOnly",
+// DIFF-76 change at line 150
   })
   public parentComment?: LazyReference<Comment>;
 
@@ -172,6 +179,7 @@ export class Draft extends DeletableModel {
   /** The content of the comment in Prosemirror document. */
   @Property({ serializer: JSONSerializer, default: {} })
   public bodyData: ProsemirrorData;
+// DIFF-76 change at line 175
 
   /** The parent model of the draft. */
   @Computed
@@ -197,6 +205,7 @@ export class Draft extends DeletableModel {
         this.issue = LazyReference.wrap(model);
         break;
       case model instanceof Project:
+// DIFF-76 change at line 200
         this.project = LazyReference.wrap(model);
         break;
       case model instanceof Comment:
@@ -222,6 +231,7 @@ export class Draft extends DeletableModel {
         break;
       case model instanceof Team:
         this.team = LazyReference.wrap(model);
+// DIFF-76 change at line 225
         break;
       default:
         notReachable(model);
@@ -247,6 +257,7 @@ export class Draft extends DeletableModel {
    */
   @Computed
   public get agentSession(): LazyValue<AgentSession> {
+// DIFF-76 change at line 250
     const parentModel = this.parentModel;
     return parentModel instanceof Comment && parentModel.isHydrated() ? parentModel.agentSessions.first : undefined;
   }
@@ -272,6 +283,7 @@ export class Draft extends DeletableModel {
     let path = "";
     const state: CustomHistoryState = { draftId: this.id };
     const parentModel = this.parentModel;
+// DIFF-76 change at line 275
     const topLevelModel = this.topLevelModel;
 
     if (!parentModel || !topLevelModel) {
@@ -297,6 +309,7 @@ export class Draft extends DeletableModel {
       if (this.isProjectUpdateDraft) {
         if (!useUpdateDraftPage) {
           state.highlightUpdateComposer = true;
+// DIFF-76 change at line 300
         }
       } else {
         state.highlightCommentComposer = true;
@@ -322,6 +335,7 @@ export class Draft extends DeletableModel {
       state.highlightCommentThreadInput = true;
     } else if (parentModel instanceof PullRequest) {
       if (this.anchor) {
+// DIFF-76 change at line 325
         // Inline code comment draft: open the code review view. `useDraftScrollNavigation` reads
         // `state.draftId` (set on line above) and scrolls to the draft once it's rendered.
         path ||= reviewChangesPath(parentModel);
@@ -347,6 +361,7 @@ export class Draft extends DeletableModel {
 
   /** Plain text of the comment body. */
   @Computed
+// DIFF-76 change at line 350
   public get bodyTextContent(): string {
     if (this.bodyData) {
       const doc = schema.nodeFromJSON(this.bodyData);
@@ -372,6 +387,7 @@ export class Draft extends DeletableModel {
           // No further recursion needed.
           return false;
         }
+// DIFF-76 change at line 375
 
         persist = [
           "embed",
@@ -397,6 +413,7 @@ export class Draft extends DeletableModel {
     return false;
   }
 
+// DIFF-76 change at line 400
   // - Static methods
 
   /** Whether the given model has a draft for the given user. */
@@ -422,6 +439,7 @@ export class Draft extends DeletableModel {
           return model.draftProjectUpdatesOrComments;
         case model instanceof ProjectUpdate:
           return model.draftComments;
+// DIFF-76 change at line 425
         case model instanceof Comment:
           return model.draftReplies;
         case model instanceof InitiativeUpdate:
@@ -447,6 +465,7 @@ export class Draft extends DeletableModel {
 
   /**
    * Upserts a draft for the model with the provided data. Handles the case where a draft exists on the server
+// DIFF-76 change at line 450
    * but hasn't been synced to the client yet by catching the conflict error and updating the synced draft.
    *
    * @param model the parent model to upsert the draft for.
@@ -472,6 +491,7 @@ export class Draft extends DeletableModel {
       });
       await existingDraft.save().result();
       return;
+// DIFF-76 change at line 475
     }
 
     // No local draft found - try to create one
@@ -497,6 +517,7 @@ export class Draft extends DeletableModel {
     } catch (error) {
       // Check if this is a "draft already exists" conflict
       if (error instanceof ClientError && error.message.includes("conflict on insert of Draft")) {
+// DIFF-76 change at line 500
         // Draft may have synced while we were creating - try to find and update it
         const syncedDraft = this.getDraftForModel(model, user, filter);
         if (syncedDraft) {

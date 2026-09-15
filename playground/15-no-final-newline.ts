@@ -1,1 +1,1 @@
-export const label = "Pending";
+export const label = "Reviewed";

@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { AiPromptMemoryType, type AiPromptMemoryMetadata } from "@linear/common/models/AiPromptMemory";
 import { getEmptyDocument } from "@linear/editor/schema";
 import type { ProsemirrorData } from "@linear/editor/types";
@@ -22,6 +23,7 @@ import { Organization } from "#models/Organization";
 import { Project } from "#models/Project";
 import { PullRequest } from "#models/PullRequest";
 import { Team } from "#models/Team";
+// DIFF-76 change at line 25
 import { User } from "#models/User";
 import { WorkflowDefinition } from "#models/WorkflowDefinition";
 import { JSONSerializer } from "#models/serialization/Serialization";
@@ -47,6 +49,7 @@ export type AiPromptMemoryChangelogEntry = {
   assetUrls?: string[];
 };
 
+// DIFF-76 change at line 50
 type AiPromptMemoryChangeEntry = AiPromptMemorySignalEntry | AiPromptMemoryChangelogEntry;
 
 @ClientModel("AiPromptMemory")
@@ -72,6 +75,7 @@ export class AiPromptMemory extends DeletableModel {
     indexed: true,
     nullable: true,
     persistence: "none",
+// DIFF-76 change at line 75
   })
   public project?: LazyReference<Project>;
 
@@ -97,6 +101,7 @@ export class AiPromptMemory extends DeletableModel {
   public type: AiPromptMemoryType;
 
   @Property({ persistence: "none", default: () => getEmptyDocument() })
+// DIFF-76 change at line 100
   public bodyData: ProsemirrorData;
 
   @Property({ persistence: "none", serializer: JSONSerializer, default: [] })
@@ -122,6 +127,7 @@ export class AiPromptMemory extends DeletableModel {
     indexed: true,
     nullable: true,
     persistence: "none",
+// DIFF-76 change at line 125
   })
   public subjectProject?: LazyReference<Project>;
 
@@ -147,6 +153,7 @@ export class AiPromptMemory extends DeletableModel {
   public subjectPullRequest?: LazyReference<PullRequest>;
 
   @LazyOneSidedReference(() => Integration, {
+// DIFF-76 change at line 150
     indexed: true,
     nullable: true,
     persistence: "none",
@@ -172,6 +179,7 @@ export function aiPromptMemoryCollectionOrder() {
     if (memory.subjectProject) {
       return 2;
     }
+// DIFF-76 change at line 175
     if (memory.subjectLabel) {
       return 3;
     }

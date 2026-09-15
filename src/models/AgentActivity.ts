@@ -113,6 +113,36 @@ export class AgentActivity extends DeletableModel {
   })
   public user: LazyReference<User>;
 
+  /**
+   * Returns true if the activity is a stop request.
+   */
+  public isStopRequest(): this is AgentActivity & {
+    content: IAgentActivityPromptContent;
+    signal: AgentActivitySignal.stop;
+  } {
+    return this.content.type === AgentActivityType.prompt && this.signal === AgentActivitySignal.stop;
+  }
+
+  /**
+   * Returns true if the activity is a user prompt that begins a new turn: a prompt with no signal (so stop requests
+   * and other signalled prompts are excluded) that has entered the conversation.
+   *
+   * Queued prompts are excluded — until a queued prompt is dequeued (its `sentAt` is set and `queued` clears) it is a
+   * draft, not yet part of the timeline, so it must not be treated as a turn boundary.
+   */
+  public isUserPrompt(): this is AgentActivity & { content: IAgentActivityPromptContent } {
+    return this.content.type === AgentActivityType.prompt && !this.signal && !this.queued;
+  }
+
+  /**
+   * Returns true if the activity ends its turn and yields control back: a terminal-type activity (response,
+   * elicitation, or error) that is not a `continue`-signalled response. A `continue` response keeps the session
+   * working in the same turn rather than yielding, so it is not turn-ending.
+   */
+  public get isTurnEnding(): boolean {
+    return AgentActivityHelper.terminalTypes.has(this.content.type) && this.signal !== AgentActivitySignal.continue;
+  }
+
   /** Pull request comments referenced by this prompt's structured content. */
   @Computed
   public get pullRequestCommentIds(): string[] {
@@ -124,9 +154,11 @@ export class AgentActivity extends DeletableModel {
       return pullRequestCommentIdsFromBodyData(this.content.bodyData);
     }
 
-    return EntityMentionHelper.extractEntities(this.content.body)
-      .filter(entity => entity.type === "PullRequestComment")
-      .map(entity => entity.id);
+    return [...new Set(
+      EntityMentionHelper.extractEntities(this.content.body)
+        .filter(entity => entity.type === "PullRequestComment")
+        .map(entity => entity.id)
+    )];
   }
 
   /**
@@ -190,36 +222,6 @@ export class AgentActivity extends DeletableModel {
 
     // Use the default mutation for non-prompt activities
     return super.createMutation(usedVariableNames);
-  }
-
-  /**
-   * Returns true if the activity is a stop request.
-   */
-  public isStopRequest(): this is AgentActivity & {
-    content: IAgentActivityPromptContent;
-    signal: AgentActivitySignal.stop;
-  } {
-    return this.content.type === AgentActivityType.prompt && this.signal === AgentActivitySignal.stop;
-  }
-
-  /**
-   * Returns true if the activity is a user prompt that begins a new turn: a prompt with no signal (so stop requests
-   * and other signalled prompts are excluded) that has entered the conversation.
-   *
-   * Queued prompts are excluded — until a queued prompt is dequeued (its `sentAt` is set and `queued` clears) it is a
-   * draft, not yet part of the timeline, so it must not be treated as a turn boundary.
-   */
-  public isUserPrompt(): this is AgentActivity & { content: IAgentActivityPromptContent } {
-    return this.content.type === AgentActivityType.prompt && !this.signal && !this.queued;
-  }
-
-  /**
-   * Returns true if the activity ends its turn and yields control back: a terminal-type activity (response,
-   * elicitation, or error) that is not a `continue`-signalled response. A `continue` response keeps the session
-   * working in the same turn rather than yielding, so it is not turn-ending.
-   */
-  public get isTurnEnding(): boolean {
-    return AgentActivityHelper.terminalTypes.has(this.content.type) && this.signal !== AgentActivitySignal.continue;
   }
 
   /**

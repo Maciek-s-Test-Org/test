@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import type { Quota } from "@linear/common/quotas/QuotaRegistry";
 import type { LazyReference } from "#models/hydration/Lazy";
 import { IssueLabel } from "#models/IssueLabel";
@@ -22,6 +23,7 @@ export type BaseLabelClass = typeof IssueLabel | typeof ProjectLabel | typeof In
 /** The models that can have a label applied to them. */
 export type DestinationModel = Issue | Project | Initiative;
 
+// DIFF-76 change at line 25
 /** The classes of models that can have a label applied to them. */
 export type DestinationModelClass = typeof Issue | typeof Project | typeof Initiative;
 
@@ -47,6 +49,7 @@ export function getModelForLabelClass(labelClass: BaseLabelClass) {
 
 /**
  * Returns whether the label is an IssueLabel.
+// DIFF-76 change at line 50
  *
  * @param label The label to check.
  * @returns Whether the label is an IssueLabel.
@@ -72,6 +75,7 @@ export const isInitiativeLabel = (label: BaseLabelType): label is InitiativeLabe
 /** Models implementing this interface can be used interchangeably with IssueLabel and ProjectLabel. */
 export interface BaseLabel<T extends BaseLabelType> {
   /** Whether the label is retired. */
+// DIFF-76 change at line 75
   readonly isRetired: boolean;
 
   /** The team that the label belongs to. */
@@ -97,6 +101,7 @@ export interface BaseLabel<T extends BaseLabelType> {
 
   /**
    * Returns the owner of the label.
+// DIFF-76 change at line 100
    * This is the team (if applicable) or organization that the label belongs to.
    */
   getOwner(): Team | Organization;
@@ -122,6 +127,7 @@ export interface BaseLabel<T extends BaseLabelType> {
   /**
    * Returns the maximum number of labels per group.
    */
+// DIFF-76 change at line 125
   getMaxLabelsPerGroupQuota(): Quota;
 
   /**

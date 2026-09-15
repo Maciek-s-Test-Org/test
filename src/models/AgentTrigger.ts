@@ -56,7 +56,7 @@ export class AgentTrigger extends DeletableModel {
     }
 
     const filterKey = filterKeyForTriggerType(this.triggerType);
-    const ids: string[] = [];
+    const ids = new Set<string>();
 
     for (const condition of this.conditions) {
       const filter = condition[filterKey];
@@ -70,16 +70,18 @@ export class AgentTrigger extends DeletableModel {
       }
 
       if (idComparator.eq) {
-        ids.push(idComparator.eq);
+        ids.add(idComparator.eq);
       }
 
       if (idComparator.in) {
         const inValues = idComparator.in instanceof Set ? [...idComparator.in] : idComparator.in;
-        ids.push(...inValues);
+        for (const id of inValues) {
+          ids.add(id);
+        }
       }
     }
 
-    return [...new Set(ids)];
+    return [...ids];
   }
 }
 

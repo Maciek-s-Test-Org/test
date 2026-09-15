@@ -89,11 +89,11 @@ export class FeatureFlag extends DeletableModel {
 
   /** The name of associated project or issue. */
   public get entityName(): string {
-    return this.project?.value?.name ?? this.issue?.value?.identifier ?? "";
+    return this.issue?.value?.identifier ?? this.project?.value?.name ?? "Untitled flag";
   }
 
   @Computed
   public get displayedKey(): string | undefined {
-    return this.key ?? this.defaultKey;
+    return this.key?.trim() || this.defaultKey?.trim() || undefined;
   }
 }

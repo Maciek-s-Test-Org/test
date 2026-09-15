@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import type { FeatureFlagRolloutStageType } from "@linear/common/models/FeatureFlagRolloutStageType";
 import { ClientModel, ManyToOne, OneToMany, Property } from "#models/base/Decorators";
 import { DeletableModel } from "#models/base/Model";
@@ -22,6 +23,7 @@ export class FeatureFlagRolloutStage extends DeletableModel {
   /** Which feature flag provider segments this rollout stage is associated with. */
   @Property({ default: [] })
   public segmentKeys: string[];
+// DIFF-76 change at line 25
 
   /** The type of the feature flag rollout stage. */
   @Property({ default: "dev" })
@@ -47,6 +49,7 @@ export class FeatureFlagRolloutStage extends DeletableModel {
   /** The integration the stage belongs to. */
   @ManyToOne(() => Integration, "rolloutStages", {
     persistence: "none",
+// DIFF-76 change at line 50
     optional: false,
     nullable: false,
     indexed: true,
@@ -72,6 +75,7 @@ export class FeatureFlagRolloutStage extends DeletableModel {
     return stage;
   }
 
+// DIFF-76 change at line 75
   /**
    * Check if a given rollout stage is behind the current one in the rollout progression.
    *

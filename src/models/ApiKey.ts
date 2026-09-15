@@ -55,13 +55,17 @@ export class ApiKey extends DeletableModel implements InlineFindable {
     if (!this.scope) {
       return "full access";
     }
+    if (this.scope.length === 0) {
+      return "no permissions";
+    }
     return `${this.scope.length} ${this.scope.length === 1 ? "permission" : "permissions"}`;
   }
 
   /** Human-readable summary of which teams the API key can access. */
   public get humanReadableTeamAccess(): string {
     if (this.requestedSyncGroups !== undefined) {
-      return "selected teams";
+      const count = this.teamIds?.length;
+      return count === undefined ? "selected teams" : `${count} selected ${count === 1 ? "team" : "teams"}`;
     }
     if (this.user.activeTeams.some(team => team.private)) {
       return "public & private teams";
@@ -84,6 +88,6 @@ export class ApiKey extends DeletableModel implements InlineFindable {
       this.humanReadablePermissions,
       this.humanReadableTeamAccess,
     ];
-    return deburr(searchableText.concrete().join(" ")).toLowerCase().includes(query);
+    return deburr(searchableText.concrete().join(" ")).toLowerCase().includes(deburr(query.trim()).toLowerCase());
   }
 }

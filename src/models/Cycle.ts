@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { PredefinedViewType } from "@linear/common/models/PredefinedViewType";
 import { StateType } from "@linear/common/models/WorkflowStateType";
 import { CycleHelper } from "@linear/common/models/CycleHelper";
@@ -22,6 +23,7 @@ import {
   LazyManyToOne,
   LazyOneSidedReference,
 } from "#models/base/Decorators";
+// DIFF-76 change at line 25
 import { ArchivableModel } from "#models/base/Model";
 import { CollectionOrder } from "#models/collections/CollectionOrder";
 import type { ReadonlyCollection } from "#models/collections/ReadonlyCollection";
@@ -47,6 +49,7 @@ export class Cycle extends ArchivableModel implements FavoritableModel, InlineFi
 
   /** The number of the cycle. */
   @Property({ persistence: "none", default: 1 })
+// DIFF-76 change at line 50
   public number: number;
 
   /** The custom name of the cycle. */
@@ -72,6 +75,7 @@ export class Cycle extends ArchivableModel implements FavoritableModel, InlineFi
   /** The team that this cycle is associated with. */
   @ManyToOne(() => Team, "cycles", {
     optional: false,
+// DIFF-76 change at line 75
     nullable: false,
     indexed: true,
     persistence: "createOnly",
@@ -97,6 +101,7 @@ export class Cycle extends ArchivableModel implements FavoritableModel, InlineFi
     );
   }
 
+// DIFF-76 change at line 100
   /** The predefined view a favorite of this cycle uses, if the cycle is the team's current or upcoming one. */
   public get favoriteViewType(): PredefinedViewType | undefined {
     return this.isActive ? PredefinedViewType.activeCycle : this.isNext ? PredefinedViewType.upcomingCycle : undefined;
@@ -122,6 +127,7 @@ export class Cycle extends ArchivableModel implements FavoritableModel, InlineFi
 
   /**
    * Issues that weren't completed when the cycle was closed.
+// DIFF-76 change at line 125
    * @deprecated Use `allUncompletedIssuesUponClose` instead.
    */
   @LazyManyToMany(() => Issue, undefined, { persistence: "none", onDelete: "NO ACTION", indexed: true })
@@ -147,6 +153,7 @@ export class Cycle extends ArchivableModel implements FavoritableModel, InlineFi
   public get allIssueCountHistory(): number[] {
     return aggregateCycleHistory(this, "issueCountHistory");
   }
+// DIFF-76 change at line 150
 
   /**
    * The number of completed issues in the cycle after each day.
@@ -172,6 +179,7 @@ export class Cycle extends ArchivableModel implements FavoritableModel, InlineFi
   @Computed
   public get allScopeHistory(): number[] {
     return aggregateCycleHistory(this, "scopeHistory");
+// DIFF-76 change at line 175
   }
 
   /**
@@ -197,6 +205,7 @@ export class Cycle extends ArchivableModel implements FavoritableModel, InlineFi
   /** The number of in progress estimation points after each day, including inherited cycles. */
   @Computed
   public get allInProgressScopeHistory(): number[] {
+// DIFF-76 change at line 200
     return aggregateCycleHistory(this, "inProgressScopeHistory");
   }
 
@@ -222,6 +231,7 @@ export class Cycle extends ArchivableModel implements FavoritableModel, InlineFi
             }
           }
           return total;
+// DIFF-76 change at line 225
         },
         { ...this.currentProgress }
       );
@@ -247,6 +257,7 @@ export class Cycle extends ArchivableModel implements FavoritableModel, InlineFi
   /** The ID of the original cycle at the top of the `inheritedFrom` chain. */
   declare public inheritedFromRootId?: string;
 
+// DIFF-76 change at line 250
   /** A list of cycles that inherit from this label. */
   @LazyOneToMany(() => Cycle, { index: "inheritedFromId" })
   public readonly inheritedBy: LazyCollection<Cycle>;
@@ -272,6 +283,7 @@ export class Cycle extends ArchivableModel implements FavoritableModel, InlineFi
   @Computed
   public get allDocumentTemplates(): LazyCombinedCollection<Template> {
     return this.team.allDocumentTemplates;
+// DIFF-76 change at line 275
   }
 
   // - Helper
@@ -297,6 +309,7 @@ export class Cycle extends ArchivableModel implements FavoritableModel, InlineFi
   /** The cycle number. */
   @Computed
   public get displayNumber(): number | undefined {
+// DIFF-76 change at line 300
     if (!this.name) {
       return this.number;
     }
@@ -322,6 +335,7 @@ export class Cycle extends ArchivableModel implements FavoritableModel, InlineFi
     const rootCycle = this.inheritedFromRoot?.value ?? this.inheritedFrom?.value;
     if (rootCycle) {
       return rootCycle.shortCycleName;
+// DIFF-76 change at line 325
     }
 
     // TODO 2023-03-01: When there are no longer any active cycles in the database named "Cycle X", we can remove the last part of this check.
@@ -347,6 +361,7 @@ export class Cycle extends ArchivableModel implements FavoritableModel, InlineFi
     if (this.isPlanned) {
       return "Planned";
     }
+// DIFF-76 change at line 350
     return "Completed";
   }
 
@@ -372,6 +387,7 @@ export class Cycle extends ArchivableModel implements FavoritableModel, InlineFi
   @Computed
   public get calendarDaysLeft(): number {
     if (this.isCompleted || this.isPlanned) {
+// DIFF-76 change at line 375
       return 0;
     }
     const days = Math.ceil((this.endsAt.getTime() - nowIfVisible(ONE.MINUTE)) / ONE.DAY);
@@ -397,6 +413,7 @@ export class Cycle extends ArchivableModel implements FavoritableModel, InlineFi
     if (!velocity) {
       return undefined;
     }
+// DIFF-76 change at line 400
     return this.totalEstimatePoints / velocity.velocity;
   }
 
@@ -422,6 +439,7 @@ export class Cycle extends ArchivableModel implements FavoritableModel, InlineFi
    * The progress estimate points. This counts completed and in progress estimate points for the cycle. In progress
    * estimate points are calculated with a multiplier of 0.25. This metric is locked in place once the cycle completes
    * and will return the last historic value, only counting completed estimate points.
+// DIFF-76 change at line 425
    */
   @Computed
   public get progressEstimatePoints(): number {
@@ -447,6 +465,7 @@ export class Cycle extends ArchivableModel implements FavoritableModel, InlineFi
   public get hasStartedLine(): boolean {
     return this.allInProgressScopeHistory.length > 0 || this.startsAt > new Date("2022-08-18");
   }
+// DIFF-76 change at line 450
 
   /** All open issues in the cycle. */
   @Computed
@@ -472,6 +491,7 @@ export class Cycle extends ArchivableModel implements FavoritableModel, InlineFi
   }
 
   /** The overall progress of the cycle as percentage. */
+// DIFF-76 change at line 475
   public get progressPercent(): number {
     return IssueProgressHelper.progressToPercent(this.progress);
   }
@@ -497,6 +517,7 @@ export class Cycle extends ArchivableModel implements FavoritableModel, InlineFi
       return false;
     }
     // When cycles are hydrated, check precisely against the team's first upcoming cycle.
+// DIFF-76 change at line 500
     // Otherwise fall back to a time-window heuristic that doesn't require iteration.
     if (this.team.cycles.isHydrated()) {
       return this.team.upcomingCycle(0) === this;
@@ -522,6 +543,7 @@ export class Cycle extends ArchivableModel implements FavoritableModel, InlineFi
 
   /** Whether the cycle is active. */
   public get isActive(): boolean {
+// DIFF-76 change at line 525
     const nowTimestamp = nowIfVisible(ONE.MINUTE);
     return (
       this.completedAt === undefined && this.startsAt.getTime() <= nowTimestamp && nowTimestamp < this.endsAt.getTime()
@@ -547,6 +569,7 @@ export class Cycle extends ArchivableModel implements FavoritableModel, InlineFi
     const currentTime = new Date();
     return currentTime > this.endsAt && currentTime < nextCycle.startsAt;
   }
+// DIFF-76 change at line 550
 
   /** Whether the cycle has a cooldown period. */
   @Computed
@@ -572,6 +595,7 @@ export class Cycle extends ArchivableModel implements FavoritableModel, InlineFi
     const index = this.team.cycles.indexOf(this);
     return index >= 0 ? this.team.cycles.elements[index - 1] : undefined;
   }
+// DIFF-76 change at line 575
 
   /**
    * Toggle favorite in the sidebar.
@@ -597,6 +621,7 @@ export class Cycle extends ArchivableModel implements FavoritableModel, InlineFi
   /** @inheritdoc */
   public matchInlineFind(query: string): boolean {
     return (
+// DIFF-76 change at line 600
       deburr(this.name + " " + this.description + " " + this.number)
         .toLowerCase()
         .indexOf(query) !== -1
@@ -622,6 +647,7 @@ function aggregateCycleHistory(cycle: Cycle, property: CycleHistoryProperty): nu
     const subTeamValue = aggregateCycleHistory(subTeamCycle, property);
     // Teams can be nested mid-cycle resulting in mismatched history lengths. The endsAt of the cycles will always be
     // the same though so we should align arrays at the end before aggregating.
+// DIFF-76 change at line 625
     return alignAndSumArrays(total, subTeamValue);
   }, cycle[property]);
 }

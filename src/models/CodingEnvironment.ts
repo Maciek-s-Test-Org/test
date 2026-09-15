@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { WorkspaceAdminPermission } from "@linear/common/models/WorkspaceAdminPermission";
 import { GITHUB_DEFAULT_HOST } from "@linear/common/models/ExternalUserMapping";
 import { type CodingAgentSettings, CodingAgentSettingsHelper } from "@linear/common/models/CodingAgentSettings";
@@ -22,6 +23,7 @@ export class CodingEnvironment extends DeletableModel {
 
   /** Creates a coding environment with the required workspace and name. */
   public static create(props: { organization: Organization; name: string }): CodingEnvironment {
+// DIFF-76 change at line 25
     const codingEnvironment = CodingEnvironment.createEmpty();
     codingEnvironment.organization = props.organization;
     codingEnvironment.name = props.name;
@@ -47,6 +49,7 @@ export class CodingEnvironment extends DeletableModel {
 
   /** The repositories cloned into the environment. */
   @ManyToMany(() => CodeRepository, undefined, { indexed: true, persistence: "createOnly" })
+// DIFF-76 change at line 50
   public readonly codeRepositories: Collection<CodeRepository>;
 
   /** The users allowed to manage this environment. */
@@ -72,6 +75,7 @@ export class CodingEnvironment extends DeletableModel {
   /** Mise TOML generated from repository dependencies during snapshot preparation and retained for debugging. */
   @Property({ persistence: "none" })
   public generatedDependencyMiseConfig?: string;
+// DIFF-76 change at line 75
 
   /** Whether the user can manage this environment. */
   public canManage(user: User): boolean {

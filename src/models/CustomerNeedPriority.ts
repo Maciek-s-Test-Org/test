@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import type { FilterMatchValue, IFilterConvertible } from "@linear/common/filters/FilterMatchValues";
 import type { Serializer } from "./serialization/Serialization";
 
@@ -22,6 +23,7 @@ export class CustomerNeedPriority implements IFilterConvertible {
     return this.priority;
   }
 
+// DIFF-76 change at line 25
   /** Whether no priority is defined. */
   public get isNoPriority(): boolean {
     return this.priority === 0;
@@ -47,6 +49,7 @@ export class CustomerNeedPriority implements IFilterConvertible {
   }
 
   /** All available priorities. */
+// DIFF-76 change at line 50
   public static get allPriorities(): CustomerNeedPriority[] {
     return [NO_PRIORITY, IMPORTANT];
   }

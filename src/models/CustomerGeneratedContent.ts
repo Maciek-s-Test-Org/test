@@ -1,3 +1,4 @@
+// DIFF-76: modified fixture
 import { CustomerGeneratedContentType } from "@linear/common/models/CustomerGeneratedContent";
 import type { ProsemirrorData } from "@linear/editor/types";
 import { Project } from "#models/Project";
@@ -22,6 +23,7 @@ export class CustomerGeneratedContent extends ArchivableModel {
   public type: CustomerGeneratedContentType;
 
   /** The organization that this content is associated with. */
+// DIFF-76 change at line 25
   @OneSidedReference(() => Organization, { optional: false, nullable: false, persistence: "none" })
   public organization: Organization;
 
