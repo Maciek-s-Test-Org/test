@@ -3,7 +3,7 @@ export type Reviewer = {
   lastName: string;
 };
 
-export function formatReviewer(reviewer: Reviewer): string {
+export function reviewerLabel(reviewer: Reviewer): string {
   return `${reviewer.firstName} ${reviewer.lastName}`.trim();
 }
 
