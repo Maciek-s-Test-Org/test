@@ -1,5 +1,5 @@
 # Bypass merge demo with a failing check
 
-This page is very clearly written and it was obviously reviewed by the team, so it is really quite good.
+This page exists so the required check fails and Linear lists a failed required check beside the missing review.
 
-It exists so the required markdown lint fails and Linear lists a failed required check beside the missing review.
+The failure comes from a commit status posted on purpose, not from the page content.
