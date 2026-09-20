@@ -8,7 +8,7 @@ export type ReminderCandidate = {
 /** Schedules only reminders that have passed the wait period. */
 export function shouldSendReminder(candidate: ReminderCandidate, now: number): boolean {
   const elapsedMinutes = (now - candidate.requestedAt) / 60_000;
-  const pastDelay = elapsedMinutes >= reviewPolicy.reminderDelayMinutes;
+  const pastDelay = elapsedMinutes >= reviewPolicy.firstReminderAfterMinutes;
   const belowLimit = candidate.remindersSent < reviewPolicy.maximumReminders;
   return pastDelay && belowLimit && isReminderHour(new Date(now).getUTCHours());
 }

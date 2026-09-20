@@ -3,7 +3,7 @@ import type { ReviewRequest } from "../domain/review-request";
 /** Returns requests that still need a decision from a reviewer. */
 export function waitingReviews(reviews: ReviewRequest[]): ReviewRequest[] {
   return reviews
-    .filter(review => review.status === "pending")
+    .filter(review => review.status === "waiting")
     .sort((left, right) => left.requestedAt - right.requestedAt);
 }
 
@@ -15,7 +15,7 @@ export function reviewInboxSummary(reviews: ReviewRequest[]): string {
 
 /** Presentation settings for the compact review inbox. */
 export const reviewInboxOptions = {
-  visibleLimit: 5,
+  visibleLimit: 12,
   showFileCount: true,
   emptyMessage: "You're all caught up",
   order: "oldest-first",

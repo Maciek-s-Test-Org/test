@@ -14,7 +14,7 @@ export function requestReview(input: RequestReviewInput): ReviewRequest {
   return {
     ...input,
     title: input.title.trim(),
-    status: "pending",
+    status: "waiting",
   };
 }
 

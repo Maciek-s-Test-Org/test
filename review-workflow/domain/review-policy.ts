@@ -1,6 +1,6 @@
 /** Shared settings for the review reminder worker and its settings page. */
 export const reviewPolicy = {
-  reminderDelayMinutes: 30,
+  firstReminderAfterMinutes: 30,
   maximumReminders: 3,
   quietHoursStart: 18,
   quietHoursEnd: 9,

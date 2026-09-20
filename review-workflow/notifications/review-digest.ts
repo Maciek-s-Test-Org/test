@@ -10,7 +10,7 @@ export type DigestEntry = {
 /** Creates plain-text rows for the daily review email. */
 export function reviewDigest(entries: DigestEntry[]): string[] {
   return entries.map(entry => {
-    const reviewer = ReviewerNames.formatReviewer(entry.reviewer);
+    const reviewer = ReviewerNames.reviewerLabel(entry.reviewer);
     return `${reviewer}: ${entry.fileCount} files waiting for review`;
   });
 }
