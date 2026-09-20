@@ -10,7 +10,7 @@ export type SettingRow = {
 export function reminderDelaySetting(): SettingRow {
   return {
     label: "First reminder",
-    value: `${reviewPolicy.reminderDelayMinutes} minutes`,
+    value: `${reviewPolicy.firstReminderAfterMinutes} minutes`,
     description: "Time after a review is requested before the first reminder.",
   };
 }

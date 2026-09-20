@@ -1,7 +1,7 @@
 import type { Reviewer } from "./reviewer";
 
 /** Lifecycle states stored with a review request. */
-export type ReviewStatus = "pending" | "approved" | "changes_requested";
+export type ReviewStatus = "waiting" | "approved" | "changes_requested";
 
 export type ReviewRequest = {
   id: string;

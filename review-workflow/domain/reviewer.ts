@@ -6,7 +6,7 @@ export type Reviewer = {
 };
 
 /** Returns the name shown next to a review request. */
-export function formatReviewer(reviewer: Reviewer): string {
+export function reviewerLabel(reviewer: Reviewer): string {
   const name = `${reviewer.firstName} ${reviewer.lastName}`.trim();
   return name || reviewer.email;
 }

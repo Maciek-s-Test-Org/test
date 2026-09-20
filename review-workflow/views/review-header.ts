@@ -1,4 +1,4 @@
-import { formatReviewer, type Reviewer } from "../domain/reviewer";
+import { reviewerLabel, type Reviewer } from "../domain/reviewer";
 
 export type ReviewHeader = {
   title: string;
@@ -14,13 +14,13 @@ export function reviewHeader(reviewer: Reviewer): ReviewHeader {
     .map(part => part[0])
     .join("");
 
-  const subtitle = formatReviewer(reviewer);
+  const subtitle = reviewerLabel(reviewer);
   return { title, subtitle, initials };
 }
 
 /** Copy shown when no reviewer has been assigned yet. */
 export const emptyReviewHeader = {
   title: "No reviewer assigned",
-  description: "Choose someone to review this change.",
+  description: "Assign a reviewer to get feedback on this change.",
   actionLabel: "Assign reviewer",
 };
