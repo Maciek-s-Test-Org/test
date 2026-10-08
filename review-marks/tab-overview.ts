@@ -1,7 +1,7 @@
 // Review-mark validation fixture: tab-overview.ts
 
 export function first(input: number): number {
-  const offset = 1;
+  const offset = 12;
   const doubled = input * 2;
   const shifted = doubled + offset;
   return shifted;
