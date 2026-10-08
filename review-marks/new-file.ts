@@ -8,7 +8,7 @@ export function first(input: number): number {
 }
 
 export function second(input: number): number {
-  const offset = 1;
+  const offset = 5;
   const doubled = input * 2;
   const shifted = doubled + offset;
   return shifted;
