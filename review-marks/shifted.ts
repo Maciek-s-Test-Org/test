@@ -1,5 +1,10 @@
 // Review-mark validation fixture: shifted.ts
 
+export const padding0 = 0;
+export const padding1 = 1;
+export const padding2 = 2;
+export const padding3 = 3;
+
 export function first(input: number): number {
   const offset = 1;
   const doubled = input * 2;
