@@ -1,7 +1,7 @@
 // Review-mark validation fixture: new-file.ts
 
 export function first(input: number): number {
-  const offset = 1;
+  const offset = 14;
   const doubled = input * 2;
   const shifted = doubled + offset;
   return shifted;

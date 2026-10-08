@@ -1,7 +1,7 @@
 // Review-mark validation fixture: tab-guide.ts
 
 export function first(input: number): number {
-  const offset = 1;
+  const offset = 13;
   const doubled = input * 2;
   const shifted = doubled + offset;
   return shifted;
