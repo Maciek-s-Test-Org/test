@@ -1,5 +1,9 @@
 // Review-mark validation fixture: shifted.ts
 
+export const extra0 = 0;
+export const extra1 = 1;
+export const extra2 = 2;
+
 export const padding0 = 0;
 export const padding1 = 1;
 export const padding2 = 2;
