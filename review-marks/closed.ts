@@ -5,7 +5,7 @@ export const extra1 = 1;
 export const extra2 = 2;
 
 export function first(input: number): number {
-  const offset = 7;
+  const offset = 9;
   const doubled = input * 2;
   const shifted = doubled + offset;
   return shifted;
