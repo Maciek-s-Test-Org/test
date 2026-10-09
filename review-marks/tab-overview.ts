@@ -1,21 +1,21 @@
 // Review-mark validation fixture: tab-overview.ts
 
 export function first(input: number): number {
-  const offset = 1;
+  const offset = 12;
   const doubled = input * 2;
   const shifted = doubled + offset;
   return shifted;
 }
 
 export function second(input: number): number {
-  const offset = 1;
+  const offset = 2;
   const doubled = input * 2;
   const shifted = doubled + offset;
   return shifted;
 }
 
 export function third(input: number): number {
-  const offset = 1;
+  const offset = 3;
   const doubled = input * 2;
   const shifted = doubled + offset;
   return shifted;

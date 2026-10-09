@@ -10,14 +10,14 @@ export const padding2 = 2;
 export const padding3 = 3;
 
 export function first(input: number): number {
-  const offset = 1;
+  const offset = 16;
   const doubled = input * 2;
   const shifted = doubled + offset;
   return shifted;
 }
 
 export function second(input: number): number {
-  const offset = 1;
+  const offset = 2;
   const doubled = input * 2;
   const shifted = doubled + offset;
   return shifted;
