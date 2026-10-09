@@ -10,7 +10,7 @@ export const padding2 = 2;
 export const padding3 = 3;
 
 export function first(input: number): number {
-  const offset = 15;
+  const offset = 17;
   const doubled = input * 2;
   const shifted = doubled + offset;
   return shifted;
