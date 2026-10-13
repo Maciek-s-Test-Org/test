@@ -1,0 +1,10 @@
+# Marks put matching files in a review category regardless of path heuristics.
+fixtures/** linear-test
+README.md linear-implementation
+.ai/** linear-agent-guidance
+i18n/** linear-localization
+vendor/** linguist-generated
+# A later unmark cancels the earlier mark for a sub path.
+fixtures/skip/** -linear-test
+# An unmark switches off the documentation heuristic for notes/.
+notes/** -linguist-documentation

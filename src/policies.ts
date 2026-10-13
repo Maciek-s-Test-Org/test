@@ -17,6 +17,8 @@ export const DocumentPolicies = {
         'ADMIN_GLOBAL_DOCUMENT_MANAGE',
         'ADMIN_DOCUMENT_MANAGE',
         'DOCS_VIEW',
+        'ADMIN_JOB_VIEW',
+        'ADMIN_JOB_UPDATE',
       ]),
       isAnyLinkUser(actor, document),
     ),
@@ -25,7 +27,6 @@ export const DocumentPolicies = {
     Policy.anyOf(
       isSystem(actor),
       isOwner(actor, document),
-      isAuthor(actor, document),
       hasAny(actor, document.workspaceId, [
         'ADMIN_GLOBAL_DOCUMENT_MANAGE',
         'ADMIN_DOCUMENT_MANAGE',
@@ -56,19 +57,8 @@ export const DocumentPolicies = {
         'ADMIN_GLOBAL_DOCUMENT_MANAGE',
         'ADMIN_DOCUMENT_MANAGE',
         'DOCS_SHARE',
-      ]),
-      isAnyLinkUser(actor, document),
-    ),
-
-  ensureCanUpload: (actor: Actor, document: Document) =>
-    Policy.anyOf(
-      isSystem(actor),
-      isOwner(actor, document),
-      isAuthor(actor, document),
-      hasAny(actor, document.workspaceId, [
-        'ADMIN_GLOBAL_DOCUMENT_MANAGE',
-        'ADMIN_DOCUMENT_MANAGE',
-        'DOCS_UPLOAD',
+        'ADMIN_JOB_SHARE',
+        'ADMIN_JOB_UPDATE',
       ]),
       isAnyLinkUser(actor, document),
     ),
@@ -77,7 +67,6 @@ export const DocumentPolicies = {
     Policy.anyOf(
       isSystem(actor),
       isOwner(actor, document),
-      isAuthor(actor, document),
       hasAny(actor, document.workspaceId, [
         'ADMIN_GLOBAL_DOCUMENT_MANAGE',
         'ADMIN_DOCUMENT_MANAGE',
@@ -95,6 +84,8 @@ export const DocumentPolicies = {
         'ADMIN_GLOBAL_DOCUMENT_MANAGE',
         'ADMIN_DOCUMENT_MANAGE',
         'DOCS_ATTEST',
+        'ADMIN_JOB_ATTEST',
+        'ADMIN_JOB_UPDATE',
       ]),
       isAnyLinkUser(actor, document),
     ),
@@ -121,19 +112,6 @@ export const DocumentPolicies = {
         'ADMIN_GLOBAL_DOCUMENT_MANAGE',
         'ADMIN_DOCUMENT_MANAGE',
         'DOCS_PURGE',
-      ]),
-      isAnyLinkUser(actor, document),
-    ),
-
-  ensureCanRestore: (actor: Actor, document: Document) =>
-    Policy.anyOf(
-      isSystem(actor),
-      isOwner(actor, document),
-      isAuthor(actor, document),
-      hasAny(actor, document.workspaceId, [
-        'ADMIN_GLOBAL_DOCUMENT_MANAGE',
-        'ADMIN_DOCUMENT_MANAGE',
-        'DOCS_RESTORE',
       ]),
       isAnyLinkUser(actor, document),
     ),
@@ -173,6 +151,8 @@ export const DocumentPolicies = {
         'ADMIN_GLOBAL_DOCUMENT_MANAGE',
         'ADMIN_DOCUMENT_MANAGE',
         'DOCS_COPY',
+        'ADMIN_JOB_COPY',
+        'ADMIN_JOB_UPDATE',
       ]),
       isAnyLinkUser(actor, document),
     ),
@@ -181,24 +161,10 @@ export const DocumentPolicies = {
     Policy.anyOf(
       isSystem(actor),
       isOwner(actor, document),
-      isAuthor(actor, document),
       hasAny(actor, document.workspaceId, [
         'ADMIN_GLOBAL_DOCUMENT_MANAGE',
         'ADMIN_DOCUMENT_MANAGE',
         'DOCS_EXPORT',
-      ]),
-      isAnyLinkUser(actor, document),
-    ),
-
-  ensureCanPrint: (actor: Actor, document: Document) =>
-    Policy.anyOf(
-      isSystem(actor),
-      isOwner(actor, document),
-      isAuthor(actor, document),
-      hasAny(actor, document.workspaceId, [
-        'ADMIN_GLOBAL_DOCUMENT_MANAGE',
-        'ADMIN_DOCUMENT_MANAGE',
-        'DOCS_PRINT',
       ]),
       isAnyLinkUser(actor, document),
     ),
@@ -212,6 +178,8 @@ export const DocumentPolicies = {
         'ADMIN_GLOBAL_DOCUMENT_MANAGE',
         'ADMIN_DOCUMENT_MANAGE',
         'DOCS_SIGN',
+        'ADMIN_JOB_SIGN',
+        'ADMIN_JOB_UPDATE',
       ]),
       isAnyLinkUser(actor, document),
     ),
@@ -233,7 +201,6 @@ export const DocumentPolicies = {
     Policy.anyOf(
       isSystem(actor),
       isOwner(actor, document),
-      isAuthor(actor, document),
       hasAny(actor, document.workspaceId, [
         'ADMIN_GLOBAL_DOCUMENT_MANAGE',
         'ADMIN_DOCUMENT_MANAGE',
@@ -251,19 +218,8 @@ export const DocumentPolicies = {
         'ADMIN_GLOBAL_DOCUMENT_MANAGE',
         'ADMIN_DOCUMENT_MANAGE',
         'DOCS_COMMENT',
-      ]),
-      isAnyLinkUser(actor, document),
-    ),
-
-  ensureCanTag: (actor: Actor, document: Document) =>
-    Policy.anyOf(
-      isSystem(actor),
-      isOwner(actor, document),
-      isAuthor(actor, document),
-      hasAny(actor, document.workspaceId, [
-        'ADMIN_GLOBAL_DOCUMENT_MANAGE',
-        'ADMIN_DOCUMENT_MANAGE',
-        'DOCS_TAG',
+        'ADMIN_JOB_COMMENT',
+        'ADMIN_JOB_UPDATE',
       ]),
       isAnyLinkUser(actor, document),
     ),
@@ -285,11 +241,12 @@ export const DocumentPolicies = {
     Policy.anyOf(
       isSystem(actor),
       isOwner(actor, document),
-      isAuthor(actor, document),
       hasAny(actor, document.workspaceId, [
         'ADMIN_GLOBAL_DOCUMENT_MANAGE',
         'ADMIN_DOCUMENT_MANAGE',
         'DOCS_STAR',
+        'ADMIN_JOB_STAR',
+        'ADMIN_JOB_UPDATE',
       ]),
       isAnyLinkUser(actor, document),
     ),
@@ -320,24 +277,10 @@ export const DocumentPolicies = {
       isAnyLinkUser(actor, document),
     ),
 
-  ensureCanSplit: (actor: Actor, document: Document) =>
-    Policy.anyOf(
-      isSystem(actor),
-      isOwner(actor, document),
-      isAuthor(actor, document),
-      hasAny(actor, document.workspaceId, [
-        'ADMIN_GLOBAL_DOCUMENT_MANAGE',
-        'ADMIN_DOCUMENT_MANAGE',
-        'DOCS_SPLIT',
-      ]),
-      isAnyLinkUser(actor, document),
-    ),
-
   ensureCanPublish: (actor: Actor, document: Document) =>
     Policy.anyOf(
       isSystem(actor),
       isOwner(actor, document),
-      isAuthor(actor, document),
       hasAny(actor, document.workspaceId, [
         'ADMIN_GLOBAL_DOCUMENT_MANAGE',
         'ADMIN_DOCUMENT_MANAGE',
@@ -368,6 +311,8 @@ export const DocumentPolicies = {
         'ADMIN_GLOBAL_DOCUMENT_MANAGE',
         'ADMIN_DOCUMENT_MANAGE',
         'DOCS_APPROVE',
+        'ADMIN_JOB_APPROVE',
+        'ADMIN_JOB_UPDATE',
       ]),
       isAnyLinkUser(actor, document),
     ),
@@ -385,19 +330,6 @@ export const DocumentPolicies = {
       isAnyLinkUser(actor, document),
     ),
 
-  ensureCanEscalate: (actor: Actor, document: Document) =>
-    Policy.anyOf(
-      isSystem(actor),
-      isOwner(actor, document),
-      isAuthor(actor, document),
-      hasAny(actor, document.workspaceId, [
-        'ADMIN_GLOBAL_DOCUMENT_MANAGE',
-        'ADMIN_DOCUMENT_MANAGE',
-        'DOCS_ESCALATE',
-      ]),
-      isAnyLinkUser(actor, document),
-    ),
-
   ensureCanAssign: (actor: Actor, document: Document) =>
     Policy.anyOf(
       isSystem(actor),
@@ -407,6 +339,8 @@ export const DocumentPolicies = {
         'ADMIN_GLOBAL_DOCUMENT_MANAGE',
         'ADMIN_DOCUMENT_MANAGE',
         'DOCS_ASSIGN',
+        'ADMIN_JOB_ASSIGN',
+        'ADMIN_JOB_UPDATE',
       ]),
       isAnyLinkUser(actor, document),
     ),
@@ -441,24 +375,12 @@ export const DocumentPolicies = {
     Policy.anyOf(
       isSystem(actor),
       isOwner(actor, document),
-      isAuthor(actor, document),
       hasAny(actor, document.workspaceId, [
         'ADMIN_GLOBAL_DOCUMENT_MANAGE',
         'ADMIN_DOCUMENT_MANAGE',
         'DOCS_UNWATCH',
-      ]),
-      isAnyLinkUser(actor, document),
-    ),
-
-  ensureCanFlag: (actor: Actor, document: Document) =>
-    Policy.anyOf(
-      isSystem(actor),
-      isOwner(actor, document),
-      isAuthor(actor, document),
-      hasAny(actor, document.workspaceId, [
-        'ADMIN_GLOBAL_DOCUMENT_MANAGE',
-        'ADMIN_DOCUMENT_MANAGE',
-        'DOCS_FLAG',
+        'ADMIN_JOB_UNWATCH',
+        'ADMIN_JOB_UPDATE',
       ]),
       isAnyLinkUser(actor, document),
     ),
@@ -485,6 +407,8 @@ export const DocumentPolicies = {
         'ADMIN_GLOBAL_DOCUMENT_MANAGE',
         'ADMIN_DOCUMENT_MANAGE',
         'DOCS_RESOLVE',
+        'ADMIN_JOB_RESOLVE',
+        'ADMIN_JOB_UPDATE',
       ]),
       isAnyLinkUser(actor, document),
     ),
@@ -493,7 +417,6 @@ export const DocumentPolicies = {
     Policy.anyOf(
       isSystem(actor),
       isOwner(actor, document),
-      isAuthor(actor, document),
       hasAny(actor, document.workspaceId, [
         'ADMIN_GLOBAL_DOCUMENT_MANAGE',
         'ADMIN_DOCUMENT_MANAGE',
@@ -515,15 +438,122 @@ export const DocumentPolicies = {
       isAnyLinkUser(actor, document),
     ),
 
-  ensureCanAudit: (actor: Actor, document: Document) =>
+  ensureCanRedact: (actor: Actor, document: Document) =>
     Policy.anyOf(
       isSystem(actor),
       isOwner(actor, document),
-      isAuthor(actor, document),
       hasAny(actor, document.workspaceId, [
         'ADMIN_GLOBAL_DOCUMENT_MANAGE',
         'ADMIN_DOCUMENT_MANAGE',
-        'DOCS_AUDIT',
+        'DOCS_REDACT',
+        'DOCS_CLIENT_REMOVE',
+        'DOCS_SELF_REMOVE',
+        'DOCS_PROVIDER_REMOVE',
+      ]),
+      isAnyLinkUser(actor, document),
+    ),
+
+  ensureCanAnnotate: (actor: Actor, document: Document) =>
+    Policy.anyOf(
+      isSystem(actor),
+      isOwner(actor, document),
+      hasAny(actor, document.workspaceId, [
+        'ADMIN_GLOBAL_DOCUMENT_MANAGE',
+        'ADMIN_DOCUMENT_MANAGE',
+        'DOCS_ANNOTATE',
+        'DOCS_CLIENT_REMOVE',
+        'DOCS_SELF_REMOVE',
+        'DOCS_PROVIDER_REMOVE',
+      ]),
+      isAnyLinkUser(actor, document),
+    ),
+
+  ensureCanNotarize: (actor: Actor, document: Document) =>
+    Policy.anyOf(
+      isSystem(actor),
+      isOwner(actor, document),
+      hasAny(actor, document.workspaceId, [
+        'ADMIN_GLOBAL_DOCUMENT_MANAGE',
+        'ADMIN_DOCUMENT_MANAGE',
+        'DOCS_NOTARIZE',
+        'DOCS_CLIENT_REMOVE',
+        'DOCS_SELF_REMOVE',
+        'DOCS_PROVIDER_REMOVE',
+      ]),
+      isAnyLinkUser(actor, document),
+    ),
+
+  ensureCanCountersign: (actor: Actor, document: Document) =>
+    Policy.anyOf(
+      isSystem(actor),
+      isOwner(actor, document),
+      hasAny(actor, document.workspaceId, [
+        'ADMIN_GLOBAL_DOCUMENT_MANAGE',
+        'ADMIN_DOCUMENT_MANAGE',
+        'DOCS_COUNTERSIGN',
+        'DOCS_CLIENT_REMOVE',
+        'DOCS_SELF_REMOVE',
+        'DOCS_PROVIDER_REMOVE',
+      ]),
+      isAnyLinkUser(actor, document),
+    ),
+
+  ensureCanSupersede: (actor: Actor, document: Document) =>
+    Policy.anyOf(
+      isSystem(actor),
+      isOwner(actor, document),
+      hasAny(actor, document.workspaceId, [
+        'ADMIN_GLOBAL_DOCUMENT_MANAGE',
+        'ADMIN_DOCUMENT_MANAGE',
+        'DOCS_SUPERSEDE',
+        'DOCS_CLIENT_REMOVE',
+        'DOCS_SELF_REMOVE',
+        'DOCS_PROVIDER_REMOVE',
+      ]),
+      isAnyLinkUser(actor, document),
+    ),
+
+  ensureCanRetire: (actor: Actor, document: Document) =>
+    Policy.anyOf(
+      isSystem(actor),
+      isOwner(actor, document),
+      hasAny(actor, document.workspaceId, [
+        'ADMIN_GLOBAL_DOCUMENT_MANAGE',
+        'ADMIN_DOCUMENT_MANAGE',
+        'DOCS_RETIRE',
+        'DOCS_CLIENT_REMOVE',
+        'DOCS_SELF_REMOVE',
+        'DOCS_PROVIDER_REMOVE',
+      ]),
+      isAnyLinkUser(actor, document),
+    ),
+
+  ensureCanReissue: (actor: Actor, document: Document) =>
+    Policy.anyOf(
+      isSystem(actor),
+      isOwner(actor, document),
+      hasAny(actor, document.workspaceId, [
+        'ADMIN_GLOBAL_DOCUMENT_MANAGE',
+        'ADMIN_DOCUMENT_MANAGE',
+        'DOCS_REISSUE',
+        'DOCS_CLIENT_REMOVE',
+        'DOCS_SELF_REMOVE',
+        'DOCS_PROVIDER_REMOVE',
+      ]),
+      isAnyLinkUser(actor, document),
+    ),
+
+  ensureCanCancel: (actor: Actor, document: Document) =>
+    Policy.anyOf(
+      isSystem(actor),
+      isOwner(actor, document),
+      hasAny(actor, document.workspaceId, [
+        'ADMIN_GLOBAL_DOCUMENT_MANAGE',
+        'ADMIN_DOCUMENT_MANAGE',
+        'DOCS_CANCEL',
+        'DOCS_CLIENT_REMOVE',
+        'DOCS_SELF_REMOVE',
+        'DOCS_PROVIDER_REMOVE',
       ]),
       isAnyLinkUser(actor, document),
     ),
