@@ -1,0 +1,13 @@
+name: Autopilot e2e stop
+on:
+  pull_request:
+    branches: [autopilot-e2e-base]
+jobs:
+  autopilot-e2e-human-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Needs a person
+        run: |
+          echo "This failure is intentional for the Autopilot end-to-end test."
+          echo "Do not change any file to fix it. Only the repository owner can fix it."
+          exit 1
