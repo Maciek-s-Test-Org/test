@@ -1,0 +1,14 @@
+name: Autopilot e2e
+on:
+  pull_request:
+    branches: [autopilot-e2e-base]
+jobs:
+  autopilot-e2e-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fail until the fix marker exists
+        run: |
+          if [ -f autopilot-e2e/fixed ]; then echo "Fix marker found"; exit 0; fi
+          echo "autopilot-e2e/fixed is missing. Add it to fix this check."
+          exit 1
