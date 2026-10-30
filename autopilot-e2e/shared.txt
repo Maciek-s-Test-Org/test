@@ -1,3 +1,4 @@
 line one
 line two changed on the base branch
+line two changed on the PR branch
 line three
