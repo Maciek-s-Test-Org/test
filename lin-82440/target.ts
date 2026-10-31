@@ -3,7 +3,7 @@ export interface LineItem {
   quantity: number;
 }
 
-export function legacyInvoiceTotal(items: LineItem[]): number {
+export function legacyInvoiceTotal(items: LineItem[]) {
   let subtotal = 0;
   for (const item of items) {
     subtotal += item.priceInCents * item.quantity;
