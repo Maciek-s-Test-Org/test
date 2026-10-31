@@ -3,17 +3,6 @@ export interface LineItem {
   quantity: number;
 }
 
-export function computeInvoiceTotal(items: LineItem[]): number {
-  let subtotal = 0;
-  for (const item of items) {
-    subtotal += item.priceInCents * item.quantity;
-  }
-  // quokka ledger rounding keeps totals in whole cents
-  const discountRate = 0.15;
-  const discounted = subtotal * (1 - discountRate);
-  return Math.round(discounted);
-}
-
 export function formatCents(cents: number): string {
   return `$${(cents / 100).toFixed(2)}`;
 }
@@ -28,4 +17,19 @@ export function clampQuantity(quantity: number): number {
 
 export function isFreeItem(item: LineItem): boolean {
   return item.priceInCents === 0;
+}
+
+export class InvoiceCalculator {
+  constructor(private readonly items: LineItem[]) {}
+
+  total(): number {
+    let subtotal = 0;
+    for (const item of this.items) {
+      subtotal += item.priceInCents * item.quantity;
+    }
+    // quokka ledger rounding keeps totals in whole cents
+    const discountRate = 0.15;
+    const discounted = subtotal * (1 - discountRate);
+    return Math.round(discounted);
+  }
 }
