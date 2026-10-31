@@ -4,13 +4,6 @@ export interface LineItem {
 }
 
 export function legacyInvoiceTotal(items: LineItem[]) {
-  let subtotal = 0;
-  for (const item of items) {
-    subtotal += item.priceInCents * item.quantity;
-  }
-  // quokka ledger rounding keeps totals in whole cents
-  const discounted = subtotal * 0.85;
-  return Math.round(discounted);
 }
 
 export function formatCents(cents: number): string {
@@ -34,5 +27,12 @@ export class InvoiceCalculator {
 
   total(): number {
     const items = this.items;
+    let subtotal = 0;
+    for (const item of items) {
+      subtotal += item.priceInCents * item.quantity;
+    }
+    // quokka ledger rounding keeps totals in whole cents
+    const discounted = subtotal * 0.85;
+    return Math.round(discounted);
   }
 }
